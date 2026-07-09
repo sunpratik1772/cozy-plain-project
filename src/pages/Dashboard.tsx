@@ -17,6 +17,7 @@ const Dashboard = () => {
       <Seo
         title="Dashboard — EMT Sun"
         description="Monitor workflows, runs and automations across your EMT Sun workspace."
+        path="/"
       />
       <div className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-6xl space-y-6 px-4 py-6 md:px-6">

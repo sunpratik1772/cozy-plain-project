@@ -55,6 +55,7 @@ const Studio = () => {
       <Seo
         title="Workflow Studio — EMT Sun"
         description="Design, run and debug data workflows on the EMT Sun canvas."
+        path="/studio"
       />
       <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
         <p className="text-sm font-semibold tracking-tight">Lead scoring pipeline</p>
