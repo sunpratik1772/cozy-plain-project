@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Seo } from "@/components/Seo";
 import { AppShell } from "@/components/emt/AppShell";
+import { OnboardingWizard } from "@/components/emt/OnboardingWizard";
 import { StatusPill } from "@/components/emt/StatusPill";
 import { StatRow } from "@/components/emt/dashboard/StatRow";
 import { SuccessRateCard } from "@/components/emt/dashboard/SuccessRateCard";
@@ -18,10 +19,11 @@ const Dashboard = () => {
   return (
     <AppShell>
       <Seo
-        title="Dashboard — EMT Sun"
-        description="Monitor workflows, runs and automations across your EMT Sun workspace."
+        title="Dashboard — dbSherpa Studio"
+        description="Monitor workflows, runs and automations across your dbSherpa Studio workspace."
         path="/"
       />
+      <OnboardingWizard />
       <div className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-6xl space-y-5 px-4 py-6 md:px-6">
           <div>

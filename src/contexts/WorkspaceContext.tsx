@@ -1,12 +1,13 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { AUTOMATIONS, SOURCES, SKILLS, type EmtAutomation, type EmtSource, type EmtSkill } from "@/data/emt";
 
-const STORAGE_KEY = "emt-sun-workspace-v1";
+const STORAGE_KEY = "dbsherpa-studio-workspace-v1";
 
 export interface WorkspaceSettings {
   displayName: string;
   workspaceName: string;
   apiKey: string;
+  onboarded: boolean;
 }
 
 interface WorkspaceState {
@@ -22,8 +23,9 @@ const DEFAULT_STATE: WorkspaceState = {
   skills: SKILLS,
   settings: {
     displayName: "Pratik",
-    workspaceName: "emt-sun",
-    apiKey: "emt_sk_live_9f31c8a24f2a",
+    workspaceName: "dbsherpa-studio",
+    apiKey: "dbsherpa_sk_live_9f31c8a24f2a",
+    onboarded: false,
   },
 };
 
@@ -47,7 +49,7 @@ function loadState(): WorkspaceState {
 
 function randomKey() {
   const part = () => Math.random().toString(36).slice(2, 10);
-  return `emt_sk_live_${part()}${part()}`.slice(0, 28);
+  return `dbsherpa_sk_live_${part()}${part()}`.slice(0, 33);
 }
 
 let idCounter = 0;
@@ -71,6 +73,7 @@ interface WorkspaceContextValue extends WorkspaceState {
 
   updateSettings: (patch: Partial<Pick<WorkspaceSettings, "displayName" | "workspaceName">>) => void;
   regenerateApiKey: () => void;
+  completeOnboarding: () => void;
 
   resetWorkspace: () => void;
 }
@@ -154,6 +157,10 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, settings: { ...s.settings, apiKey: randomKey() } }));
   }, []);
 
+  const completeOnboarding = useCallback(() => {
+    setState((s) => ({ ...s, settings: { ...s.settings, onboarded: true } }));
+  }, []);
+
   const resetWorkspace = useCallback(() => {
     setState({ automations: [], sources: [], skills: DEFAULT_STATE.skills.map((s) => ({ ...s, enabled: false })), settings: DEFAULT_STATE.settings });
   }, []);
@@ -173,6 +180,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         deleteSkill,
         updateSettings,
         regenerateApiKey,
+        completeOnboarding,
         resetWorkspace,
       }}
     >
