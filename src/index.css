@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 210 40% 98%;
+
+    --card: 220 7% 10%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 220 7% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 220 7% 8%;
+
+    --secondary: 220 7% 15%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 220 7% 15%;
+    --muted-foreground: 228 8% 85%;
+
+    --accent: 220 7% 15%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 210 6% 13%;
+    --input: 220 7% 20%;
+    --ring: 212.7 26.8% 83.9%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 220 7% 6%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 7% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 220 7% 15%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 210 40% 98%;
+
+    --card: 220 7% 10%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 220 7% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 220 7% 8%;
+
+    --secondary: 220 7% 15%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 220 7% 15%;
+    --muted-foreground: 228 8% 85%;
+
+    --accent: 220 7% 15%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 210 6% 13%;
+    --input: 220 7% 20%;
+    --ring: 212.7 26.8% 83.9%;
+
+    --sidebar-background: 220 7% 6%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 7% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 220 7% 15%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* SearchBar gradient border styling */
+  .search-bar-gradient-border {
+    position: relative;
+    background: linear-gradient(182.51deg, rgba(255, 255, 255, 0.02) 27.09%, rgba(90, 90, 90, 0.02) 58.59%, rgba(0, 0, 0, 0.02) 92.75%);
+    backdrop-filter: blur(10px);
+    border-radius: 0.75rem;
+  }
+
+  .search-bar-gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 0.75rem;
+    padding: 1px;
+    background: linear-gradient(178.8deg, rgba(255, 255, 255, 0.25) 10.85%, rgba(20, 20, 20, 0.46) 24.36%, rgba(50, 50, 50, 0.46) 73.67%, rgba(255, 255, 255, 0.46) 90.68%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbars while keeping scroll functionality */
+  .scrollbar-none {
+    -ms-overflow-style: none; /* IE and Edge (legacy) */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+    width: 0;
+    height: 0;
+  }
+}
