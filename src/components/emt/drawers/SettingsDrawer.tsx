@@ -1,11 +1,46 @@
-import { Copy, KeyRound, Plug, Trash2, UserRound } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Copy, KeyRound, Plug, RefreshCw, Trash2, UserRound } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { StatusPill } from "../StatusPill";
+import { useWorkspace } from "@/contexts/WorkspaceContext";
 import { DrawerFrame, type DrawerProps } from "./DrawerFrame";
 
 export function SettingsDrawer(props: DrawerProps) {
+  const { settings, updateSettings, regenerateApiKey, toggleMcp, resetWorkspace } = useWorkspace();
+  const [displayName, setDisplayName] = useState(settings.displayName);
+  const [workspaceName, setWorkspaceName] = useState(settings.workspaceName);
+
+  useEffect(() => {
+    setDisplayName(settings.displayName);
+    setWorkspaceName(settings.workspaceName);
+  }, [settings.displayName, settings.workspaceName]);
+
+  const saveProfile = () => {
+    updateSettings({ displayName: displayName.trim() || settings.displayName, workspaceName: workspaceName.trim() || settings.workspaceName });
+    toast.success("Profile saved");
+  };
+
+  const copyKey = () => {
+    navigator.clipboard?.writeText(settings.apiKey);
+    toast.success("API key copied to clipboard");
+  };
+
+  const masked = `${settings.apiKey.slice(0, 11)}••••••••${settings.apiKey.slice(-4)}`;
+
   return (
     <DrawerFrame {...props} title="Settings" description="Workspace profile, keys and integrations.">
       <section className="emt-card p-4">
@@ -15,12 +50,20 @@ export function SettingsDrawer(props: DrawerProps) {
         <div className="space-y-3">
           <div className="space-y-1.5">
             <Label htmlFor="emt-name" className="text-xs">Display name</Label>
-            <Input id="emt-name" defaultValue="Pratik" className="h-8 bg-background text-sm" />
+            <Input id="emt-name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} className="h-8 bg-background text-sm" />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="emt-workspace" className="text-xs">Workspace</Label>
-            <Input id="emt-workspace" defaultValue="emt-sun" className="h-8 bg-background font-mono text-sm" />
+            <Input id="emt-workspace" value={workspaceName} onChange={(e) => setWorkspaceName(e.target.value)} className="h-8 bg-background font-mono text-sm" />
           </div>
+          <Button
+            size="sm"
+            className="h-8 text-xs"
+            onClick={saveProfile}
+            disabled={displayName === settings.displayName && workspaceName === settings.workspaceName}
+          >
+            Save changes
+          </Button>
         </div>
       </section>
 
@@ -30,10 +73,22 @@ export function SettingsDrawer(props: DrawerProps) {
         </div>
         <div className="flex items-center gap-2">
           <code className="flex-1 truncate rounded-md border border-border bg-background px-2.5 py-1.5 font-mono text-xs text-muted-foreground">
-            emt_sk_••••••••••••4f2a
+            {masked}
           </code>
-          <Button variant="outline" size="icon" className="h-8 w-8 shrink-0" aria-label="Copy API key">
+          <Button variant="outline" size="icon" className="h-8 w-8 shrink-0" aria-label="Copy API key" onClick={copyKey}>
             <Copy className="h-3.5 w-3.5" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-8 w-8 shrink-0"
+            aria-label="Regenerate API key"
+            onClick={() => {
+              regenerateApiKey();
+              toast.success("New API key generated");
+            }}
+          >
+            <RefreshCw className="h-3.5 w-3.5" />
           </Button>
         </div>
       </section>
@@ -43,14 +98,22 @@ export function SettingsDrawer(props: DrawerProps) {
           <Plug className="h-4 w-4 text-muted-foreground" /> MCP integrations
         </div>
         <div className="space-y-2.5">
-          <div className="flex items-center justify-between">
-            <span className="text-sm">Atlassian</span>
-            <StatusPill status="partial" label="Needs auth" />
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm">GitHub</span>
-            <StatusPill status="off" label="Not set" />
-          </div>
+          {settings.mcp.map((m) => (
+            <div key={m.name} className="flex items-center justify-between">
+              <span className="text-sm">{m.name}</span>
+              <button
+                onClick={() => {
+                  toggleMcp(m.name);
+                  toast(m.status === "off" ? `${m.name} connected` : `${m.name} disconnected`);
+                }}
+              >
+                <StatusPill
+                  status={m.status}
+                  label={m.status === "connected" ? "Connected" : m.status === "partial" ? "Needs auth" : "Not set"}
+                />
+              </button>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -59,7 +122,30 @@ export function SettingsDrawer(props: DrawerProps) {
           <Trash2 className="h-4 w-4" /> Danger zone
         </div>
         <p className="mb-3 text-xs text-muted-foreground">Permanently delete this workspace and all workflows.</p>
-        <Button variant="destructive" size="sm" className="h-8 text-xs">Delete workspace</Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive" size="sm" className="h-8 text-xs">Delete workspace</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent className="bg-card">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete this workspace?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This removes every automation and data source and resets your settings. Saved workflows in Studio are not affected. This cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => {
+                  resetWorkspace();
+                  toast.success("Workspace reset");
+                }}
+              >
+                Delete workspace
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </section>
     </DrawerFrame>
   );

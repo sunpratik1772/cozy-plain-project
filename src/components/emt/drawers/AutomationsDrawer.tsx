@@ -1,17 +1,91 @@
 import { useState } from "react";
-import { CalendarClock } from "lucide-react";
+import { CalendarClock, Plus, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
-import { AUTOMATIONS } from "@/data/emt";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { WORKFLOWS } from "@/data/emt";
+import { useWorkspace } from "@/contexts/WorkspaceContext";
 import { DrawerFrame, type DrawerProps } from "./DrawerFrame";
 
 export function AutomationsDrawer(props: DrawerProps) {
-  const [enabled, setEnabled] = useState<Record<string, boolean>>(
-    Object.fromEntries(AUTOMATIONS.map((a) => [a.id, a.enabled])),
-  );
+  const { automations, addAutomation, toggleAutomation, deleteAutomation } = useWorkspace();
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [workflow, setWorkflow] = useState(WORKFLOWS[0]?.name ?? "");
+  const [cron, setCron] = useState("0 2 * * *");
+
+  const submit = () => {
+    if (!name.trim() || !workflow) return;
+    addAutomation({ name: name.trim(), workflow, cron: cron.trim() || "0 2 * * *" });
+    toast.success(`"${name.trim()}" automation created`);
+    setName("");
+    setCron("0 2 * * *");
+    setOpen(false);
+  };
 
   return (
     <DrawerFrame {...props} title="Automations" description="Scheduled runs for your saved workflows.">
-      {AUTOMATIONS.map((a) => (
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button variant="outline" className="w-full gap-2 border-dashed text-sm">
+            <Plus className="h-4 w-4" /> New automation
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="bg-card sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>New automation</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div className="space-y-1.5">
+              <Label className="text-xs">Name</Label>
+              <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nightly sync" className="h-8 bg-background text-sm" />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Workflow</Label>
+              <Select value={workflow} onValueChange={setWorkflow}>
+                <SelectTrigger className="h-8 bg-background text-sm">
+                  <SelectValue placeholder="Select a workflow" />
+                </SelectTrigger>
+                <SelectContent>
+                  {WORKFLOWS.map((w) => (
+                    <SelectItem key={w.id} value={w.name}>{w.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Cron expression</Label>
+              <Input value={cron} onChange={(e) => setCron(e.target.value)} className="h-8 bg-background font-mono text-sm" />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button size="sm" onClick={submit} disabled={!name.trim()}>Create</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {automations.length === 0 && (
+        <p className="px-1 py-2 text-center text-xs text-muted-foreground">No automations yet.</p>
+      )}
+
+      {automations.map((a) => (
         <div key={a.id} className="emt-card emt-card-hover p-4">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-start gap-3">
@@ -25,15 +99,27 @@ export function AutomationsDrawer(props: DrawerProps) {
                   <code className="rounded border border-border bg-background px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground">
                     {a.cron}
                   </code>
-                  <span className="text-[11px] text-muted-foreground">Next: {a.next}</span>
+                  <span className="text-[11px] text-muted-foreground">Next: {a.enabled ? a.next : "Paused"}</span>
                 </div>
               </div>
             </div>
-            <Switch
-              checked={enabled[a.id]}
-              onCheckedChange={(v) => setEnabled((s) => ({ ...s, [a.id]: v }))}
-              aria-label={`Toggle ${a.name}`}
-            />
+            <div className="flex items-center gap-2">
+              <Switch
+                checked={a.enabled}
+                onCheckedChange={() => toggleAutomation(a.id)}
+                aria-label={`Toggle ${a.name}`}
+              />
+              <button
+                onClick={() => {
+                  deleteAutomation(a.id);
+                  toast(`"${a.name}" automation deleted`);
+                }}
+                className="text-muted-foreground transition-colors hover:text-destructive"
+                aria-label={`Delete ${a.name}`}
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
+            </div>
           </div>
         </div>
       ))}

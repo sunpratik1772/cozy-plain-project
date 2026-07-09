@@ -11,6 +11,7 @@ interface TopbarProps {
 const TITLES: Record<string, string> = {
   "/": "Dashboard",
   "/studio": "Workflow Studio",
+  "/codebase": "Codebase Graph",
 };
 
 export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {

@@ -1,10 +1,12 @@
 import { Database, FileSpreadsheet, Plug } from "lucide-react";
-import { SOURCES } from "@/data/emt";
+import { useWorkspace } from "@/contexts/WorkspaceContext";
 import { StatusPill } from "../StatusPill";
 
 const ICONS = { database: Database, file: FileSpreadsheet, mcp: Plug };
 
 export function SourcesStrip({ onOpen }: { onOpen: () => void }) {
+  const { sources } = useWorkspace();
+
   return (
     <div className="emt-card p-4">
       <div className="mb-3 flex items-center justify-between">
@@ -13,8 +15,9 @@ export function SourcesStrip({ onOpen }: { onOpen: () => void }) {
           Manage
         </button>
       </div>
+      {sources.length === 0 && <p className="text-xs text-muted-foreground">No sources connected yet.</p>}
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-        {SOURCES.map((s) => {
+        {sources.map((s) => {
           const Icon = ICONS[s.type as keyof typeof ICONS] ?? Database;
           return (
             <div key={s.id} className="flex items-center gap-2.5 rounded-md border border-border bg-surface/60 p-2.5">

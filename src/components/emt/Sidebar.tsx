@@ -4,6 +4,7 @@ import {
   Boxes,
   CalendarClock,
   Database,
+  GitGraph,
   History,
   LayoutGrid,
   Puzzle,
@@ -24,6 +25,7 @@ interface SidebarProps {
 const routes = [
   { label: "Dashboard", to: "/", icon: LayoutGrid },
   { label: "Studio", to: "/studio", icon: Workflow },
+  { label: "Codebase", to: "/codebase", icon: GitGraph },
   { label: "Docs", to: "/docs", icon: BookOpen },
 ];
 
