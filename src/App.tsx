@@ -5,7 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SearchProvider } from "@/contexts/SearchContext";
 import { SearchModal } from "@/components/search";
-import Index from "./pages/Index";
+import Dashboard from "./pages/Dashboard";
+import Studio from "./pages/Studio";
+import Login from "./pages/Login";
 import Changelog from "./pages/Changelog";
 import Documentation from "./pages/Documentation";
 import ApiReference from "./pages/ApiReference";
@@ -22,7 +24,9 @@ const App = () => (
         <SearchProvider>
           <SearchModal />
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/studio" element={<Studio />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/changelog" element={<Changelog />} />
             <Route path="/docs/*" element={<Documentation />} />
             <Route path="/api/*" element={<ApiReference />} />

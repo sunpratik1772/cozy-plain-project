@@ -1,59 +1,43 @@
+# emt-sun Redesign — Compass × Vercel, Dark Only
 
-# Fix Plan: API Page Mobile Horizontal Overflow
+Rebuild the emt-sun (DbSherpa) frontend inside this project, replacing the current Compass docs site. Every screen gets the hybrid aesthetic: Compass's pure-black, Satoshi, tight-tracking identity crossed with Vercel's crisp hairline borders, muted grays, geometric precision, and understated micro-interactions.
 
-## Problem Identified
-The API Reference page has horizontal overflow on mobile while the Documentation page works correctly. The root cause is a structural difference between the two pages:
+## Design language
 
-**Documentation Page**: Uses `motion.main` directly with `overflow-hidden`
-**API Page**: Wraps content in `ScrollArea` component which creates a different overflow context
+- **Theme**: Dark only. Background `#000000`, surfaces `#0A0A0A` / `#111111`, hairline borders `#1F1F1F` (Vercel-style 1px), text `#EDEDED`, subtext `#A1A1A1`–`#D5D6DB`.
+- **Accent**: Single restrained accent (Vercel-blue `#0070F3` or keep Compass neutral-white CTAs) + semantic green/amber/red for run statuses.
+- **Typography**: Satoshi everywhere, tighter letter-spacing on headings; JetBrains Mono for IDs, cron strings, logs, and code.
+- **Icons**: Lucide React throughout — replacing emt-sun's custom `arc` icon set with a consistent mapped set.
+- **Motion**: Framer Motion — subtle fades/slides, no flashiness. Vercel-style hover states (border lightens, bg `#111` → `#161616`).
+- **Components**: shadcn primitives restyled with the token set; rounded-lg cards, hairline dividers, command-palette (⌘K).
 
-Additionally, the `ApiTable` component has nested overflow wrappers that conflict with each other.
+## Screens (all rebuilt)
 
----
+1. **Login** — centered card on black, brand mark, email + SSO buttons, subtle grid/glow backdrop.
+2. **Dashboard** (`/`) — sidebar + header shell; stat row with micro-sparklines, run-health card, run-activity calendar (GitHub-style heatmap), workflow grid cards, recent-runs rail, Sherpa prompt bar (AI input) pinned prominently.
+3. **Workflow Studio** (`/studio`) — the five-region layout: left nav rail, topbar, node palette panel, canvas (React Flow with custom dark nodes + status pills), right panel with tabs (Config / Output / Run Log). Bottom output panel toggle.
+4. **Drawers** — Vercel-style sheet/drawer treatments for: Automations (schedules, cron), Data Sources, Run History (timeline + status pills), Nodes catalog, Skills, Settings, User access.
+5. **Copilot / Sherpa chat** — chat panel with thinking blocks, route chips, typewriter text, markdown rendering.
+6. **Docs** (`/docs`) — simplified docs page reusing this template's proven docs layout.
+7. **Command palette** — global ⌘K.
 
-## Solution
+## Simplifications (dropped without killing core)
 
-### 1. Remove ScrollArea Wrapper from ApiPageContent
-Replace the `ScrollArea` wrapper with a regular container that matches the Documentation page structure.
+- No Python backend — all data mocked with realistic fixtures (workflows, runs, schedules, sources) so every screen is fully interactive-looking.
+- Workflow code editor (Monaco) reduced to a styled read-only code view.
+- Auth callback / SSO plumbing stubbed (login is visual).
+- Webpack/nginx/deploy tooling irrelevant — stays Vite.
 
-**File**: `src/components/api-reference/ApiPageContent.tsx`
+## Technical notes
 
-**Changes**:
-- Remove the `ScrollArea` import and wrapper
-- Use `motion.main` directly as the root element (same as DocPageContent)
+- Remove Compass pages/components; keep the design tokens, Satoshi setup, and scrollbar/nav conventions as the base.
+- New token set in `index.css` + `tailwind.config.ts` (surfaces, borders, status colors); zero hardcoded color classes.
+- `@xyflow/react` for the studio canvas; `cmdk` for the palette; mock data in `src/data/`.
+- Routes: `/login`, `/` (dashboard), `/studio`, `/docs`.
 
-```text
-Before:
-<ScrollArea className="flex-1 min-w-0 w-full">
-  <motion.main ...>
-    ...
-  </motion.main>
-</ScrollArea>
+## Order of delivery
 
-After:
-<motion.main className="flex-1 min-w-0 px-4 md:px-6 lg:px-12 pt-16 lg:pt-10 pb-10 overflow-hidden">
-  ...
-</motion.main>
-```
-
----
-
-### 2. Fix ApiTable Nested Overflow
-The Table UI component already has `overflow-auto` built in. The outer wrapper in ApiTable should only handle visual styling, not overflow.
-
-**File**: `src/components/api-reference/ApiTable.tsx`
-
-**Changes**:
-- Remove `overflow-x-auto` from the outer div wrapper (keep `overflow-hidden` for border-radius clipping)
-- The inner Table component already handles horizontal scrolling
-
----
-
-## Summary of Changes
-
-| File | Change |
-|------|--------|
-| `ApiPageContent.tsx` | Remove `ScrollArea` wrapper, use `motion.main` directly |
-| `ApiTable.tsx` | Remove `overflow-x-auto` from outer div |
-
-This aligns the API page structure with the Documentation page, which is already working correctly on mobile.
+1. Token system + app shell (sidebar, topbar) + Dashboard
+2. Workflow Studio canvas + panels
+3. Drawers + Copilot chat
+4. Login + Docs + command palette + polish pass
