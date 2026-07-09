@@ -1,8 +1,8 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Menu } from "lucide-react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { EmtSidebar } from "./Sidebar";
+import { EmtTopbar } from "./Topbar";
 import { CommandPalette } from "./CommandPalette";
 import { AutomationsDrawer, DataSourcesDrawer, NodesDrawer, RunHistoryDrawer, SherpaChatDrawer } from "./drawers";
 
@@ -51,13 +51,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </Sheet>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <button
-          onClick={() => setMobileNavOpen(true)}
-          className="fixed left-3 top-3 z-40 rounded-md border border-border bg-surface p-1.5 text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-foreground lg:hidden"
-          aria-label="Open menu"
-        >
-          <Menu className="h-4.5 w-4.5" size={18} />
-        </button>
+        <EmtTopbar onSearch={() => setPaletteOpen(true)} onMobileMenu={() => setMobileNavOpen(true)} />
         <main className="flex min-h-0 flex-1 flex-col overflow-hidden">{children}</main>
       </div>
 
