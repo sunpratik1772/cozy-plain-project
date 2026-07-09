@@ -73,6 +73,8 @@ interface WorkspaceContextValue extends WorkspaceState {
   removeSource: (id: string) => void;
 
   toggleSkill: (id: string) => void;
+  addCustomSkill: (input: { name: string; description: string }) => void;
+  deleteSkill: (id: string) => void;
 
   updateSettings: (patch: Partial<Pick<WorkspaceSettings, "displayName" | "workspaceName">>) => void;
   regenerateApiKey: () => void;
@@ -138,6 +140,20 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const addCustomSkill = useCallback((input: { name: string; description: string }) => {
+    setState((s) => ({
+      ...s,
+      skills: [
+        { id: nextId("skill"), name: input.name, description: input.description, enabled: true, usedByWorkflows: 0, runs: 0, origin: "custom" },
+        ...s.skills,
+      ],
+    }));
+  }, []);
+
+  const deleteSkill = useCallback((id: string) => {
+    setState((s) => ({ ...s, skills: s.skills.filter((sk) => sk.id !== id) }));
+  }, []);
+
   const updateSettings = useCallback((patch: Partial<Pick<WorkspaceSettings, "displayName" | "workspaceName">>) => {
     setState((s) => ({ ...s, settings: { ...s.settings, ...patch } }));
   }, []);
@@ -171,6 +187,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         toggleSourceStatus,
         removeSource,
         toggleSkill,
+        addCustomSkill,
+        deleteSkill,
         updateSettings,
         regenerateApiKey,
         toggleMcp,
