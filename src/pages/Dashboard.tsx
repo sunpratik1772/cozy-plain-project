@@ -1,16 +1,22 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Seo } from "@/components/Seo";
 import { AppShell } from "@/components/emt/AppShell";
 import { StatusPill } from "@/components/emt/StatusPill";
-import { OverviewBar } from "@/components/emt/dashboard/OverviewBar";
+import { StatRow } from "@/components/emt/dashboard/StatRow";
+import { SuccessRateCard } from "@/components/emt/dashboard/SuccessRateCard";
+import { RunActivityCard } from "@/components/emt/dashboard/RunActivityCard";
 import { WorkflowGrid } from "@/components/emt/dashboard/WorkflowGrid";
 import { SherpaPromptBar } from "@/components/emt/dashboard/SherpaPromptBar";
+import { SourcesStrip } from "@/components/emt/dashboard/SourcesStrip";
+import { DataSourcesDrawer } from "@/components/emt/drawers";
 import { STATS, WORKFLOWS } from "@/data/emt";
 import { useRun } from "@/contexts/RunContext";
 
 const Dashboard = () => {
+  const [sourcesOpen, setSourcesOpen] = useState(false);
   const { liveRun } = useRun();
 
   return (
@@ -21,7 +27,7 @@ const Dashboard = () => {
         path="/"
       />
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-5xl space-y-5 px-4 py-8 md:px-6">
+        <div className="mx-auto max-w-6xl space-y-5 px-4 py-6 md:px-6">
           <div>
             <h2 className="text-xl font-bold tracking-tight">Good evening, Pratik</h2>
             <p className="mt-0.5 text-sm text-muted-foreground">
@@ -46,10 +52,19 @@ const Dashboard = () => {
           )}
 
           <SherpaPromptBar />
-          <OverviewBar stats={STATS} successRate="94%" />
+          <StatRow stats={STATS} />
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <SuccessRateCard />
+            <RunActivityCard />
+          </div>
+
           <WorkflowGrid workflows={WORKFLOWS} />
+
+          <SourcesStrip onOpen={() => setSourcesOpen(true)} />
         </div>
       </div>
+      <DataSourcesDrawer open={sourcesOpen} onOpenChange={setSourcesOpen} />
     </AppShell>
   );
 };

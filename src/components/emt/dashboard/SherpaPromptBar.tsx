@@ -3,6 +3,12 @@ import { ArrowUp, Sparkle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSherpa } from "@/contexts/SherpaContext";
 
+const SUGGESTIONS = [
+  "Sync leads from Postgres nightly",
+  "Alert me when orders spike",
+  "Build a weekly exec report",
+];
+
 export function SherpaPromptBar() {
   const [value, setValue] = useState("");
   const { openChat } = useSherpa();
@@ -38,6 +44,17 @@ export function SherpaPromptBar() {
           <ArrowUp className="h-4 w-4" />
         </button>
       </form>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {SUGGESTIONS.map((s) => (
+          <button
+            key={s}
+            onClick={() => openChat(s)}
+            className="rounded-full border border-border bg-surface px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-ring/40 hover:text-foreground"
+          >
+            {s}
+          </button>
+        ))}
+      </div>
     </motion.div>
   );
 }
