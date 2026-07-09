@@ -8,6 +8,7 @@ export interface FlowNodeData extends Record<string, unknown> {
   sub: string;
   icon: string;
   status?: "success" | "error" | "warning" | "running" | "idle";
+  nodeType: string;
 }
 
 const DOT: Record<string, string> = {

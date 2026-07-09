@@ -8,6 +8,7 @@ import {
   LayoutGrid,
   Puzzle,
   Settings,
+  Sparkles,
   Workflow,
 } from "lucide-react";
 import {
@@ -20,6 +21,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { WORKFLOWS } from "@/data/emt";
+import { useSherpa } from "@/contexts/SherpaContext";
 import type { EmtDrawer } from "./AppShell";
 
 interface CommandPaletteProps {
@@ -30,6 +32,7 @@ interface CommandPaletteProps {
 
 export function CommandPalette({ open, onOpenChange, onOpenDrawer }: CommandPaletteProps) {
   const navigate = useNavigate();
+  const { openChat } = useSherpa();
 
   const run = (fn: () => void) => {
     onOpenChange(false);
@@ -50,6 +53,9 @@ export function CommandPalette({ open, onOpenChange, onOpenDrawer }: CommandPale
           </CommandItem>
           <CommandItem onSelect={() => run(() => navigate("/docs"))}>
             <BookOpen className="mr-2 h-4 w-4" /> Docs
+          </CommandItem>
+          <CommandItem onSelect={() => run(() => openChat())}>
+            <Sparkles className="mr-2 h-4 w-4" /> Ask Sherpa
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />

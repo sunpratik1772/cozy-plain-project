@@ -2,6 +2,7 @@ import { Activity } from "lucide-react";
 import { buildCalendar } from "@/data/emt";
 import { cn } from "@/lib/utils";
 import { StatusPill } from "../StatusPill";
+import { useRun } from "@/contexts/RunContext";
 
 const LEVEL_CLASSES = [
   "bg-surface",
@@ -14,13 +15,19 @@ const LEVEL_CLASSES = [
 const cells = buildCalendar();
 
 export function RunHealthCard() {
+  const { liveRun } = useRun();
+
   return (
     <div className="emt-card p-4">
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2 text-sm font-semibold">
           <Activity className="h-4 w-4 text-muted-foreground" /> Run health
         </div>
-        <StatusPill status="connected" label="Engine online" />
+        {liveRun ? (
+          <StatusPill status="running" label={`Running ${liveRun.workflowName}`} className="max-w-[190px] truncate" />
+        ) : (
+          <StatusPill status="connected" label="Engine online" />
+        )}
       </div>
 
       <div className="mb-4 grid grid-cols-3 gap-2">

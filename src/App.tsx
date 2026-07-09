@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SearchProvider } from "@/contexts/SearchContext";
+import { SherpaProvider } from "@/contexts/SherpaContext";
+import { RunProvider } from "@/contexts/RunContext";
 import { SearchModal } from "@/components/search";
 import Dashboard from "./pages/Dashboard";
 import Studio from "./pages/Studio";
@@ -22,17 +24,21 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <SearchProvider>
-          <SearchModal />
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/studio" element={<Studio />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/changelog" element={<Changelog />} />
-            <Route path="/docs/*" element={<Documentation />} />
-            <Route path="/api/*" element={<ApiReference />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <RunProvider>
+            <SherpaProvider>
+              <SearchModal />
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/studio" element={<Studio />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/changelog" element={<Changelog />} />
+                <Route path="/docs/*" element={<Documentation />} />
+                <Route path="/api/*" element={<ApiReference />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </SherpaProvider>
+          </RunProvider>
         </SearchProvider>
       </BrowserRouter>
     </TooltipProvider>

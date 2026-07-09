@@ -196,3 +196,133 @@ export function buildCalendar(): { level: number }[] {
   }
   return cells;
 }
+
+export interface EmtNodeConfigField {
+  label: string;
+  value: string;
+}
+
+export const NODE_CONFIG: Record<string, { subtitle: string; fields: EmtNodeConfigField[] }> = {
+  schedule: {
+    subtitle: "Trigger · Schedule",
+    fields: [
+      { label: "Cron expression", value: "0 2 * * *" },
+      { label: "Timezone", value: "UTC" },
+    ],
+  },
+  webhook: {
+    subtitle: "Trigger · Webhook",
+    fields: [
+      { label: "Endpoint", value: "/hooks/lead-scoring" },
+      { label: "Method", value: "POST" },
+    ],
+  },
+  db_query: {
+    subtitle: "Data · DB query",
+    fields: [
+      { label: "Source", value: "postgres · production" },
+      { label: "Query", value: "SELECT * FROM leads LIMIT 500" },
+    ],
+  },
+  csv_extract: {
+    subtitle: "Data · CSV extract",
+    fields: [
+      { label: "File", value: "orders.csv" },
+      { label: "Delimiter", value: "," },
+    ],
+  },
+  http_request: {
+    subtitle: "Data · HTTP request",
+    fields: [
+      { label: "URL", value: "https://api.example.com/v1/orders" },
+      { label: "Method", value: "GET" },
+    ],
+  },
+  transform: {
+    subtitle: "Transform · Join + filter",
+    fields: [{ label: "Operation", value: "join(leads, orders) → filter(active)" }],
+  },
+  agent: {
+    subtitle: "Agent · score_leads",
+    fields: [
+      { label: "Model", value: "gemini-2.5-flash" },
+      { label: "Batch size", value: "100" },
+      { label: "System prompt", value: "Score each lead 0–100 based on fit and intent signals." },
+    ],
+  },
+  classifier: {
+    subtitle: "AI · Classifier",
+    fields: [
+      { label: "Model", value: "gemini-2.5-flash" },
+      { label: "Labels", value: "spike, dip, normal" },
+    ],
+  },
+  email: {
+    subtitle: "Output · Email",
+    fields: [
+      { label: "To", value: "ops@acme.com" },
+      { label: "Subject", value: "Weekly exec report" },
+    ],
+  },
+  table_output: {
+    subtitle: "Output · Table output",
+    fields: [
+      { label: "Table", value: "scored_leads" },
+      { label: "Write mode", value: "overwrite" },
+    ],
+  },
+};
+
+export const NODE_OUTPUT: Record<string, { columns: string[]; rows: (string | number)[][]; note: string }> = {
+  db_query: {
+    columns: ["id", "name", "company"],
+    rows: [[1, "Jane Cho", "Acme Corp"], [2, "Sam Lee", "Globex"], [3, "Ana Ruiz", "Initech"], [4, "Tom Iyer", "Hooli"]],
+    note: "500 rows · showing 4",
+  },
+  csv_extract: {
+    columns: ["order_id", "sku", "qty"],
+    rows: [["ord_1021", "SKU-88", 2], ["ord_1022", "SKU-14", 1], ["ord_1023", "SKU-88", 5]],
+    note: "12,402 rows · showing 3",
+  },
+  transform: {
+    columns: ["name", "company", "score_input"],
+    rows: [["Jane Cho", "Acme Corp", "ready"], ["Sam Lee", "Globex", "ready"]],
+    note: "342 rows after filter · showing 2",
+  },
+  agent: {
+    columns: ["name", "score", "tier"],
+    rows: [["Acme Corp", 92, "A"], ["Globex", 81, "A"], ["Initech", 64, "B"], ["Umbrella Ltd", 47, "C"], ["Hooli", 88, "A"]],
+    note: "342 rows · showing 5",
+  },
+  table_output: {
+    columns: ["name", "score", "tier"],
+    rows: [["Acme Corp", 92, "A"], ["Globex", 81, "A"], ["Initech", 64, "B"]],
+    note: "Materialized to scored_leads · showing 3",
+  },
+  http_request: {
+    columns: ["status", "latency_ms"],
+    rows: [[200, 142], [200, 98]],
+    note: "2 requests · showing 2",
+  },
+  email: {
+    columns: ["to", "status"],
+    rows: [["ops@acme.com", "sent"]],
+    note: "1 email sent",
+  },
+  webhook: {
+    columns: ["event", "received_at"],
+    rows: [["lead.created", "12:04:01"]],
+    note: "1 event · showing 1",
+  },
+  classifier: {
+    columns: ["metric", "label"],
+    rows: [["orders.count", "spike"]],
+    note: "1 row classified",
+  },
+};
+
+export interface EmtLogLine {
+  t: string;
+  level: "info" | "warn" | "error";
+  msg: string;
+}

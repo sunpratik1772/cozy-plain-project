@@ -19,174 +19,134 @@ export interface ChangelogEntryData {
 
 export const changelogData: ChangelogEntryData[] = [
   {
-    date: "Nov 9, 2025",
-    badges: [
-      { variant: "fixes", label: "Fixes" },
-      { variant: "improvements", label: "Improvements" },
-    ],
-    sections: [
-      {
-        title: "Search Experience Updates",
-        items: [
-          "Introduced search_filters field in the results response (category, date, relevance).",
-          "Added query_suggestions to auto-complete user searches.",
-          "The x-search-score header is now available in search response callbacks.",
-        ],
-      },
-      {
-        title: "Documentation Upgrades",
-        items: [
-          "Documentation now supports version_history to track changes.",
-          "You can update article_status directly via the dashboard.",
-          "Added review_period_days for smoother content approval flows.",
-        ],
-      },
-      {
-        title: "API Enhancements",
-        items: [
-          "The article_id is now returned in all webhook payloads.",
-          "You can now pass the x-preview-mode header to view draft articles.",
-          "The content.pdf field is now included in GET /articles responses.",
-        ],
-      },
-    ],
-  },
-  {
-    date: "Nov 4, 2025",
+    date: "Jul 8, 2026",
     badges: [
       { variant: "features", label: "New Features" },
       { variant: "improvements", label: "Improvements" },
     ],
     sections: [
       {
-        title: "Dashboard Upgrades",
+        title: "Sherpa plan approval",
         items: [
-          "Dark mode toggle is now available under Settings > Preferences.",
-          "Export buttons now include csv, xlsx, and json formats.",
-          "The new quick_filters sidebar helps you find articles faster.",
+          "New workflow builds now go through a plan-first gate — Sherpa proposes a numbered plan and waits for approval before touching the canvas.",
+          "Canvas edits and fix-plans after a run review skip the gate, since you've already reviewed the context.",
+          "Added a dedicated activity chip state (Planning) so it's clear when Sherpa is drafting a plan versus generating a workflow.",
         ],
       },
       {
-        title: "Developer Tools",
+        title: "Studio canvas",
         items: [
-          "The x-api-key header has been standardized across API endpoints.",
-          "help-cli now supports environment variables with HELPCENTER_ENV.",
-          "Updated API error codes: E-404 is now ARTICLE_NOT_FOUND.",
+          "The node palette now supports ⌘K search across all 36 node types.",
+          "Validation badges on canvas nodes update as you type, instead of only on save.",
+          "Compact layout for narrow viewports moves the node palette into an overlay and the right panel into a fixed sheet.",
         ],
       },
     ],
   },
   {
-    date: "Oct 5, 2025",
+    date: "Jun 24, 2026",
     badges: [
-      { variant: "fixes", label: "Fixes" },
       { variant: "features", label: "New Features" },
+      { variant: "fixes", label: "Fixes" },
     ],
     sections: [
       {
-        title: "New Content Request Features",
+        title: "MCP integrations",
         items: [
-          "Added support for public and private content request submissions.",
-          "Content links now include ?utm_source parameters for tracking.",
-          "Enhanced article pages with bookmark and share button support.",
-        ],
-      },
-      {
-        title: "API Enhancements",
-        items: [
-          "The article_id is now returned in all webhook payloads.",
-          "You can now pass the x-preview-mode header to view draft content.",
-          "The export.pdf field is now included in GET /exports responses.",
+          "Added typed jira_mcp, confluence_mcp, and github_mcp nodes — the preferred way to reach Jira, Confluence, and GitHub through the MCP bridge.",
+          "The legacy mcp node now auto-upgrades to the correct typed node based on its configured tool.",
+          "Fixed a bug where MCP credential fields could appear editable in the node inspector; they are now always locked, read-only mirrors of backend/.env.",
         ],
         code: {
           lines: [
-            "POST /api/v1/content-requests",
+            "POST /tools/confluence_publish_report/run",
             "{",
-            '  "title": "Getting Started Guide",',
-            '  "category": "tutorials",',
-            '  "type": "public"',
+            '  "params": { "title": "Weekly Risk Digest", "body_markdown": "..." },',
+            '  "credentials": { "integration": "atlassian" }',
             "}",
           ],
         },
       },
       {
-        title: "Search Detection Improvements",
+        title: "Gemini migration",
         items: [
-          "Introduced relevance_score field in the search response (low, medium, high).",
-          "Added user_preferences to session tracking for personalization.",
-          "The x-search-rank header is now available in search callbacks.",
-        ],
-      },
-      {
-        title: "Content Category Upgrades",
-        items: [
-          "Categories now support nested_levels to organize subcategories.",
-          "You can update category_order directly via the API.",
-          "Added archive_after_days for automatic content archival flows.",
+          "All LLM traffic now flows through a single adapter module, making the switch from Google AI API keys to Vertex AI a one-file change.",
+          "Added automatic key rotation across up to three GEMINI_API_KEY values on rate limits or transient errors.",
+          "New GET /api/agent/llm/health and GET /api/agent/llm/probe endpoints for credential and connectivity checks.",
         ],
       },
     ],
   },
   {
-    date: "Sep 19, 2025",
+    date: "Jun 9, 2026",
     badges: [
       { variant: "improvements", label: "Improvements" },
       { variant: "fixes", label: "Fixes" },
     ],
     sections: [
       {
-        title: "Enhanced Export Controls",
+        title: "Backend restructure",
         items: [
-          "Added support for scheduled exports (daily, weekly, or monthly).",
-          "Introduced export holds for content under review.",
-          "Improved multi-format linking for faster switching between export types.",
+          "Dataset catalog moved from data_sources/ to connectors/, and the generation harness moved from agent/ to generation/ — legacy import paths are removed.",
+          "Vetted demo workflows now live under backend/good_examples/ and back both the Copilot retriever and the end-to-end test suite.",
+          "Node handlers and their YAML specs are now paired one-to-one under engine/nodes/, auto-discovered by the registry at import time.",
         ],
       },
       {
-        title: "Analytics Dashboard Improvements",
+        title: "Fixes",
         items: [
-          "New Article Views metric added.",
-          "Enhanced filtering by user cohort and content category.",
-          "Reports can now be exported as PDF in addition to CSV & Excel.",
-        ],
-      },
-      {
-        title: "Developer Updates",
-        items: [
-          "Added new Articles Search API endpoint.",
-          "Improved rate limiting with clearer error messages.",
-          "Webhook retry logic now supports exponential backoff.",
+          "Fixed a race where the Questions panel could be cleared immediately after Sherpa asked a clarifying question.",
+          "Fixed sample-run \"yes\" sometimes triggering a full workflow rebuild instead of running the existing canvas DAG.",
+          "Fixed the Join node's edge-order handling so left/right inputs resolve deterministically.",
         ],
       },
     ],
   },
   {
-    date: "Sep 4, 2025",
+    date: "May 27, 2026",
     badges: [
       { variant: "features", label: "New Features" },
       { variant: "improvements", label: "Improvements" },
     ],
     sections: [
       {
-        title: "New Features",
+        title: "Automations",
         items: [
-          "Multi-Language Support: You can now publish content in multiple languages (EN, ES, FR).",
-          "Added automatic language detection based on user browser settings.",
-          "Option to set a default content language in account settings.",
+          "Added interval-based automations alongside cron schedules, with a configurable active duration window.",
+          "The Automations drawer now shows run history and supports manual, on-demand triggers.",
+          "The scheduler now writes both run_logs and automation_runs entries for every scheduled execution.",
         ],
       },
       {
-        title: "Improvements",
+        title: "Node catalogue",
         items: [
-          "Enhanced failed search retries: system will now attempt 3 retries within 7 seconds.",
-          "Optimized analytics dashboard for faster load times.",
+          "Added the Evaluator node for pass/fail quality gates against a run's output.",
+          "Added the Router node for multi-way branching, alongside the existing binary Condition node.",
+          "Excel Export now supports multi-tab output by connecting multiple upstream edges.",
+        ],
+      },
+    ],
+  },
+  {
+    date: "May 12, 2026",
+    badges: [
+      { variant: "fixes", label: "Fixes" },
+      { variant: "improvements", label: "Improvements" },
+    ],
+    sections: [
+      {
+        title: "Studio reliability",
+        items: [
+          "Fixed a bug where the bottom output panel could show duplicated stage cards after a run with warnings.",
+          "Improved SSE reconnection handling for long-running workflow executions.",
+          "Draft autosave now debounces more aggressively to avoid write contention with manual saves.",
         ],
       },
       {
-        title: "Fixes",
+        title: "Developer experience",
         items: [
-          "Fixed an issue where draft articles incorrectly appeared in search results.",
-          "Resolved a bug causing view reports to show duplicated entries.",
+          "Added python backend/scripts/gen_artifacts.py output validation, catching malformed node YAML before it reaches the palette.",
+          "Improved error messages when a Starlark script in the code node references a disallowed builtin.",
         ],
       },
     ],

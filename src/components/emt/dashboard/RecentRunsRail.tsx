@@ -1,8 +1,13 @@
 import { History } from "lucide-react";
 import { StatusPill } from "../StatusPill";
-import { RUNS } from "@/data/emt";
+import type { EmtRun } from "@/data/emt";
 
-export function RecentRunsRail({ onViewAll }: { onViewAll: () => void }) {
+interface RecentRunsRailProps {
+  runs: EmtRun[];
+  onViewAll: () => void;
+}
+
+export function RecentRunsRail({ runs, onViewAll }: RecentRunsRailProps) {
   return (
     <div className="emt-card p-4">
       <div className="mb-3 flex items-center justify-between">
@@ -14,7 +19,7 @@ export function RecentRunsRail({ onViewAll }: { onViewAll: () => void }) {
         </button>
       </div>
       <div className="space-y-1">
-        {RUNS.slice(0, 5).map((r) => (
+        {runs.slice(0, 5).map((r) => (
           <div key={r.id} className="-mx-2 flex items-center gap-2.5 rounded-md px-2 py-1.5 transition-colors hover:bg-surface">
             <StatusPill status={r.status} label="" className="border-0 bg-transparent px-0" />
             <div className="min-w-0 flex-1">

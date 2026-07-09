@@ -1,6 +1,11 @@
-import { NODE_CATALOG } from "@/data/emt";
+import { Plus } from "lucide-react";
+import { NODE_CATALOG, type EmtNodeDef } from "@/data/emt";
 
-export function NodePalette() {
+interface NodePaletteProps {
+  onAddNode: (def: EmtNodeDef) => void;
+}
+
+export function NodePalette({ onAddNode }: NodePaletteProps) {
   const categories = [...new Set(NODE_CATALOG.map((n) => n.category))];
 
   return (
@@ -15,11 +20,13 @@ export function NodePalette() {
             {NODE_CATALOG.filter((n) => n.category === cat).map((n) => (
               <button
                 key={n.id}
-                className="flex w-full cursor-grab items-center gap-2 rounded-md border border-border bg-card px-2 py-1.5 text-left transition-colors hover:border-ring/40 hover:bg-surface"
-                title={n.description}
+                onClick={() => onAddNode(n)}
+                className="group flex w-full items-center gap-2 rounded-md border border-border bg-card px-2 py-1.5 text-left transition-colors hover:border-ring/40 hover:bg-surface"
+                title={`Add ${n.label} to canvas`}
               >
                 <n.icon className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                 <span className="truncate text-xs font-medium">{n.label}</span>
+                <Plus className="ml-auto h-3 w-3 shrink-0 text-muted-foreground/0 transition-colors group-hover:text-muted-foreground" />
               </button>
             ))}
           </div>

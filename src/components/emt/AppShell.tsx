@@ -10,6 +10,7 @@ import {
   RunHistoryDrawer,
   SettingsDrawer,
   SkillsDrawer,
+  SherpaChatDrawer,
 } from "./drawers";
 
 export type EmtDrawer =
@@ -65,6 +66,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <NodesDrawer open={drawer === "nodes"} onOpenChange={(o) => !o && setDrawer(null)} />
       <SkillsDrawer open={drawer === "skills"} onOpenChange={(o) => !o && setDrawer(null)} />
       <SettingsDrawer open={drawer === "settings"} onOpenChange={(o) => !o && setDrawer(null)} />
+      <SherpaChatDrawer />
     </div>
   );
 }

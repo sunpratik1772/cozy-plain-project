@@ -1,15 +1,18 @@
 import {
   FileText,
-  Wrench,
   Layers,
-  Settings,
-  Sparkles,
-  Tag,
-  DollarSign,
-  Package,
+  Rocket,
+  Blocks,
+  Wrench,
+  LayoutDashboard,
+  Bot,
+  Wand2,
+  Plug,
+  Database,
+  Table2,
+  Cloud,
+  GraduationCap,
   RefreshCw,
-  AlertTriangle,
-  Shield,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -39,52 +42,49 @@ export const navigationGroups: NavGroup[] = [
     title: "Getting Started",
     items: [
       { id: "overview", title: "Overview", href: "/docs/overview", icon: FileText },
-      { id: "workspace", title: "Set Up Your Workspace", href: "/docs/workspace", icon: Wrench },
-      { id: "sandbox", title: "Sandbox vs. Production", href: "/docs/sandbox", icon: Layers },
-      { id: "account-setup", title: "Account Setup", href: "/docs/account-setup", icon: Settings },
-      { id: "features", title: "Key Features", href: "/docs/features", icon: Sparkles },
+      { id: "architecture", title: "Architecture", href: "/docs/architecture", icon: Layers },
+      { id: "quickstart", title: "Quickstart", href: "/docs/quickstart", icon: Rocket },
     ],
   },
   {
-    id: "products",
-    title: "Products & Subscriptions",
+    id: "building-workflows",
+    title: "Building Workflows",
     items: [
-      { id: "coupons", title: "Coupons & Discounts", href: "/docs/coupons", icon: Tag },
-      { id: "pricing", title: "Pricing Models", href: "/docs/pricing", icon: DollarSign },
-      { id: "products", title: "Creating a Product", href: "/docs/products", icon: Package },
-      { id: "subscriptions", title: "Subscriptions", href: "/docs/subscriptions", icon: RefreshCw },
-      { id: "failed-payments", title: "Failed Payments", href: "/docs/failed-payments", icon: AlertTriangle },
+      { id: "node-catalogue", title: "Node Catalogue", href: "/docs/node-catalogue", icon: Blocks },
+      { id: "creating-nodes", title: "Creating Custom Nodes", href: "/docs/creating-nodes", icon: Wrench },
+      { id: "studio-basics", title: "Studio Basics", href: "/docs/studio-basics", icon: LayoutDashboard },
     ],
   },
   {
-    id: "security",
-    title: "Security",
+    id: "sherpa-copilot",
+    title: "Sherpa & Copilot",
     items: [
-      { id: "encryption", title: "Security & Encryption", href: "/docs/encryption", icon: Shield },
+      { id: "agent-harness", title: "Agent Harness", href: "/docs/agent-harness", icon: Bot },
+      { id: "generation-harness", title: "Generation Harness", href: "/docs/generation-harness", icon: Wand2, isNew: true },
+    ],
+  },
+  {
+    id: "integrations",
+    title: "Integrations",
+    items: [
+      { id: "mcp-integrations", title: "MCP Integrations", href: "/docs/mcp-integrations", icon: Plug },
+      { id: "data-sources", title: "Data Source Onboarding", href: "/docs/data-sources", icon: Database },
+    ],
+  },
+  {
+    id: "database",
+    title: "Database",
+    items: [
+      { id: "database-schema", title: "Schema & Relations", href: "/docs/database-schema", icon: Table2 },
+      { id: "cloud-sql", title: "Cloud SQL", href: "/docs/cloud-sql", icon: Cloud },
+    ],
+  },
+  {
+    id: "engineering",
+    title: "Engineering",
+    items: [
+      { id: "engineering-onboarding", title: "Onboarding", href: "/docs/engineering-onboarding", icon: GraduationCap },
+      { id: "gemini-migration", title: "Gemini Migration", href: "/docs/gemini-migration", icon: RefreshCw },
     ],
   },
 ];
-
-export const tableOfContents: TableOfContentsItem[] = [
-  { id: "introduction", title: "Introduction", level: "h2" },
-  { id: "creating-your-account", title: "Creating Your Account", level: "h2" },
-  { id: "sign-up-process", title: "Sign-up Process", level: "h3" },
-  { id: "account-verification", title: "Account Verification", level: "h3" },
-  { id: "workspace-details", title: "Workspace & Project Details", level: "h2" },
-  { id: "adding-a-workspace", title: "Adding a Workspace", level: "h3" },
-  { id: "supported-regions", title: "Supported Regions", level: "h3" },
-  { id: "configuration", title: "Configuration", level: "h2" },
-  { id: "security-setup", title: "Security Setup", level: "h2" },
-  { id: "two-factor-auth", title: "Two-Factor Authentication", level: "h3" },
-  { id: "recovery-options", title: "Setting Up Recovery Options", level: "h3" },
-  { id: "notifications", title: "Notifications & Preferences", level: "h2" },
-  { id: "reviewing-setup", title: "Reviewing Your Setup", level: "h2" },
-  { id: "checklist", title: "Checklist for a Complete Account", level: "h3" },
-  { id: "testing-sandbox", title: "Testing in Sandbox Mode", level: "h3" },
-];
-
-export const documentationContent = {
-  title: "Account Setup",
-  description: "Learn how to set up your account and configure your workspace for optimal use.",
-  breadcrumb: ["Getting Started", "Account Setup"],
-};

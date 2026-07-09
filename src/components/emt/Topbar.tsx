@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
-import { Menu, Plus, Search } from "lucide-react";
+import { Menu, Plus, Search, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSherpa } from "@/contexts/SherpaContext";
 
 interface TopbarProps {
   onSearch: () => void;
@@ -14,6 +15,7 @@ const TITLES: Record<string, string> = {
 
 export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
   const { pathname } = useLocation();
+  const { openChat } = useSherpa();
   const title = TITLES[pathname] ?? "EMT Sun";
 
   return (
@@ -43,6 +45,13 @@ export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
           aria-label="Search"
         >
           <Search className="h-4 w-4" />
+        </button>
+        <button
+          onClick={() => openChat()}
+          className="hidden items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-ring/40 hover:text-foreground sm:flex"
+        >
+          <Sparkles className="h-3.5 w-3.5" />
+          Ask Sherpa
         </button>
         <Button size="sm" className="h-8 gap-1.5 text-xs font-semibold">
           <Plus className="h-3.5 w-3.5" />

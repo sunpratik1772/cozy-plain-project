@@ -109,7 +109,7 @@ const Hero = () => {
           to="/docs/overview"
           className="inline-flex items-center gap-2 pl-4 pr-2 py-2 mb-8 text-sm text-muted-foreground bg-[#121314] rounded-full"
         >
-          <span>Hello, I'm Compass.</span>
+          <span>Hello, I'm Sherpa.</span>
           <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#1B1C1D]">
             <ChevronRight className="w-4 h-4" />
           </span>

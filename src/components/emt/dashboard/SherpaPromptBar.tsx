@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { ArrowUp, Sparkle } from "lucide-react";
 import { motion } from "framer-motion";
+import { useSherpa } from "@/contexts/SherpaContext";
 
 const SUGGESTIONS = [
   "Sync leads from Postgres nightly",
@@ -11,11 +11,13 @@ const SUGGESTIONS = [
 
 export function SherpaPromptBar() {
   const [value, setValue] = useState("");
-  const navigate = useNavigate();
+  const { openChat } = useSherpa();
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/studio");
+    if (!value.trim()) return;
+    openChat(value);
+    setValue("");
   };
 
   return (
@@ -46,7 +48,7 @@ export function SherpaPromptBar() {
         {SUGGESTIONS.map((s) => (
           <button
             key={s}
-            onClick={() => setValue(s)}
+            onClick={() => openChat(s)}
             className="rounded-full border border-border bg-surface px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-ring/40 hover:text-foreground"
           >
             {s}
