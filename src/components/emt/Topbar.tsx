@@ -10,16 +10,18 @@ interface TopbarProps {
 
 const TITLES: [string, string][] = [
   ["/", "Dashboard"],
-  ["/studio", "Workflow Studio"],
-  ["/templates", "Templates"],
-  ["/skills", "Skills"],
-  ["/automations", "Automations"],
-  ["/runs", "Run History"],
-  ["/codebase", "Codebase Graph"],
-  ["/settings", "Settings"],
+  ["/docs", "Docs"],
+  ["/api", "API Reference"],
+  ["/changelog", "Changelog"],
 ];
 
+// Pages below already render their own in-page header bar with the title
+// (and richer status/actions), so the Topbar would otherwise show the same
+// name twice — leave the Topbar blank for these instead of duplicating it.
+const OWN_HEADER_PATHS = ["/studio", "/templates", "/skills", "/automations", "/runs", "/codebase", "/settings"];
+
 function resolveTitle(pathname: string) {
+  if (OWN_HEADER_PATHS.some((path) => pathname === path || pathname.startsWith(`${path}/`))) return null;
   if (pathname === "/") return "Dashboard";
   const match = TITLES.find(([path]) => path !== "/" && (pathname === path || pathname.startsWith(`${path}/`)));
   return match?.[1] ?? "EMT Sun";
@@ -41,7 +43,7 @@ export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
         <Menu className="h-4.5 w-4.5" size={18} />
       </button>
 
-      <h1 className="text-sm font-semibold tracking-tight">{title}</h1>
+      {title && <h1 className="text-sm font-semibold tracking-tight">{title}</h1>}
 
       <div className="ml-auto flex items-center gap-2">
         <button
