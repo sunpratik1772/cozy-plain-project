@@ -93,7 +93,7 @@ export function CommandPalette({ open, onOpenChange, onOpenDrawer }: CommandPale
           <CommandItem onSelect={() => run(() => navigate("/skills"))}>
             <Puzzle className="mr-2 h-4 w-4" /> Skills
           </CommandItem>
-          <CommandItem onSelect={() => run(() => onOpenDrawer("settings"))}>
+          <CommandItem onSelect={() => run(() => navigate("/settings"))}>
             <Settings className="mr-2 h-4 w-4" /> Settings
           </CommandItem>
         </CommandGroup>

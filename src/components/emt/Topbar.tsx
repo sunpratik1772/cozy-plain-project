@@ -16,6 +16,7 @@ const TITLES: [string, string][] = [
   ["/automations", "Automations"],
   ["/runs", "Run History"],
   ["/codebase", "Codebase Graph"],
+  ["/settings", "Settings"],
 ];
 
 function resolveTitle(pathname: string) {

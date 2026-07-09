@@ -3,13 +3,10 @@ import { AUTOMATIONS, SOURCES, SKILLS, type EmtAutomation, type EmtSource, type 
 
 const STORAGE_KEY = "emt-sun-workspace-v1";
 
-export type McpStatus = "connected" | "partial" | "off";
-
 export interface WorkspaceSettings {
   displayName: string;
   workspaceName: string;
   apiKey: string;
-  mcp: { name: string; status: McpStatus }[];
 }
 
 interface WorkspaceState {
@@ -27,10 +24,6 @@ const DEFAULT_STATE: WorkspaceState = {
     displayName: "Pratik",
     workspaceName: "emt-sun",
     apiKey: "emt_sk_live_9f31c8a24f2a",
-    mcp: [
-      { name: "Atlassian", status: "partial" },
-      { name: "GitHub", status: "off" },
-    ],
   },
 };
 
@@ -78,7 +71,6 @@ interface WorkspaceContextValue extends WorkspaceState {
 
   updateSettings: (patch: Partial<Pick<WorkspaceSettings, "displayName" | "workspaceName">>) => void;
   regenerateApiKey: () => void;
-  toggleMcp: (name: string) => void;
 
   resetWorkspace: () => void;
 }
@@ -162,16 +154,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, settings: { ...s.settings, apiKey: randomKey() } }));
   }, []);
 
-  const toggleMcp = useCallback((name: string) => {
-    setState((s) => ({
-      ...s,
-      settings: {
-        ...s.settings,
-        mcp: s.settings.mcp.map((m) => (m.name === name ? { ...m, status: m.status === "off" ? "connected" : "off" } : m)),
-      },
-    }));
-  }, []);
-
   const resetWorkspace = useCallback(() => {
     setState({ automations: [], sources: [], skills: DEFAULT_STATE.skills.map((s) => ({ ...s, enabled: false })), settings: DEFAULT_STATE.settings });
   }, []);
@@ -191,7 +173,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         deleteSkill,
         updateSettings,
         regenerateApiKey,
-        toggleMcp,
         resetWorkspace,
       }}
     >

@@ -3,9 +3,9 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { EmtSidebar } from "./Sidebar";
 import { EmtTopbar } from "./Topbar";
 import { CommandPalette } from "./CommandPalette";
-import { DataSourcesDrawer, NodesDrawer, SettingsDrawer, SherpaChatDrawer } from "./drawers";
+import { DataSourcesDrawer, NodesDrawer, SherpaChatDrawer } from "./drawers";
 
-export type EmtDrawer = "sources" | "nodes" | "settings" | null;
+export type EmtDrawer = "sources" | "nodes" | null;
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [drawer, setDrawer] = useState<EmtDrawer>(null);
@@ -47,7 +47,6 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <DataSourcesDrawer open={drawer === "sources"} onOpenChange={(o) => !o && setDrawer(null)} />
       <NodesDrawer open={drawer === "nodes"} onOpenChange={(o) => !o && setDrawer(null)} />
-      <SettingsDrawer open={drawer === "settings"} onOpenChange={(o) => !o && setDrawer(null)} />
       <SherpaChatDrawer />
     </div>
   );

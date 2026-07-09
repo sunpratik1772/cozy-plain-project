@@ -17,6 +17,7 @@ import Automations from "./pages/Automations";
 import RunHistory from "./pages/RunHistory";
 import RunDetail from "./pages/RunDetail";
 import Codebase from "./pages/Codebase";
+import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import Changelog from "./pages/Changelog";
 import Documentation from "./pages/Documentation";
@@ -46,6 +47,7 @@ const App = () => (
                     <Route path="/runs" element={<RunHistory />} />
                     <Route path="/runs/:runId" element={<RunDetail />} />
                     <Route path="/codebase" element={<Codebase />} />
+                    <Route path="/settings" element={<Settings />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/changelog" element={<Changelog />} />
                     <Route path="/docs/*" element={<Documentation />} />
