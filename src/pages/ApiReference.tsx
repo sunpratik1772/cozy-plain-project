@@ -8,14 +8,14 @@ import { Seo } from "@/components/Seo";
 
 export default function ApiReference() {
   const params = useParams();
-  const endpointSlug = params["*"] || "refresh-token";
+  const endpointSlug = params["*"] || "register-user";
   const tableOfContents = generateApiTableOfContents(endpointSlug);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Seo
-        title={`${endpointSlug.replace(/-/g, " ")} — Compass API`}
-        description="REST API reference for Compass: endpoints, headers, request bodies, and response schemas."
+        title={`${endpointSlug.replace(/-/g, " ")} — EMT Sun API`}
+        description="REST API reference for EMT Sun: endpoints, headers, request bodies, and response schemas."
         path={`/api/${endpointSlug}`}
       />
       <Navbar />

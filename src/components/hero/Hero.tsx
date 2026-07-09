@@ -117,12 +117,12 @@ const Hero = () => {
 
         {/* Headline */}
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-center tracking-tighter mb-6">
-          <WaveText text="Docs & Knowledge Hub" />
+          <WaveText text="EMT Sun Docs & API Reference" />
         </h1>
 
         {/* Subheadline */}
         <p className="text-base md:text-lg text-muted-foreground text-center max-w-2xl mb-10">
-          <WaveText text="Dark documentation site template" staggerDelay={0.015} />
+          <WaveText text="Everything you need to build workflows, extend Sherpa, and ship integrations" staggerDelay={0.015} />
         </p>
 
         {/* Search Bar */}

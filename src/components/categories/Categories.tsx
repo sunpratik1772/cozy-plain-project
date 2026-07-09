@@ -18,7 +18,7 @@ const categories = [
     title: "API Reference",
     description: "Everything developers need to build and integrate.",
     linkText: "Check API Reference",
-    href: "/api/refresh-token",
+    href: "/api/register-user",
   },
   {
     image: cardChangelog,

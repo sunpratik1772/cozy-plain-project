@@ -9,8 +9,8 @@ const Changelog = () => {
   return (
     <div className="min-h-screen bg-background">
       <Seo
-        title="Changelog — Compass"
-        description="Product updates, new features, improvements, and bug fixes for Compass."
+        title="Changelog — EMT Sun"
+        description="Product updates, new features, improvements, and bug fixes for EMT Sun."
         path="/changelog"
       />
       <Navbar />

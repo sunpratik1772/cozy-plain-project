@@ -8,7 +8,7 @@ import WaveText from "@/components/ui/wave-text";
 
 export function ApiPageContent() {
   const params = useParams();
-  const endpointSlug = params["*"] || "refresh-token";
+  const endpointSlug = params["*"] || "register-user";
   const endpoint = getEndpointBySlug(endpointSlug);
   const group = getGroupForEndpoint(endpointSlug);
 
