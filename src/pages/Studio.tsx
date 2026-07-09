@@ -1,4 +1,5 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   Background,
   BackgroundVariant,
@@ -22,57 +23,41 @@ import { StudioRightPanel } from "@/components/emt/studio/StudioRightPanel";
 import { FlowNode, type FlowNodeData } from "@/components/emt/studio/FlowNode";
 import { StatusPill } from "@/components/emt/StatusPill";
 import { useRun } from "@/contexts/RunContext";
+import { getWorkflowPreset } from "@/data/workflowPresets";
 import type { EmtLogLine, EmtNodeDef, RunStatus } from "@/data/emt";
 
 const nodeTypes = { emt: FlowNode };
-
-const WORKFLOW_NAME = "Lead scoring pipeline";
-const WORKFLOW_FILE = "leads_pipeline.json";
-
-const initialNodes: Node<FlowNodeData>[] = [
-  { id: "1", type: "emt", position: { x: 0, y: 120 }, data: { label: "Schedule", sub: "0 2 * * *", icon: "CalendarClock", status: "success", nodeType: "schedule" } },
-  { id: "2", type: "emt", position: { x: 260, y: 40 }, data: { label: "DB query", sub: "leads · postgres", icon: "Database", status: "success", nodeType: "db_query" } },
-  { id: "3", type: "emt", position: { x: 260, y: 200 }, data: { label: "CSV extract", sub: "orders.csv", icon: "FileSpreadsheet", status: "success", nodeType: "csv_extract" } },
-  { id: "4", type: "emt", position: { x: 520, y: 120 }, data: { label: "Transform", sub: "join + filter", icon: "Braces", status: "success", nodeType: "transform" } },
-  { id: "5", type: "emt", position: { x: 780, y: 120 }, data: { label: "Agent", sub: "score_leads", icon: "Bot", status: "success", nodeType: "agent" } },
-  { id: "6", type: "emt", position: { x: 1040, y: 120 }, data: { label: "Table output", sub: "scored_leads", icon: "Table2", status: "success", nodeType: "table_output" } },
-];
-
-const initialEdges: Edge[] = [
-  { id: "e1-2", source: "1", target: "2" },
-  { id: "e1-3", source: "1", target: "3" },
-  { id: "e2-4", source: "2", target: "4" },
-  { id: "e3-4", source: "3", target: "4" },
-  { id: "e4-5", source: "4", target: "5" },
-  { id: "e5-6", source: "5", target: "6" },
-];
-
-// (delay ms, node ids to mark running → success, log line)
-const RUN_TIMELINE: { delay: number; nodeIds: string[]; log: EmtLogLine }[] = [
-  { delay: 0, nodeIds: ["1"], log: { t: "now", level: "info", msg: "Run started (trigger: manual)" } },
-  { delay: 500, nodeIds: ["2", "3"], log: { t: "now", level: "info", msg: "db_query: SELECT * FROM leads LIMIT 500" } },
-  { delay: 1400, nodeIds: [], log: { t: "now", level: "info", msg: "csv_extract: loaded 12,402 rows from orders.csv" } },
-  { delay: 2100, nodeIds: ["4"], log: { t: "now", level: "info", msg: "transform: 500 → 342 rows after filter" } },
-  { delay: 2900, nodeIds: ["5"], log: { t: "now", level: "info", msg: "agent: scoring batch 1/4" } },
-  { delay: 3600, nodeIds: [], log: { t: "now", level: "warn", msg: "agent: 3 rows missing company field" } },
-  { delay: 3900, nodeIds: ["6"], log: { t: "now", level: "info", msg: "output: wrote 342 rows to scored_leads" } },
-  { delay: 4200, nodeIds: [], log: { t: "now", level: "info", msg: "Run succeeded in 4.2s" } },
-];
 
 function timestamp() {
   return new Date().toLocaleTimeString("en-US", { hour12: false });
 }
 
 const Studio = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const { workflowId } = useParams();
+  const preset = useMemo(() => getWorkflowPreset(workflowId), [workflowId]);
+
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node<FlowNodeData>>(preset.nodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(preset.edges);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [logs, setLogs] = useState<EmtLogLine[]>([]);
   const [runStatus, setRunStatus] = useState<RunStatus>("success");
   const timers = useRef<number[]>([]);
   const { startRun } = useRun();
-  const nodeCounter = useRef(initialNodes.length);
+  const nodeCounter = useRef(preset.nodes.length);
   const { resolvedTheme } = useTheme();
+
+  // Reset the canvas whenever a different workflow is opened.
+  useEffect(() => {
+    timers.current.forEach((id) => window.clearTimeout(id));
+    timers.current = [];
+    setNodes(preset.nodes);
+    setEdges(preset.edges);
+    setSelectedNodeId(null);
+    setLogs([]);
+    setRunStatus("success");
+    nodeCounter.current = preset.nodes.length;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [preset]);
 
   const onConnect = useCallback(
     (connection: Connection) => setEdges((eds) => addEdge(connection, eds)),
@@ -96,28 +81,30 @@ const Studio = () => {
     timers.current.forEach((id) => window.clearTimeout(id));
     timers.current = [];
 
+    const runTimeline = preset.runTimeline;
     setRunStatus("running");
     setLogs([]);
     setNodes((nds) => nds.map((n) => ({ ...n, data: { ...n.data, status: "idle" } })));
     setEdges((eds) => eds.map((e) => ({ ...e, animated: true })));
-    startRun(WORKFLOW_NAME);
+    startRun(preset.name);
 
-    RUN_TIMELINE.forEach((step) => {
+    runTimeline.forEach((step, i) => {
       const timer = window.setTimeout(() => {
-        if (step.nodeIds.length) setNodeStatus(step.nodeIds, "running");
+        if (step.nodeIds.length) setNodeStatus(step.nodeIds, step.status ?? "running");
         setLogs((prev) => [...prev, { ...step.log, t: timestamp() }]);
 
-        const priorStep = RUN_TIMELINE[RUN_TIMELINE.indexOf(step) - 1];
-        if (priorStep?.nodeIds.length) setNodeStatus(priorStep.nodeIds, "success");
+        const priorStep = runTimeline[i - 1];
+        const priorWasPlainRun = priorStep && (!priorStep.status || priorStep.status === "running");
+        if (priorStep?.nodeIds.length && priorWasPlainRun) setNodeStatus(priorStep.nodeIds, "success");
 
-        if (step === RUN_TIMELINE[RUN_TIMELINE.length - 1]) {
-          setRunStatus("success");
+        if (i === runTimeline.length - 1) {
+          setRunStatus(preset.finalStatus);
           setEdges((eds) => eds.map((e) => ({ ...e, animated: false })));
         }
       }, step.delay);
       timers.current.push(timer);
     });
-  }, [runStatus, setNodes, setEdges, setNodeStatus, startRun]);
+  }, [runStatus, setNodes, setEdges, setNodeStatus, startRun, preset]);
 
   const addNode = useCallback(
     (def: EmtNodeDef) => {
@@ -149,13 +136,13 @@ const Studio = () => {
   return (
     <AppShell>
       <Seo
-        title="Workflow Studio — EMT Sun"
+        title={`${preset.name} — EMT Sun Studio`}
         description="Design, run and debug data workflows on the EMT Sun canvas."
-        path="/studio"
+        path={workflowId ? `/studio/${workflowId}` : "/studio"}
       />
       <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
-        <p className="text-sm font-semibold tracking-tight">{WORKFLOW_NAME}</p>
-        <span className="font-mono text-[11px] text-muted-foreground">{WORKFLOW_FILE}</span>
+        <p className="text-sm font-semibold tracking-tight">{preset.name}</p>
+        <span className="font-mono text-[11px] text-muted-foreground">{preset.file}</span>
         <StatusPill status={runStatus} />
         <div className="ml-auto flex items-center gap-2">
           <Button variant="outline" size="sm" className="h-7 gap-1.5 text-xs">

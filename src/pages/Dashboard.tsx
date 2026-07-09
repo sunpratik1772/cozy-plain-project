@@ -6,19 +6,18 @@ import { Seo } from "@/components/Seo";
 import { AppShell } from "@/components/emt/AppShell";
 import { StatusPill } from "@/components/emt/StatusPill";
 import { StatRow } from "@/components/emt/dashboard/StatRow";
-import { RunHealthCard } from "@/components/emt/dashboard/RunHealthCard";
+import { SuccessRateCard } from "@/components/emt/dashboard/SuccessRateCard";
+import { RunActivityCard } from "@/components/emt/dashboard/RunActivityCard";
 import { WorkflowGrid } from "@/components/emt/dashboard/WorkflowGrid";
-import { RecentRunsRail } from "@/components/emt/dashboard/RecentRunsRail";
 import { SherpaPromptBar } from "@/components/emt/dashboard/SherpaPromptBar";
 import { SourcesStrip } from "@/components/emt/dashboard/SourcesStrip";
-import { RunHistoryDrawer, DataSourcesDrawer } from "@/components/emt/drawers";
+import { DataSourcesDrawer } from "@/components/emt/drawers";
 import { STATS, WORKFLOWS } from "@/data/emt";
 import { useRun } from "@/contexts/RunContext";
 
 const Dashboard = () => {
-  const [runsOpen, setRunsOpen] = useState(false);
   const [sourcesOpen, setSourcesOpen] = useState(false);
-  const { recentRuns, liveRun } = useRun();
+  const { liveRun } = useRun();
 
   return (
     <AppShell>
@@ -28,7 +27,7 @@ const Dashboard = () => {
         path="/"
       />
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-6xl space-y-6 px-4 py-6 md:px-6">
+        <div className="mx-auto max-w-6xl space-y-5 px-4 py-6 md:px-6">
           <div>
             <h2 className="text-xl font-bold tracking-tight">Good evening, Pratik</h2>
             <p className="mt-0.5 text-sm text-muted-foreground">
@@ -55,18 +54,16 @@ const Dashboard = () => {
           <SherpaPromptBar />
           <StatRow stats={STATS} />
 
-          <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
-            <WorkflowGrid workflows={WORKFLOWS} />
-            <div className="space-y-3">
-              <RunHealthCard />
-              <RecentRunsRail runs={recentRuns} onViewAll={() => setRunsOpen(true)} />
-            </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <SuccessRateCard />
+            <RunActivityCard />
           </div>
+
+          <WorkflowGrid workflows={WORKFLOWS} />
 
           <SourcesStrip onOpen={() => setSourcesOpen(true)} />
         </div>
       </div>
-      <RunHistoryDrawer open={runsOpen} onOpenChange={setRunsOpen} />
       <DataSourcesDrawer open={sourcesOpen} onOpenChange={setSourcesOpen} />
     </AppShell>
   );

@@ -7,6 +7,7 @@ import {
   GitGraph,
   History,
   LayoutGrid,
+  LayoutTemplate,
   Puzzle,
   Settings,
   Sparkles,
@@ -25,6 +26,7 @@ interface SidebarProps {
 const routes = [
   { label: "Dashboard", to: "/", icon: LayoutGrid },
   { label: "Studio", to: "/studio", icon: Workflow },
+  { label: "Templates", to: "/templates", icon: LayoutTemplate },
   { label: "Codebase", to: "/codebase", icon: GitGraph },
   { label: "Docs", to: "/docs", icon: BookOpen },
 ];
@@ -71,7 +73,7 @@ export function EmtSidebar({ onOpenDrawer, className }: SidebarProps) {
           Ask Sherpa
         </button>
         {routes.map((r) => (
-          <Link key={r.to} to={r.to} className={itemClass(pathname === r.to)}>
+          <Link key={r.to} to={r.to} className={itemClass(pathname === r.to || pathname.startsWith(`${r.to}/`))}>
             <r.icon className="h-4 w-4" />
             {r.label}
           </Link>

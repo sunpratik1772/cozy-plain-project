@@ -11,6 +11,7 @@ import { WorkspaceProvider } from "@/contexts/WorkspaceContext";
 import { SearchModal } from "@/components/search";
 import Dashboard from "./pages/Dashboard";
 import Studio from "./pages/Studio";
+import Templates from "./pages/Templates";
 import Codebase from "./pages/Codebase";
 import Login from "./pages/Login";
 import Changelog from "./pages/Changelog";
@@ -34,7 +35,8 @@ const App = () => (
                   <SearchModal />
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
-                    <Route path="/studio" element={<Studio />} />
+                    <Route path="/studio/:workflowId?" element={<Studio />} />
+                    <Route path="/templates" element={<Templates />} />
                     <Route path="/codebase" element={<Codebase />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/changelog" element={<Changelog />} />

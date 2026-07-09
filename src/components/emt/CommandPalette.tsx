@@ -7,6 +7,7 @@ import {
   GitGraph,
   History,
   LayoutGrid,
+  LayoutTemplate,
   Puzzle,
   Settings,
   Sparkles,
@@ -52,6 +53,9 @@ export function CommandPalette({ open, onOpenChange, onOpenDrawer }: CommandPale
           <CommandItem onSelect={() => run(() => navigate("/studio"))}>
             <Workflow className="mr-2 h-4 w-4" /> Workflow Studio
           </CommandItem>
+          <CommandItem onSelect={() => run(() => navigate("/templates"))}>
+            <LayoutTemplate className="mr-2 h-4 w-4" /> Templates
+          </CommandItem>
           <CommandItem onSelect={() => run(() => navigate("/codebase"))}>
             <GitGraph className="mr-2 h-4 w-4" /> Codebase Graph
           </CommandItem>
@@ -65,7 +69,7 @@ export function CommandPalette({ open, onOpenChange, onOpenDrawer }: CommandPale
         <CommandSeparator />
         <CommandGroup heading="Workflows">
           {WORKFLOWS.map((w) => (
-            <CommandItem key={w.id} onSelect={() => run(() => navigate("/studio"))}>
+            <CommandItem key={w.id} onSelect={() => run(() => navigate(`/studio/${w.id}`))}>
               <Workflow className="mr-2 h-4 w-4" />
               {w.name}
               <span className="ml-auto font-mono text-xs text-muted-foreground">{w.filename}</span>

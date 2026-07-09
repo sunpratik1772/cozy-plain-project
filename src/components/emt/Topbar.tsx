@@ -9,16 +9,23 @@ interface TopbarProps {
   onMobileMenu: () => void;
 }
 
-const TITLES: Record<string, string> = {
-  "/": "Dashboard",
-  "/studio": "Workflow Studio",
-  "/codebase": "Codebase Graph",
-};
+const TITLES: [string, string][] = [
+  ["/", "Dashboard"],
+  ["/studio", "Workflow Studio"],
+  ["/templates", "Templates"],
+  ["/codebase", "Codebase Graph"],
+];
+
+function resolveTitle(pathname: string) {
+  if (pathname === "/") return "Dashboard";
+  const match = TITLES.find(([path]) => path !== "/" && (pathname === path || pathname.startsWith(`${path}/`)));
+  return match?.[1] ?? "EMT Sun";
+}
 
 export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
   const { pathname } = useLocation();
   const { openChat } = useSherpa();
-  const title = TITLES[pathname] ?? "EMT Sun";
+  const title = resolveTitle(pathname);
 
   return (
     <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-background px-4">

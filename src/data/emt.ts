@@ -75,7 +75,6 @@ export interface EmtSkill {
 export const STATS: EmtStat[] = [
   { label: "Workflows", value: "6", sub: "2 drafts ready to open", sparkline: [2, 3, 3, 4, 4, 5, 6] },
   { label: "Runs this month", value: "48", sub: "+12 vs last month", sparkline: [3, 5, 4, 8, 6, 10, 12] },
-  { label: "Success rate", value: "94%", sub: "3 failed this month", sparkline: [88, 90, 92, 89, 93, 95, 94] },
   { label: "Automations", value: "3", sub: "2 running on schedule", sparkline: [1, 1, 2, 2, 2, 3, 3] },
 ];
 
