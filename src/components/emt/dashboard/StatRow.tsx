@@ -17,20 +17,20 @@ function Sparkline({ data }: { data: number[] }) {
 
 export function StatRow({ stats }: { stats: EmtStat[] }) {
   return (
-    <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
       {stats.map((s, i) => (
         <motion.div
           key={s.label}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: i * 0.05 }}
-          className="emt-card emt-card-hover p-4"
+          className="emt-card emt-card-hover p-5"
         >
           <div className="flex items-start justify-between gap-2">
             <p className="text-xs font-medium text-muted-foreground">{s.label}</p>
             <Sparkline data={s.sparkline} />
           </div>
-          <p className="mt-1 text-2xl font-bold tracking-tight">{s.value}</p>
+          <p className="mt-1.5 text-3xl font-bold tracking-tight">{s.value}</p>
           <p className="mt-0.5 text-xs text-muted-foreground">{s.sub}</p>
         </motion.div>
       ))}

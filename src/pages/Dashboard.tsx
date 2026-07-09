@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
@@ -10,13 +9,10 @@ import { SuccessRateCard } from "@/components/emt/dashboard/SuccessRateCard";
 import { RunActivityCard } from "@/components/emt/dashboard/RunActivityCard";
 import { WorkflowGrid } from "@/components/emt/dashboard/WorkflowGrid";
 import { SherpaPromptBar } from "@/components/emt/dashboard/SherpaPromptBar";
-import { SourcesStrip } from "@/components/emt/dashboard/SourcesStrip";
-import { DataSourcesDrawer } from "@/components/emt/drawers";
 import { STATS, WORKFLOWS } from "@/data/emt";
 import { useRun } from "@/contexts/RunContext";
 
 const Dashboard = () => {
-  const [sourcesOpen, setSourcesOpen] = useState(false);
   const { liveRun } = useRun();
 
   return (
@@ -60,11 +56,8 @@ const Dashboard = () => {
           </div>
 
           <WorkflowGrid workflows={WORKFLOWS} />
-
-          <SourcesStrip onOpen={() => setSourcesOpen(true)} />
         </div>
       </div>
-      <DataSourcesDrawer open={sourcesOpen} onOpenChange={setSourcesOpen} />
     </AppShell>
   );
 };
