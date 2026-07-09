@@ -262,10 +262,10 @@ export const WORKFLOW_PRESETS: Record<string, WorkflowPreset> = {
 export const DEFAULT_PRESET: WorkflowPreset = {
   name: "New workflow",
   file: "untitled.json",
-  nodes: [node("1", 0, 120, "Webhook trigger", "Configure a trigger", "Webhook", "webhook", "idle")],
+  nodes: [],
   edges: [],
   finalStatus: "success",
-  runTimeline: [{ delay: 0, nodeIds: ["1"], log: { t: "now", level: "info", msg: "Add more nodes to build out this workflow" } }],
+  runTimeline: [],
 };
 
 export function getWorkflowPreset(id: string | undefined): WorkflowPreset {

@@ -9,12 +9,12 @@ import {
   LayoutGrid,
   LayoutTemplate,
   Puzzle,
-  Settings,
   Sparkles,
   Workflow,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BrandMark } from "./BrandMark";
+import { ProfileMenu } from "./ProfileMenu";
 import type { EmtDrawer } from "./AppShell";
 import { useSherpa } from "@/contexts/SherpaContext";
 
@@ -102,19 +102,7 @@ export function EmtSidebar({ onOpenDrawer, className }: SidebarProps) {
       </nav>
 
       <div className="border-t border-sidebar-border p-3">
-        <button onClick={() => onOpenDrawer("settings")} className={itemClass(false)}>
-          <Settings className="h-4 w-4" />
-          Settings
-        </button>
-        <div className="mt-2 flex items-center gap-2.5 rounded-md px-2.5 py-1.5">
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-surface text-[11px] font-bold text-foreground">
-            P
-          </div>
-          <div className="min-w-0">
-            <p className="truncate text-xs font-medium text-foreground">Pratik</p>
-            <p className="truncate text-[11px] text-muted-foreground">Free plan</p>
-          </div>
-        </div>
+        <ProfileMenu onOpenDrawer={onOpenDrawer} />
       </div>
     </aside>
   );

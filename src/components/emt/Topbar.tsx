@@ -1,7 +1,6 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, Plus, Search, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { useSherpa } from "@/contexts/SherpaContext";
 
 interface TopbarProps {
@@ -27,6 +26,7 @@ function resolveTitle(pathname: string) {
 
 export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const { openChat } = useSherpa();
   const title = resolveTitle(pathname);
 
@@ -65,8 +65,7 @@ export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
           <Sparkles className="h-3.5 w-3.5" />
           Ask Sherpa
         </button>
-        <ThemeToggle className="h-8 w-8 border border-border bg-surface hover:border-ring/40" />
-        <Button size="sm" className="h-8 gap-1.5 text-xs font-semibold">
+        <Button size="sm" className="h-8 gap-1.5 text-xs font-semibold" onClick={() => navigate("/studio/new")}>
           <Plus className="h-3.5 w-3.5" />
           New workflow
         </Button>

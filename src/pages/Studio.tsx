@@ -15,7 +15,7 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useTheme } from "next-themes";
-import { Play, Save, Sparkles } from "lucide-react";
+import { LayoutTemplate, Play, Save, Sparkles } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { Button } from "@/components/ui/button";
 import { AppShell } from "@/components/emt/AppShell";
@@ -24,6 +24,7 @@ import { StudioRightPanel } from "@/components/emt/studio/StudioRightPanel";
 import { FlowNode, type FlowNodeData } from "@/components/emt/studio/FlowNode";
 import { StatusPill } from "@/components/emt/StatusPill";
 import { useRun } from "@/contexts/RunContext";
+import { useSherpa } from "@/contexts/SherpaContext";
 import { getWorkflowPreset } from "@/data/workflowPresets";
 import type { EmtLogLine, EmtNodeDef, RunStatus } from "@/data/emt";
 
@@ -49,6 +50,7 @@ const Studio = () => {
   const { startRun } = useRun();
   const nodeCounter = useRef(preset.nodes.length);
   const { resolvedTheme } = useTheme();
+  const { openChat } = useSherpa();
   const flowInstance = useRef<ReactFlowInstance | null>(null);
 
   // Reset the canvas whenever a different workflow is opened. If Sherpa just
@@ -200,7 +202,7 @@ const Studio = () => {
 
       <div className="flex min-h-0 flex-1">
         <NodePalette onAddNode={addNode} />
-        <div className="min-w-0 flex-1">
+        <div className="relative min-w-0 flex-1">
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -215,9 +217,35 @@ const Studio = () => {
             proOptions={{ hideAttribution: true }}
             colorMode={resolvedTheme === "light" ? "light" : "dark"}
           >
-            <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="hsl(var(--border))" />
+            <Background variant={BackgroundVariant.Dots} gap={16} size={1.5} color="hsl(var(--muted-foreground) / 0.3)" />
             <Controls showInteractive={false} />
           </ReactFlow>
+
+          {nodes.length === 0 && !generating && (
+            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                New workflow
+              </span>
+              <h2 className="text-2xl font-bold tracking-tight text-foreground">Compose a workflow</h2>
+              <p className="max-w-sm text-sm text-muted-foreground">
+                Drag nodes from the left palette, chain typed ports, or ask the sherpa to generate the entire workflow for you.
+              </p>
+              <div className="pointer-events-auto mt-1 flex items-center gap-2">
+                <Button variant="outline" size="sm" className="h-8 gap-1.5 text-xs" onClick={() => navigate("/templates")}>
+                  <LayoutTemplate className="h-3.5 w-3.5" />
+                  Load a template
+                </Button>
+                <Button size="sm" className="h-8 gap-1.5 text-xs font-semibold" onClick={() => openChat()}>
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Ask sherpa
+                </Button>
+              </div>
+              <p className="pointer-events-none mt-2 flex items-center gap-1.5 text-xs text-muted-foreground/60">
+                <kbd className="rounded border border-border bg-surface px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
+                for commands
+              </p>
+            </div>
+          )}
         </div>
         <StudioRightPanel
           node={selectedNode ? { id: selectedNode.id, nodeType: selectedNode.data.nodeType, label: selectedNode.data.label } : null}

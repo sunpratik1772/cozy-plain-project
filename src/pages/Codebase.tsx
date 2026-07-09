@@ -96,7 +96,7 @@ const Codebase = () => {
             proOptions={{ hideAttribution: true }}
             colorMode={resolvedTheme === "light" ? "light" : "dark"}
           >
-            <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="hsl(var(--border))" />
+            <Background variant={BackgroundVariant.Dots} gap={16} size={1.5} color="hsl(var(--muted-foreground) / 0.3)" />
             <Controls showInteractive={false} />
           </ReactFlow>
         </div>
