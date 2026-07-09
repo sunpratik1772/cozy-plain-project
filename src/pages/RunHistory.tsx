@@ -1,12 +1,14 @@
-import { Link } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ChevronRight, PanelRightOpen } from "lucide-react";
 import { Seo } from "@/components/Seo";
+import { Button } from "@/components/ui/button";
 import { AppShell } from "@/components/emt/AppShell";
 import { StatusPill } from "@/components/emt/StatusPill";
 import { useRun } from "@/contexts/RunContext";
 
 const RunHistory = () => {
   const { recentRuns } = useRun();
+  const navigate = useNavigate();
 
   return (
     <AppShell>
@@ -14,6 +16,15 @@ const RunHistory = () => {
       <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
         <p className="text-sm font-semibold tracking-tight">Run History</p>
         <span className="text-[11px] text-muted-foreground">{recentRuns.length} runs</span>
+        <Button
+          variant="outline"
+          size="icon"
+          className="ml-auto h-7 w-7"
+          aria-label="Collapse to side panel"
+          onClick={() => navigate("/", { state: { openDrawer: "runs" } })}
+        >
+          <PanelRightOpen className="h-3.5 w-3.5" />
+        </Button>
       </div>
 
       <div className="flex-1 overflow-y-auto">

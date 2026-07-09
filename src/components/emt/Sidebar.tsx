@@ -31,11 +31,12 @@ const routes = [
   { label: "Docs", to: "/docs", icon: BookOpen },
 ];
 
-const workspaceRoutes = [
-  { label: "Automations", to: "/automations", icon: CalendarClock },
-  { label: "Run History", to: "/runs", icon: History },
-  { label: "Skills", to: "/skills", icon: Puzzle },
+const workspaceItems: { label: string; to: string; drawerId: EmtDrawer; icon: typeof CalendarClock }[] = [
+  { label: "Automations", to: "/automations", drawerId: "automations", icon: CalendarClock },
+  { label: "Run History", to: "/runs", drawerId: "runs", icon: History },
 ];
+
+const workspaceRoutes = [{ label: "Skills", to: "/skills", icon: Puzzle }];
 
 const drawers: { label: string; id: EmtDrawer; icon: typeof Boxes }[] = [
   { label: "Data Sources", id: "sources", icon: Database },
@@ -87,6 +88,12 @@ export function EmtSidebar({ onOpenDrawer, className }: SidebarProps) {
         <p className="px-2.5 pb-1 pt-5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground/60">
           Workspace
         </p>
+        {workspaceItems.map((w) => (
+          <button key={w.to} onClick={() => onOpenDrawer(w.drawerId)} className={itemClass(isActive(w.to))}>
+            <w.icon className="h-4 w-4" />
+            {w.label}
+          </button>
+        ))}
         {workspaceRoutes.map((r) => (
           <Link key={r.to} to={r.to} className={itemClass(isActive(r.to))}>
             <r.icon className="h-4 w-4" />

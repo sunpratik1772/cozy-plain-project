@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { CalendarClock, Plus, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { CalendarClock, PanelRightOpen, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,7 @@ import { useWorkspace } from "@/contexts/WorkspaceContext";
 
 const Automations = () => {
   const { automations, addAutomation, toggleAutomation, deleteAutomation } = useWorkspace();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [workflow, setWorkflow] = useState(WORKFLOWS[0]?.name ?? "");
@@ -38,7 +40,16 @@ const Automations = () => {
       <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
         <p className="text-sm font-semibold tracking-tight">Automations</p>
         <span className="text-[11px] text-muted-foreground">{automations.length} scheduled</span>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-7 w-7"
+            aria-label="Collapse to side panel"
+            onClick={() => navigate("/", { state: { openDrawer: "automations" } })}
+          >
+            <PanelRightOpen className="h-3.5 w-3.5" />
+          </Button>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button size="sm" className="h-7 gap-1.5 text-xs font-semibold">
