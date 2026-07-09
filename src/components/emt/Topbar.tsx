@@ -13,6 +13,9 @@ const TITLES: [string, string][] = [
   ["/", "Dashboard"],
   ["/studio", "Workflow Studio"],
   ["/templates", "Templates"],
+  ["/skills", "Skills"],
+  ["/automations", "Automations"],
+  ["/runs", "Run History"],
   ["/codebase", "Codebase Graph"],
 ];
 

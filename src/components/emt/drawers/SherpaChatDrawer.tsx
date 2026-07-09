@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowUp, Pencil, Sparkle, Sparkles } from "lucide-react";
+import { ArrowUp, Check, Loader2, Pencil, Sparkle, Sparkles } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useSherpa, type SherpaMessage } from "@/contexts/SherpaContext";
 import { useRun } from "@/contexts/RunContext";
 import { useTypewriter } from "@/hooks/use-typewriter";
-import type { ClarificationOption } from "@/lib/sherpa";
+import type { ClarificationOption, SherpaWorkflowContext } from "@/lib/sherpa";
 
 const SUGGESTIONS = [
   "Sync leads from Postgres nightly",
@@ -78,8 +78,59 @@ function ClarificationBlock({
   );
 }
 
+const BUILD_STAGES = ["Checking data sources", "Designing workflow steps", "Planning export"];
+
+function ThinkingPanel({ workflow }: { workflow: SherpaWorkflowContext }) {
+  const [stage, setStage] = useState(0);
+
+  useEffect(() => {
+    setStage(0);
+    const id = window.setInterval(() => {
+      setStage((s) => Math.min(s + 1, BUILD_STAGES.length));
+    }, 650);
+    return () => window.clearInterval(id);
+  }, [workflow.name]);
+
+  const reasoning = `Examining your connected sources and mapping the fields "${workflow.name}" needs. I'll wire the nodes in dependency order, validate the schema, then write the workflow.`;
+  const { shown } = useTypewriter(reasoning, true, 8);
+
+  return (
+    <div className="w-full max-w-[85%] rounded-lg border border-border bg-surface p-3">
+      <p className="mb-2 flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+        <Sparkles className="h-3.5 w-3.5" /> Thinking process…
+      </p>
+      <div className="space-y-2.5">
+        <div>
+          <p className="text-xs font-medium text-foreground">Thinking…</p>
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{shown}</p>
+        </div>
+        {BUILD_STAGES.map((label, i) => {
+          const status = stage > i ? "done" : stage === i ? "active" : "pending";
+          return (
+            <div key={label} className="flex items-center gap-2">
+              {status === "done" ? (
+                <Check className="h-3.5 w-3.5 shrink-0 text-success" />
+              ) : status === "active" ? (
+                <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-muted-foreground" />
+              ) : (
+                <span className="h-3.5 w-3.5 shrink-0 rounded-full border border-border" />
+              )}
+              <div>
+                <p className={cn("text-xs font-medium", status === "pending" ? "text-muted-foreground/50" : "text-foreground")}>{label}</p>
+                {status !== "pending" && (
+                  <p className="text-[10px] text-muted-foreground">{status === "done" ? "Done" : "In progress…"}</p>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function SherpaChatDrawer() {
-  const { open, closeChat, messages, thinking, editing, send, answerClarification, runSlashCommand } = useSherpa();
+  const { open, closeChat, messages, thinking, building, editing, send, answerClarification, runSlashCommand } = useSherpa();
   const { startRun } = useRun();
   const [value, setValue] = useState("");
   const [animatedIds, setAnimatedIds] = useState<Set<string>>(new Set());
@@ -146,7 +197,7 @@ export function SherpaChatDrawer() {
                   <button
                     onClick={() => {
                       closeChat();
-                      navigate(m.action!.to);
+                      navigate(m.action!.to, { state: { generated: true } });
                     }}
                     className="mt-2 inline-flex items-center gap-1 rounded-md border border-border bg-background px-2 py-1 text-xs font-medium text-foreground transition-colors hover:border-ring/40"
                   >
@@ -157,7 +208,13 @@ export function SherpaChatDrawer() {
             </div>
           ))}
 
-          {thinking && (
+          {thinking && building && (
+            <div className="flex justify-start">
+              <ThinkingPanel workflow={building} />
+            </div>
+          )}
+
+          {thinking && !building && (
             <div className="flex justify-start">
               <div className="flex items-center gap-1 rounded-lg border border-border bg-surface px-3 py-2.5">
                 <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50 [animation-delay:-0.3s]" />

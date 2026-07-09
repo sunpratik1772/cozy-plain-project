@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Background,
   BackgroundVariant,
@@ -11,10 +11,11 @@ import {
   type Connection,
   type Edge,
   type Node,
+  type ReactFlowInstance,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useTheme } from "next-themes";
-import { Play, Save } from "lucide-react";
+import { Play, Save, Sparkles } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { Button } from "@/components/ui/button";
 import { AppShell } from "@/components/emt/AppShell";
@@ -35,27 +36,59 @@ function timestamp() {
 const Studio = () => {
   const { workflowId } = useParams();
   const preset = useMemo(() => getWorkflowPreset(workflowId), [workflowId]);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node<FlowNodeData>>(preset.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(preset.edges);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [logs, setLogs] = useState<EmtLogLine[]>([]);
   const [runStatus, setRunStatus] = useState<RunStatus>("success");
+  const [generating, setGenerating] = useState(false);
   const timers = useRef<number[]>([]);
   const { startRun } = useRun();
   const nodeCounter = useRef(preset.nodes.length);
   const { resolvedTheme } = useTheme();
+  const flowInstance = useRef<ReactFlowInstance | null>(null);
 
-  // Reset the canvas whenever a different workflow is opened.
+  // Reset the canvas whenever a different workflow is opened. If Sherpa just
+  // generated this workflow (navigated here with `generated` state), animate
+  // the nodes and edges appearing one at a time instead of all at once.
   useEffect(() => {
     timers.current.forEach((id) => window.clearTimeout(id));
     timers.current = [];
-    setNodes(preset.nodes);
-    setEdges(preset.edges);
     setSelectedNodeId(null);
     setLogs([]);
     setRunStatus("success");
     nodeCounter.current = preset.nodes.length;
+
+    const cameFromSherpa = Boolean((location.state as { generated?: boolean } | null)?.generated);
+
+    if (cameFromSherpa) {
+      setGenerating(true);
+      setNodes([]);
+      setEdges([]);
+      preset.nodes.forEach((n, i) => {
+        const t = window.setTimeout(() => setNodes((nds) => [...nds, n]), 260 * i);
+        timers.current.push(t);
+      });
+      const edgeStart = preset.nodes.length * 260 + 200;
+      preset.edges.forEach((e, i) => {
+        const t = window.setTimeout(() => setEdges((eds) => [...eds, e]), edgeStart + 140 * i);
+        timers.current.push(t);
+      });
+      const doneAt = edgeStart + preset.edges.length * 140 + 200;
+      const doneTimer = window.setTimeout(() => {
+        setGenerating(false);
+        flowInstance.current?.fitView({ padding: 0.2, duration: 400 });
+      }, doneAt);
+      timers.current.push(doneTimer);
+      navigate(location.pathname, { replace: true, state: {} });
+    } else {
+      setGenerating(false);
+      setNodes(preset.nodes);
+      setEdges(preset.edges);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [preset]);
 
@@ -143,7 +176,13 @@ const Studio = () => {
       <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
         <p className="text-sm font-semibold tracking-tight">{preset.name}</p>
         <span className="font-mono text-[11px] text-muted-foreground">{preset.file}</span>
-        <StatusPill status={runStatus} />
+        {generating ? (
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+            <Sparkles className="h-3 w-3" /> Sherpa is building this workflow…
+          </span>
+        ) : (
+          <StatusPill status={runStatus} />
+        )}
         <div className="ml-auto flex items-center gap-2">
           <Button variant="outline" size="sm" className="h-7 gap-1.5 text-xs">
             <Save className="h-3 w-3" /> Save
@@ -152,7 +191,7 @@ const Studio = () => {
             size="sm"
             className="h-7 gap-1.5 text-xs font-semibold"
             onClick={runWorkflow}
-            disabled={runStatus === "running"}
+            disabled={runStatus === "running" || generating}
           >
             <Play className="h-3 w-3" /> {runStatus === "running" ? "Running…" : "Run"}
           </Button>
@@ -171,6 +210,7 @@ const Studio = () => {
             onConnect={onConnect}
             onNodeClick={onNodeClick}
             onPaneClick={() => setSelectedNodeId(null)}
+            onInit={(instance) => (flowInstance.current = instance)}
             fitView
             proOptions={{ hideAttribution: true }}
             colorMode={resolvedTheme === "light" ? "light" : "dark"}

@@ -20,6 +20,7 @@ interface SherpaContextValue {
   open: boolean;
   messages: SherpaMessage[];
   thinking: boolean;
+  building: SherpaWorkflowContext | null;
   editing: SherpaWorkflowContext | null;
   openChat: (initialPrompt?: string) => void;
   closeChat: () => void;
@@ -36,10 +37,14 @@ const GREETING: SherpaMessage = {
   text: "Hi, I'm Sherpa. Tell me what you want to automate and I'll scaffold a workflow for it.",
 };
 
+const SIMPLE_DELAY = () => 700 + Math.random() * 400;
+const BUILD_DELAY = () => 2400 + Math.random() * 400;
+
 export function SherpaProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<SherpaMessage[]>([GREETING]);
   const [thinking, setThinking] = useState(false);
+  const [building, setBuilding] = useState<SherpaWorkflowContext | null>(null);
   const [editing, setEditing] = useState<SherpaWorkflowContext | null>(null);
   const counter = useRef(0);
 
@@ -65,12 +70,20 @@ export function SherpaProvider({ children }: { children: ReactNode }) {
 
       counter.current += 1;
       setMessages((prev) => [...prev, { id: `msg_${counter.current}`, role: "user", text: trimmed }]);
-      setThinking(true);
 
-      window.setTimeout(() => {
-        applyReply(getSherpaReply(trimmed));
-        setThinking(false);
-      }, 700 + Math.random() * 400);
+      const reply = getSherpaReply(trimmed);
+      const isBuild = Boolean(reply.workflow) && !reply.clarification;
+      setThinking(true);
+      setBuilding(isBuild ? reply.workflow! : null);
+
+      window.setTimeout(
+        () => {
+          applyReply(reply);
+          setThinking(false);
+          setBuilding(null);
+        },
+        isBuild ? BUILD_DELAY() : SIMPLE_DELAY(),
+      );
     },
     [applyReply],
   );
@@ -81,12 +94,20 @@ export function SherpaProvider({ children }: { children: ReactNode }) {
 
       counter.current += 1;
       setMessages((prev) => [...prev, { id: `msg_${counter.current}`, role: "user", text: option.label }]);
-      setThinking(true);
 
-      window.setTimeout(() => {
-        applyReply(getClarificationFollowup(option));
-        setThinking(false);
-      }, 700 + Math.random() * 400);
+      const reply = getClarificationFollowup(option);
+      const isBuild = Boolean(reply.workflow);
+      setThinking(true);
+      setBuilding(isBuild ? reply.workflow! : null);
+
+      window.setTimeout(
+        () => {
+          applyReply(reply);
+          setThinking(false);
+          setBuilding(null);
+        },
+        isBuild ? BUILD_DELAY() : SIMPLE_DELAY(),
+      );
     },
     [applyReply],
   );
@@ -122,7 +143,7 @@ export function SherpaProvider({ children }: { children: ReactNode }) {
       window.setTimeout(() => {
         applyReply({ text: getImproveSuggestion(editing) });
         setThinking(false);
-      }, 700 + Math.random() * 400);
+      }, SIMPLE_DELAY());
     },
     [applyReply, editing],
   );
@@ -139,7 +160,7 @@ export function SherpaProvider({ children }: { children: ReactNode }) {
 
   return (
     <SherpaContext.Provider
-      value={{ open, messages, thinking, editing, openChat, closeChat, send, answerClarification, runSlashCommand }}
+      value={{ open, messages, thinking, building, editing, openChat, closeChat, send, answerClarification, runSlashCommand }}
     >
       {children}
     </SherpaContext.Provider>

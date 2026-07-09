@@ -31,17 +31,22 @@ const routes = [
   { label: "Docs", to: "/docs", icon: BookOpen },
 ];
 
+const workspaceRoutes = [
+  { label: "Automations", to: "/automations", icon: CalendarClock },
+  { label: "Run History", to: "/runs", icon: History },
+  { label: "Skills", to: "/skills", icon: Puzzle },
+];
+
 const drawers: { label: string; id: EmtDrawer; icon: typeof Boxes }[] = [
-  { label: "Automations", id: "automations", icon: CalendarClock },
   { label: "Data Sources", id: "sources", icon: Database },
-  { label: "Run History", id: "runs", icon: History },
   { label: "Nodes", id: "nodes", icon: Boxes },
-  { label: "Skills", id: "skills", icon: Puzzle },
 ];
 
 export function EmtSidebar({ onOpenDrawer, className }: SidebarProps) {
   const { pathname } = useLocation();
   const { openChat } = useSherpa();
+
+  const isActive = (to: string) => pathname === to || pathname.startsWith(`${to}/`);
 
   const itemClass = (active: boolean) =>
     cn(
@@ -73,7 +78,7 @@ export function EmtSidebar({ onOpenDrawer, className }: SidebarProps) {
           Ask Sherpa
         </button>
         {routes.map((r) => (
-          <Link key={r.to} to={r.to} className={itemClass(pathname === r.to || pathname.startsWith(`${r.to}/`))}>
+          <Link key={r.to} to={r.to} className={itemClass(isActive(r.to))}>
             <r.icon className="h-4 w-4" />
             {r.label}
           </Link>
@@ -82,6 +87,12 @@ export function EmtSidebar({ onOpenDrawer, className }: SidebarProps) {
         <p className="px-2.5 pb-1 pt-5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground/60">
           Workspace
         </p>
+        {workspaceRoutes.map((r) => (
+          <Link key={r.to} to={r.to} className={itemClass(isActive(r.to))}>
+            <r.icon className="h-4 w-4" />
+            {r.label}
+          </Link>
+        ))}
         {drawers.map((d) => (
           <button key={d.id} onClick={() => onOpenDrawer(d.id)} className={itemClass(false)}>
             <d.icon className="h-4 w-4" />

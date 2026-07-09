@@ -70,6 +70,8 @@ export interface EmtSkill {
   name: string;
   description: string;
   enabled: boolean;
+  usedByWorkflows: number;
+  runs: number;
 }
 
 export const STATS: EmtStat[] = [
@@ -177,10 +179,12 @@ export const NODE_CATALOG: EmtNodeDef[] = [
 ];
 
 export const SKILLS: EmtSkill[] = [
-  { id: "sql-author", name: "SQL authoring", description: "Sherpa writes and validates SQL against your scoped schema.", enabled: true },
-  { id: "report-writer", name: "Report writer", description: "Turns run output into executive-ready narratives.", enabled: true },
-  { id: "anomaly-triage", name: "Anomaly triage", description: "Explains spikes and dips in monitored metrics.", enabled: false },
-  { id: "jira-sync", name: "Jira sync", description: "Files and updates tickets from workflow output.", enabled: false },
+  { id: "sql-author", name: "SQL authoring", description: "Sherpa writes and validates SQL against your scoped schema.", enabled: true, usedByWorkflows: 2, runs: 188 },
+  { id: "report-writer", name: "Report writer", description: "Turns run output into executive-ready narratives.", enabled: true, usedByWorkflows: 1, runs: 57 },
+  { id: "anomaly-triage", name: "Anomaly triage", description: "Explains spikes and dips in monitored metrics.", enabled: false, usedByWorkflows: 1, runs: 906 },
+  { id: "jira-sync", name: "Jira sync", description: "Files and updates tickets from workflow output.", enabled: false, usedByWorkflows: 0, runs: 0 },
+  { id: "github-summarizer", name: "GitHub summarizer", description: "Condenses commit and PR activity into a briefing.", enabled: true, usedByWorkflows: 1, runs: 34 },
+  { id: "excel-export", name: "Excel export", description: "Builds multi-tab Excel workbooks from tabular run output.", enabled: true, usedByWorkflows: 1, runs: 61 },
 ];
 
 /** GitHub-style activity heatmap: 12 weeks × 7 days, deterministic pseudo-random. */

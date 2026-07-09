@@ -12,6 +12,10 @@ import { SearchModal } from "@/components/search";
 import Dashboard from "./pages/Dashboard";
 import Studio from "./pages/Studio";
 import Templates from "./pages/Templates";
+import Skills from "./pages/Skills";
+import Automations from "./pages/Automations";
+import RunHistory from "./pages/RunHistory";
+import RunDetail from "./pages/RunDetail";
 import Codebase from "./pages/Codebase";
 import Login from "./pages/Login";
 import Changelog from "./pages/Changelog";
@@ -37,6 +41,10 @@ const App = () => (
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/studio/:workflowId?" element={<Studio />} />
                     <Route path="/templates" element={<Templates />} />
+                    <Route path="/skills" element={<Skills />} />
+                    <Route path="/automations" element={<Automations />} />
+                    <Route path="/runs" element={<RunHistory />} />
+                    <Route path="/runs/:runId" element={<RunDetail />} />
                     <Route path="/codebase" element={<Codebase />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/changelog" element={<Changelog />} />

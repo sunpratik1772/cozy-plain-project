@@ -78,19 +78,19 @@ export function CommandPalette({ open, onOpenChange, onOpenDrawer }: CommandPale
         </CommandGroup>
         <CommandSeparator />
         <CommandGroup heading="Workspace">
-          <CommandItem onSelect={() => run(() => onOpenDrawer("automations"))}>
+          <CommandItem onSelect={() => run(() => navigate("/automations"))}>
             <CalendarClock className="mr-2 h-4 w-4" /> Automations
           </CommandItem>
           <CommandItem onSelect={() => run(() => onOpenDrawer("sources"))}>
             <Database className="mr-2 h-4 w-4" /> Data Sources
           </CommandItem>
-          <CommandItem onSelect={() => run(() => onOpenDrawer("runs"))}>
+          <CommandItem onSelect={() => run(() => navigate("/runs"))}>
             <History className="mr-2 h-4 w-4" /> Run History
           </CommandItem>
           <CommandItem onSelect={() => run(() => onOpenDrawer("nodes"))}>
             <Boxes className="mr-2 h-4 w-4" /> Nodes
           </CommandItem>
-          <CommandItem onSelect={() => run(() => onOpenDrawer("skills"))}>
+          <CommandItem onSelect={() => run(() => navigate("/skills"))}>
             <Puzzle className="mr-2 h-4 w-4" /> Skills
           </CommandItem>
           <CommandItem onSelect={() => run(() => onOpenDrawer("settings"))}>
