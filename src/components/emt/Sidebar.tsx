@@ -65,7 +65,7 @@ export function EmtSidebar({ onOpenDrawer, className }: SidebarProps) {
       )}
     >
       <div className="flex h-14 items-center border-b border-sidebar-border px-4">
-        <Link to="/" aria-label="EMT Sun dashboard">
+        <Link to="/" aria-label="dbSherpa Studio dashboard">
           <BrandMark />
         </Link>
       </div>

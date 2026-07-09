@@ -49,7 +49,7 @@ export const apiGroups: ApiGroup[] = [
           { field: "expires_at", type: "string", description: "ISO 8601 session expiry, 7 days from creation." },
         ],
         exampleRequest: `{
-  "email": "ada@emtsun.dev",
+  "email": "ada@dbsherpastudio.dev",
   "password": "correcthorsebattery",
   "name": "Ada Lovelace",
   "username": "ada"
@@ -58,7 +58,7 @@ export const apiGroups: ApiGroup[] = [
   "user": {
     "user_id": "user_8f21ac0b19de",
     "username": "ada",
-    "email": "ada@emtsun.dev",
+    "email": "ada@dbsherpastudio.dev",
     "name": "Ada Lovelace",
     "picture": null
   },

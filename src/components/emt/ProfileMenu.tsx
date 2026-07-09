@@ -27,7 +27,7 @@ export function ProfileMenu() {
     toast.success("API key copied to clipboard");
   };
 
-  const masked = `${settings.apiKey.slice(0, 11)}••••••••${settings.apiKey.slice(-4)}`;
+  const masked = `${settings.apiKey.slice(0, 17)}••••••••${settings.apiKey.slice(-4)}`;
   const initial = settings.displayName.trim().charAt(0).toUpperCase() || "P";
 
   return (
@@ -108,7 +108,7 @@ export function ProfileMenu() {
               <KeyRound className="h-4 w-4 text-muted-foreground" /> Developer &amp; API keys
             </DialogTitle>
             <DialogDescription>
-              Use this key to authenticate scripts and custom integrations with the EMT Sun API.
+              Use this key to authenticate scripts and custom integrations with the dbSherpa Studio API.
             </DialogDescription>
           </DialogHeader>
           <div className="flex items-center gap-2">

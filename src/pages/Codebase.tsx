@@ -51,8 +51,8 @@ const Codebase = () => {
   return (
     <AppShell>
       <Seo
-        title="Codebase Graph — EMT Sun"
-        description="Explore how EMT Sun's backend services and frontend components connect."
+        title="Codebase Graph — dbSherpa Studio"
+        description="Explore how dbSherpa Studio's backend services and frontend components connect."
         path="/codebase"
       />
       <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">

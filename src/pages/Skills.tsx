@@ -44,7 +44,7 @@ const Skills = () => {
   return (
     <AppShell>
       <Seo
-        title="Skills — EMT Sun"
+        title="Skills — dbSherpa Studio"
         description="Packaged capabilities Sherpa can drop into any workflow."
         path="/skills"
       />

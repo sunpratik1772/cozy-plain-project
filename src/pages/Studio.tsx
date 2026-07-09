@@ -171,8 +171,8 @@ const Studio = () => {
   return (
     <AppShell>
       <Seo
-        title={`${preset.name} — EMT Sun Studio`}
-        description="Design, run and debug data workflows on the EMT Sun canvas."
+        title={`${preset.name} — dbSherpa Studio`}
+        description="Design, run and debug data workflows on the dbSherpa Studio canvas."
         path={workflowId ? `/studio/${workflowId}` : "/studio"}
       />
       <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">

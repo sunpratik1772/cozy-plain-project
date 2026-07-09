@@ -17,7 +17,7 @@ const ChatBox = () => {
         <ChatMessage role="assistant" content="What can I help you with?" />
         <ChatMessage
           role="assistant"
-          content="Demo preview — this chat is not connected to a backend yet. Enable Lovable Cloud to wire it up to a real AI assistant."
+          content="Demo preview — this chat is not connected to a backend yet."
         />
       </div>
 

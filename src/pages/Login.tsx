@@ -17,7 +17,7 @@ const Login = () => {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-background px-4">
-      <Seo title="Sign in — EMT Sun" description="Sign in to your EMT Sun workspace." path="/login" />
+      <Seo title="Sign in — dbSherpa Studio" description="Sign in to your dbSherpa Studio workspace." path="/login" />
       <div className="emt-grid-bg absolute inset-0" aria-hidden />
       <div
         className="pointer-events-none absolute left-1/2 top-1/3 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground/[0.04] blur-3xl"

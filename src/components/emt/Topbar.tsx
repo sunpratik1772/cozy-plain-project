@@ -24,7 +24,7 @@ function resolveTitle(pathname: string) {
   if (OWN_HEADER_PATHS.some((path) => pathname === path || pathname.startsWith(`${path}/`))) return null;
   if (pathname === "/") return "Dashboard";
   const match = TITLES.find(([path]) => path !== "/" && (pathname === path || pathname.startsWith(`${path}/`)));
-  return match?.[1] ?? "EMT Sun";
+  return match?.[1] ?? "dbSherpa Studio";
 }
 
 export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {

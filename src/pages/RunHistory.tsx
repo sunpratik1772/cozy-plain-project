@@ -12,7 +12,7 @@ const RunHistory = () => {
 
   return (
     <AppShell>
-      <Seo title="Run History — EMT Sun" description="Latest executions across every workflow." path="/runs" />
+      <Seo title="Run History — dbSherpa Studio" description="Latest executions across every workflow." path="/runs" />
       <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
         <p className="text-sm font-semibold tracking-tight">Run History</p>
         <span className="text-[11px] text-muted-foreground">{recentRuns.length} runs</span>

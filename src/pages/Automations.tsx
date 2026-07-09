@@ -33,7 +33,7 @@ const Automations = () => {
   return (
     <AppShell>
       <Seo
-        title="Automations — EMT Sun"
+        title="Automations — dbSherpa Studio"
         description="Scheduled runs for your saved workflows."
         path="/automations"
       />

@@ -6,7 +6,7 @@ interface SeoProps {
   path: string;
 }
 
-const BASE = "https://blank-canvas-start-3045.lovable.app";
+const BASE = "https://dbsherpastudio.app";
 
 export const Seo = ({ title, description, path }: SeoProps) => {
   const url = `${BASE}${path}`;
@@ -18,7 +18,7 @@ export const Seo = ({ title, description, path }: SeoProps) => {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
-      <meta property="og:site_name" content="Lovable" />
+      <meta property="og:site_name" content="dbSherpa Studio" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
     </Helmet>

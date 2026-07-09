@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://blank-canvas-start-3045.lovable.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://blank-canvas-start-3045.lovable.app/docs/overview</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://blank-canvas-start-3045.lovable.app/api/refresh-token</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://blank-canvas-start-3045.lovable.app/changelog</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://dbsherpastudio.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://dbsherpastudio.app/docs/overview</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dbsherpastudio.app/api/refresh-token</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dbsherpastudio.app/changelog</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
 </urlset>

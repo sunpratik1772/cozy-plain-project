@@ -9,7 +9,7 @@ export function BrandMark({ className, compact }: { className?: string; compact?
       </div>
       {!compact && (
         <span className="text-sm font-bold tracking-tight text-foreground">
-          EMT Sun
+          dbSherpa Studio
         </span>
       )}
     </div>

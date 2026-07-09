@@ -6,7 +6,7 @@ const ChatInput = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Demo only — no backend wired. Enable Lovable Cloud to connect a real AI.
+    // Demo only — no backend wired.
     setInput("");
   };
 
@@ -18,7 +18,7 @@ const ChatInput = () => {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Demo only — enable Lovable Cloud to connect AI"
+          placeholder="Demo only — not wired to a real AI"
           maxLength={500}
           aria-label="Chat message (demo only)"
           className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"

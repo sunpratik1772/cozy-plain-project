@@ -14,8 +14,8 @@ export default function ApiReference() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Seo
-        title={`${endpointSlug.replace(/-/g, " ")} — EMT Sun API`}
-        description="REST API reference for EMT Sun: endpoints, headers, request bodies, and response schemas."
+        title={`${endpointSlug.replace(/-/g, " ")} — dbSherpa Studio API`}
+        description="REST API reference for dbSherpa Studio: endpoints, headers, request bodies, and response schemas."
         path={`/api/${endpointSlug}`}
       />
       <Navbar />

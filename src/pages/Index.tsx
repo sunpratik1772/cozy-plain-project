@@ -10,8 +10,8 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Seo
-        title="EMT Sun Docs & API Reference"
-        description="Documentation, API reference, and changelog for EMT Sun — the visual, node-based workflow-automation platform with the Sherpa AI copilot."
+        title="dbSherpa Studio Docs & API Reference"
+        description="Documentation, API reference, and changelog for dbSherpa Studio — the visual, node-based workflow-automation platform with the Sherpa AI copilot."
         path="/"
       />
       <Navbar />
