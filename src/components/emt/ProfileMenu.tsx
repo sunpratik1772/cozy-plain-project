@@ -13,6 +13,7 @@ const THEME_OPTIONS = [
   { value: "light", label: "Light", icon: Sun },
   { value: "dark", label: "Dark", icon: Moon },
   { value: "system", label: "System", icon: Laptop },
+  { value: "blue", label: "Blue", icon: null },
 ] as const;
 
 export function ProfileMenu() {
@@ -51,7 +52,7 @@ export function ProfileMenu() {
 
           <div className="border-b border-border p-3">
             <p className="mb-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">Theme</p>
-            <div className="grid grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-2 gap-1.5">
               {THEME_OPTIONS.map((opt) => (
                 <button
                   key={opt.value}
@@ -63,7 +64,11 @@ export function ProfileMenu() {
                       : "border-border text-muted-foreground hover:border-ring/30 hover:text-foreground",
                   )}
                 >
-                  <opt.icon className="h-3.5 w-3.5" />
+                  {opt.icon ? (
+                    <opt.icon className="h-3.5 w-3.5" />
+                  ) : (
+                    <span className="h-3.5 w-3.5 rounded-full bg-[hsl(234_60%_63%)]" aria-hidden />
+                  )}
                   {opt.label}
                 </button>
               ))}

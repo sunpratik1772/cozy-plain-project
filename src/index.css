@@ -106,6 +106,68 @@ All colors MUST be HSL. */
     --sidebar-border: 0 0% 90%;
     --sidebar-ring: 0 0% 60%;
   }
+
+  /* Blue theme — Linear-style dark navy with its signature indigo accent.
+     Unlike the monochrome dark theme, the sidebar and main content sit on
+     two distinct tones (sidebar darker, content a step lighter) instead of
+     a near-identical near-black, matching Linear's own panel balance. */
+  .blue {
+    --background: 228 12% 15%;
+    --foreground: 220 15% 93%;
+
+    --card: 228 12% 17%;
+    --card-foreground: 220 15% 93%;
+
+    --popover: 228 14% 17%;
+    --popover-foreground: 220 15% 93%;
+
+    --primary: 234 60% 63%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 228 10% 20%;
+    --secondary-foreground: 220 15% 93%;
+
+    --muted: 228 10% 20%;
+    --muted-foreground: 220 10% 65%;
+
+    --accent: 228 12% 22%;
+    --accent-foreground: 220 15% 96%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 152 55% 45%;
+    --success-foreground: 152 60% 8%;
+
+    --warning: 38 92% 55%;
+    --warning-foreground: 32 80% 10%;
+
+    --info: 212 90% 62%;
+    --info-foreground: 0 0% 100%;
+
+    --surface: 228 12% 18%;
+    --surface-hover: 228 12% 22%;
+
+    --border: 228 12% 26%;
+    --input: 228 12% 26%;
+    --ring: 234 60% 65%;
+
+    --sidebar-background: 230 18% 9%;
+    --sidebar-foreground: 220 15% 90%;
+    --sidebar-primary: 234 60% 63%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 228 14% 14%;
+    --sidebar-accent-foreground: 220 15% 96%;
+    --sidebar-border: 228 14% 16%;
+    --sidebar-ring: 234 60% 65%;
+  }
+}
+
+/* Subtle ambient glow behind the main content pane in the Blue theme,
+   echoing Linear's soft top-left light instead of a flat fill. */
+.blue main {
+  background-image: radial-gradient(1100px 650px at 12% -12%, hsl(234 60% 45% / 0.16), transparent 60%);
+  background-color: hsl(var(--background));
 }
 
 @layer base {
