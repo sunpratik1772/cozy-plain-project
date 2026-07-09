@@ -15,11 +15,11 @@ const SupportCard = ({ icon: Icon, title, description, linkText, href }: Support
       to={href}
       className="group flex flex-col lg:flex-row items-center gap-4 p-5 bg-background border border-border rounded-[2rem] transition-colors hover:border-muted-foreground/30"
       style={{
-        boxShadow: `0px 3px 6px 0px rgba(0, 0, 0, 0.1), 
-                    inset 0px -3px 2px 0px rgba(255, 255, 255, 0.03), 
-                    inset 0px 0.6px 0.36px -1.17px rgba(255, 255, 255, 0.10), 
-                    inset 0px 2.29px 1.37px -2.33px rgba(255, 255, 255, 0.09), 
-                    inset 0px 10px 6px -3.5px rgba(255, 255, 255, 0.045)`
+        boxShadow: `0px 3px 6px 0px rgba(0, 0, 0, 0.1),
+                    inset 0px -3px 2px 0px hsl(var(--foreground) / 0.03),
+                    inset 0px 0.6px 0.36px -1.17px hsl(var(--foreground) / 0.10),
+                    inset 0px 2.29px 1.37px -2.33px hsl(var(--foreground) / 0.09),
+                    inset 0px 10px 6px -3.5px hsl(var(--foreground) / 0.045)`
       }}
     >
       {/* Icon Container */}

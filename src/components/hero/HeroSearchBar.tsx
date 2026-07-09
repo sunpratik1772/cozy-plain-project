@@ -19,10 +19,10 @@ const HeroSearchBar = () => {
       </div>
       
       <div className="flex items-center gap-1 flex-shrink-0">
-        <kbd className="flex items-center justify-center w-7 h-7 rounded-md bg-[#121314] text-xs font-semibold text-muted-foreground">
+        <kbd className="flex items-center justify-center w-7 h-7 rounded-md bg-secondary text-xs font-semibold text-muted-foreground">
           ⌘
         </kbd>
-        <kbd className="flex items-center justify-center w-7 h-7 rounded-md bg-[#121314] text-xs font-semibold text-muted-foreground">
+        <kbd className="flex items-center justify-center w-7 h-7 rounded-md bg-secondary text-xs font-semibold text-muted-foreground">
           K
         </kbd>
       </div>

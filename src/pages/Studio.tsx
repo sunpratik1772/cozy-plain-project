@@ -12,6 +12,7 @@ import {
   type Node,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import { useTheme } from "next-themes";
 import { Play, Save } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { Button } from "@/components/ui/button";
@@ -71,6 +72,7 @@ const Studio = () => {
   const timers = useRef<number[]>([]);
   const { startRun } = useRun();
   const nodeCounter = useRef(initialNodes.length);
+  const { resolvedTheme } = useTheme();
 
   const onConnect = useCallback(
     (connection: Connection) => setEdges((eds) => addEdge(connection, eds)),
@@ -184,9 +186,9 @@ const Studio = () => {
             onPaneClick={() => setSelectedNodeId(null)}
             fitView
             proOptions={{ hideAttribution: true }}
-            colorMode="dark"
+            colorMode={resolvedTheme === "light" ? "light" : "dark"}
           >
-            <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="hsl(0 0% 16%)" />
+            <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="hsl(var(--border))" />
             <Controls showInteractive={false} />
           </ReactFlow>
         </div>

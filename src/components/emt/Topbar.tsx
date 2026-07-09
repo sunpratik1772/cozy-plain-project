@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { Menu, Plus, Search, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useSherpa } from "@/contexts/SherpaContext";
 
 interface TopbarProps {
@@ -54,6 +55,7 @@ export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
           <Sparkles className="h-3.5 w-3.5" />
           Ask Sherpa
         </button>
+        <ThemeToggle className="h-8 w-8 border border-border bg-surface hover:border-ring/40" />
         <Button size="sm" className="h-8 gap-1.5 text-xs font-semibold">
           <Plus className="h-3.5 w-3.5" />
           New workflow

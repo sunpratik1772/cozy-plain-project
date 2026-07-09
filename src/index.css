@@ -2,61 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
-/* EMT Sun design system — dark, minimal, product-grade.
+/* EMT Sun design system — dark & light, minimal, product-grade.
 All colors MUST be HSL. */
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 93%;
+    /* Light theme — white-based, Linear-style */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 9%;
 
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 93%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 9%;
 
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 93%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
 
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 5%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 8%;
-    --secondary-foreground: 0 0% 93%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 9%;
 
-    --muted: 0 0% 8%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 0 0% 10%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 0 0% 94%;
+    --accent-foreground: 0 0% 9%;
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 72% 42%;
+    --destructive-foreground: 0 0% 100%;
 
-    --success: 142 71% 45%;
-    --success-foreground: 144 70% 8%;
+    --success: 142 65% 32%;
+    --success-foreground: 144 70% 97%;
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 32 80% 10%;
+    --warning: 36 92% 40%;
+    --warning-foreground: 32 80% 97%;
 
-    --info: 212 100% 48%;
+    --info: 212 90% 45%;
     --info-foreground: 0 0% 100%;
 
-    --surface: 0 0% 7%;
-    --surface-hover: 0 0% 9%;
+    --surface: 0 0% 98%;
+    --surface-hover: 0 0% 95%;
 
-    --border: 0 0% 12%;
-    --input: 0 0% 12%;
-    --ring: 0 0% 40%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 60%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 2%;
-    --sidebar-foreground: 0 0% 93%;
-    --sidebar-primary: 0 0% 98%;
-    --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 0 0% 8%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 0 0% 10%;
-    --sidebar-ring: 0 0% 40%;
+    --sidebar-background: 0 0% 99%;
+    --sidebar-foreground: 0 0% 9%;
+    --sidebar-primary: 0 0% 9%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 94%;
+    --sidebar-accent-foreground: 0 0% 9%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 0 0% 60%;
   }
 
   .dark {
@@ -132,10 +133,12 @@ All colors MUST be HSL. */
     mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 75%);
   }
 
-  /* SearchBar gradient border styling (docs pages) */
+  /* SearchBar gradient border styling (docs pages) — uses the foreground
+     token so the sheen reads as a light glow in dark mode and a soft
+     shade in light mode instead of a hardcoded white-on-dark effect. */
   .search-bar-gradient-border {
     position: relative;
-    background: linear-gradient(182.51deg, rgba(255, 255, 255, 0.02) 27.09%, rgba(90, 90, 90, 0.02) 58.59%, rgba(0, 0, 0, 0.02) 92.75%);
+    background: linear-gradient(182.51deg, hsl(var(--foreground) / 0.02) 27.09%, hsl(var(--foreground) / 0.02) 58.59%, hsl(var(--foreground) / 0.02) 92.75%);
     backdrop-filter: blur(10px);
     border-radius: 0.75rem;
   }
@@ -146,7 +149,7 @@ All colors MUST be HSL. */
     inset: 0;
     border-radius: 0.75rem;
     padding: 1px;
-    background: linear-gradient(178.8deg, rgba(255, 255, 255, 0.25) 10.85%, rgba(20, 20, 20, 0.46) 24.36%, rgba(50, 50, 50, 0.46) 73.67%, rgba(255, 255, 255, 0.46) 90.68%);
+    background: linear-gradient(178.8deg, hsl(var(--foreground) / 0.25) 10.85%, hsl(var(--foreground) / 0.12) 24.36%, hsl(var(--foreground) / 0.12) 73.67%, hsl(var(--foreground) / 0.25) 90.68%);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
     pointer-events: none;
@@ -167,7 +170,7 @@ All colors MUST be HSL. */
   }
 }
 
-/* React Flow dark overrides */
+/* React Flow theme overrides — token-driven, adapts to light/dark */
 .react-flow__background {
   background: hsl(var(--background));
 }

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { Copy, KeyRound, Plug, RefreshCw, Trash2, UserRound } from "lucide-react";
+import { Copy, KeyRound, Laptop, Moon, Plug, RefreshCw, Sun, Trash2, UserRound } from "lucide-react";
+import { useTheme } from "next-themes";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,8 +21,15 @@ import { StatusPill } from "../StatusPill";
 import { useWorkspace } from "@/contexts/WorkspaceContext";
 import { DrawerFrame, type DrawerProps } from "./DrawerFrame";
 
+const APPEARANCE_OPTIONS = [
+  { value: "light", label: "Light", icon: Sun },
+  { value: "dark", label: "Dark", icon: Moon },
+  { value: "system", label: "System", icon: Laptop },
+] as const;
+
 export function SettingsDrawer(props: DrawerProps) {
   const { settings, updateSettings, regenerateApiKey, toggleMcp, resetWorkspace } = useWorkspace();
+  const { theme, setTheme } = useTheme();
   const [displayName, setDisplayName] = useState(settings.displayName);
   const [workspaceName, setWorkspaceName] = useState(settings.workspaceName);
 
@@ -43,6 +52,29 @@ export function SettingsDrawer(props: DrawerProps) {
 
   return (
     <DrawerFrame {...props} title="Settings" description="Workspace profile, keys and integrations.">
+      <section className="emt-card p-4">
+        <div className="mb-3 flex items-center gap-2 text-sm font-semibold">
+          <Sun className="h-4 w-4 text-muted-foreground" /> Appearance
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {APPEARANCE_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => setTheme(opt.value)}
+              className={cn(
+                "flex flex-col items-center gap-1.5 rounded-md border px-2 py-2.5 text-xs font-medium transition-colors",
+                theme === opt.value
+                  ? "border-ring/60 bg-surface text-foreground"
+                  : "border-border text-muted-foreground hover:border-ring/30 hover:text-foreground",
+              )}
+            >
+              <opt.icon className="h-4 w-4" />
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </section>
+
       <section className="emt-card p-4">
         <div className="mb-3 flex items-center gap-2 text-sm font-semibold">
           <UserRound className="h-4 w-4 text-muted-foreground" /> Profile

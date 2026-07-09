@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Background, BackgroundVariant, Controls, ReactFlow, type Edge, type Node } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import { useTheme } from "next-themes";
 import { Search } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { AppShell } from "@/components/emt/AppShell";
@@ -22,6 +23,7 @@ const baseEdges: Edge[] = CODE_GRAPH_EDGES.map((e) => ({ id: e.id, source: e.sou
 const Codebase = () => {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const { resolvedTheme } = useTheme();
 
   const matchedIds = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -92,9 +94,9 @@ const Codebase = () => {
             nodesConnectable={false}
             fitView
             proOptions={{ hideAttribution: true }}
-            colorMode="dark"
+            colorMode={resolvedTheme === "light" ? "light" : "dark"}
           >
-            <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="hsl(0 0% 16%)" />
+            <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="hsl(var(--border))" />
             <Controls showInteractive={false} />
           </ReactFlow>
         </div>

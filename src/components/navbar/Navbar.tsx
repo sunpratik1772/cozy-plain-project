@@ -2,6 +2,7 @@ import Logo from "./Logo";
 import SearchBar from "./SearchBar";
 import NavLinks from "./NavLinks";
 import MobileMenu from "./MobileMenu";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Navbar = () => {
   return (
@@ -16,6 +17,7 @@ const Navbar = () => {
         {/* Right Section: NavLinks + CTA */}
         <div className="flex items-center gap-2">
           <NavLinks />
+          <ThemeToggle className="hidden lg:flex" />
           <MobileMenu />
         </div>
       </nav>

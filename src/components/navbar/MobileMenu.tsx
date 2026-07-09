@@ -1,5 +1,6 @@
-import { Menu, Search } from "lucide-react";
+import { Menu, Moon, Search, Sun } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useTheme } from "next-themes";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useSearch } from "@/contexts/SearchContext";
 
@@ -18,6 +19,8 @@ const mainLinks: NavLinkItem[] = [
 const MobileMenu = () => {
   const location = useLocation();
   const { openSearch } = useSearch();
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   const isActive = (href: string) => {
     if (href.startsWith("/docs")) return location.pathname.startsWith("/docs");
@@ -65,6 +68,13 @@ const MobileMenu = () => {
                 {link.label}
               </Link>
             ))}
+            <button
+              onClick={() => setTheme(isDark ? "light" : "dark")}
+              className="flex items-center gap-2 px-4 py-3 text-base font-medium rounded-xl text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary/50"
+            >
+              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              {isDark ? "Light mode" : "Dark mode"}
+            </button>
           </nav>
         </SheetContent>
       </Sheet>
