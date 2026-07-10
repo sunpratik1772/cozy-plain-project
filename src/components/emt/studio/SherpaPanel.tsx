@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Check, ChevronDown, Loader2, Sparkles, Square, X } from "lucide-react";
+import { Check, ChevronDown, Loader as Loader2, Sparkles, Square, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useStudioStore } from "@/store/studioStore";
 import { runSherpaSend, resolveSherpaClarification, stopSherpaStream, runWorkflowOnCanvas } from "@/lib/sherpaEngine";
