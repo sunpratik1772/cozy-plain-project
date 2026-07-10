@@ -16,7 +16,8 @@ import { cn } from "@/lib/utils";
 import { BrandMark } from "./BrandMark";
 import { ProfileMenu } from "./ProfileMenu";
 import type { EmtDrawer } from "./AppShell";
-import { useSherpa } from "@/contexts/SherpaContext";
+import { useNavigate } from "react-router-dom";
+import { useStudioStore } from "@/store/studioStore";
 
 interface SidebarProps {
   onOpenDrawer: (d: EmtDrawer) => void;
@@ -45,7 +46,8 @@ const drawers: { label: string; id: EmtDrawer; icon: typeof Boxes }[] = [
 
 export function EmtSidebar({ onOpenDrawer, className }: SidebarProps) {
   const { pathname } = useLocation();
-  const { openChat } = useSherpa();
+  const navigate = useNavigate();
+  const clearCopilot = useStudioStore((s) => s.clearCopilotMessages);
 
   const isActive = (to: string) => pathname === to || pathname.startsWith(`${to}/`);
 
@@ -72,7 +74,7 @@ export function EmtSidebar({ onOpenDrawer, className }: SidebarProps) {
 
       <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-3 scrollbar-none">
         <button
-          onClick={() => openChat()}
+          onClick={() => { clearCopilot(); navigate("/studio"); }}
           className="mb-3 flex w-full items-center gap-2.5 rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/15"
         >
           <Sparkles className="h-4 w-4" />

@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, Plus, Search, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSherpa } from "@/contexts/SherpaContext";
+import { useStudioStore } from "@/store/studioStore";
 
 interface TopbarProps {
   onSearch: () => void;
@@ -30,7 +30,7 @@ function resolveTitle(pathname: string) {
 export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { openChat } = useSherpa();
+  const clearCopilot = useStudioStore((s) => s.clearCopilotMessages);
   const title = resolveTitle(pathname);
 
   return (
@@ -62,7 +62,7 @@ export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
           <Search className="h-4 w-4" />
         </button>
         <button
-          onClick={() => openChat()}
+          onClick={() => { clearCopilot(); navigate("/studio"); }}
           className="hidden items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-ring/40 hover:text-foreground sm:flex"
         >
           <Sparkles className="h-3.5 w-3.5" />

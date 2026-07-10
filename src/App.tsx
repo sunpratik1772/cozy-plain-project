@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SearchProvider } from "@/contexts/SearchContext";
-import { SherpaProvider } from "@/contexts/SherpaContext";
 import { RunProvider } from "@/contexts/RunContext";
 import { WorkspaceProvider } from "@/contexts/WorkspaceContext";
 import { SearchModal } from "@/components/search";
@@ -36,7 +35,6 @@ const App = () => (
           <SearchProvider>
             <RunProvider>
               <WorkspaceProvider>
-                <SherpaProvider>
                   <SearchModal />
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
@@ -55,7 +53,6 @@ const App = () => (
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
-                </SherpaProvider>
               </WorkspaceProvider>
             </RunProvider>
           </SearchProvider>

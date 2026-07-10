@@ -23,7 +23,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { WORKFLOWS } from "@/data/emt";
-import { useSherpa } from "@/contexts/SherpaContext";
+import { useStudioStore } from "@/store/studioStore";
 import type { EmtDrawer } from "./AppShell";
 
 interface CommandPaletteProps {
@@ -34,7 +34,7 @@ interface CommandPaletteProps {
 
 export function CommandPalette({ open, onOpenChange, onOpenDrawer }: CommandPaletteProps) {
   const navigate = useNavigate();
-  const { openChat } = useSherpa();
+  const clearCopilot = useStudioStore((s) => s.clearCopilotMessages);
 
   const run = (fn: () => void) => {
     onOpenChange(false);
@@ -62,7 +62,7 @@ export function CommandPalette({ open, onOpenChange, onOpenDrawer }: CommandPale
           <CommandItem onSelect={() => run(() => navigate("/docs"))}>
             <BookOpen className="mr-2 h-4 w-4" /> Docs
           </CommandItem>
-          <CommandItem onSelect={() => run(() => openChat())}>
+          <CommandItem onSelect={() => run(() => { clearCopilot(); navigate("/studio"); })}>
             <Sparkles className="mr-2 h-4 w-4" /> Ask Sherpa
           </CommandItem>
         </CommandGroup>

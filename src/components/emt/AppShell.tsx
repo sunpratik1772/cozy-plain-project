@@ -4,7 +4,7 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { EmtSidebar } from "./Sidebar";
 import { EmtTopbar } from "./Topbar";
 import { CommandPalette } from "./CommandPalette";
-import { AutomationsDrawer, DataSourcesDrawer, NodesDrawer, RunHistoryDrawer, SherpaChatDrawer } from "./drawers";
+import { AutomationsDrawer, DataSourcesDrawer, NodesDrawer, RunHistoryDrawer } from "./drawers";
 
 export type EmtDrawer = "sources" | "nodes" | "automations" | "runs" | null;
 
@@ -61,7 +61,6 @@ export function AppShell({ children }: { children: ReactNode }) {
       <NodesDrawer open={drawer === "nodes"} onOpenChange={(o) => !o && setDrawer(null)} />
       <AutomationsDrawer open={drawer === "automations"} onOpenChange={(o) => !o && setDrawer(null)} />
       <RunHistoryDrawer open={drawer === "runs"} onOpenChange={(o) => !o && setDrawer(null)} />
-      <SherpaChatDrawer />
     </div>
   );
 }

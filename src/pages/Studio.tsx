@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Background,
   BackgroundVariant,
@@ -15,7 +15,7 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useTheme } from "next-themes";
-import { LayoutTemplate, Play, Save, Sparkles } from "lucide-react";
+import { Play, Save, Sparkles } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { Button } from "@/components/ui/button";
 import { AppShell } from "@/components/emt/AppShell";
@@ -24,75 +24,67 @@ import { StudioRightPanel } from "@/components/emt/studio/StudioRightPanel";
 import { FlowNode, type FlowNodeData } from "@/components/emt/studio/FlowNode";
 import { StatusPill } from "@/components/emt/StatusPill";
 import { useRun } from "@/contexts/RunContext";
-import { useSherpa } from "@/contexts/SherpaContext";
+import { useStudioStore } from "@/store/studioStore";
+import { runWorkflowOnCanvas } from "@/lib/sherpaEngine";
 import { getWorkflowPreset } from "@/data/workflowPresets";
-import type { EmtLogLine, EmtNodeDef, RunStatus } from "@/data/emt";
+import type { EmtNodeDef } from "@/data/emt";
 
 const nodeTypes = { emt: FlowNode };
-
-function timestamp() {
-  return new Date().toLocaleTimeString("en-US", { hour12: false });
-}
 
 const Studio = () => {
   const { workflowId } = useParams();
   const preset = useMemo(() => getWorkflowPreset(workflowId), [workflowId]);
-  const location = useLocation();
   const navigate = useNavigate();
 
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node<FlowNodeData>>(preset.nodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(preset.edges);
-  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-  const [logs, setLogs] = useState<EmtLogLine[]>([]);
-  const [runStatus, setRunStatus] = useState<RunStatus>("success");
-  const [generating, setGenerating] = useState(false);
-  const timers = useRef<number[]>([]);
+  const storeNodes = useStudioStore((s) => s.nodes);
+  const storeEdges = useStudioStore((s) => s.edges);
+  const setWorkflow = useStudioStore((s) => s.setWorkflow);
+  const selectNode = useStudioStore((s) => s.selectNode);
+  const setNodeStatus = useStudioStore((s) => s.setNodeStatus);
+  const generating = useStudioStore((s) => s.generating);
+  const setGenerating = useStudioStore((s) => s.setGenerating);
+  const isRunning = useStudioStore((s) => s.isRunning);
+  const runStatus = useStudioStore((s) => s.runStatus);
+  const harnessGenerating = useStudioStore((s) => s.copilotHarnessGenerating);
+  const addNodeToStore = useStudioStore((s) => s.addNode);
+  const setRightPanelMode = useStudioStore((s) => s.setRightPanelMode);
+
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node<FlowNodeData>>(storeNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(storeEdges);
   const { startRun } = useRun();
-  const nodeCounter = useRef(preset.nodes.length);
   const { resolvedTheme } = useTheme();
-  const { openChat } = useSherpa();
   const flowInstance = useRef<ReactFlowInstance | null>(null);
+  const nodeCounter = useRef(preset.nodes.length);
+  const initialized = useRef(false);
 
-  // Reset the canvas whenever a different workflow is opened. If Sherpa just
-  // generated this workflow (navigated here with `generated` state), animate
-  // the nodes and edges appearing one at a time instead of all at once.
+  // Initialize from preset on first mount or when preset changes (but not when Sherpa is generating)
   useEffect(() => {
-    timers.current.forEach((id) => window.clearTimeout(id));
-    timers.current = [];
-    setSelectedNodeId(null);
-    setLogs([]);
-    setRunStatus("success");
+    if (initialized.current && !harnessGenerating) return;
+    initialized.current = true;
+    setWorkflow(preset.name, preset.nodes, preset.edges);
+    setNodes(preset.nodes);
+    setEdges(preset.edges);
     nodeCounter.current = preset.nodes.length;
-
-    const cameFromSherpa = Boolean((location.state as { generated?: boolean } | null)?.generated);
-
-    if (cameFromSherpa) {
-      setGenerating(true);
-      setNodes([]);
-      setEdges([]);
-      preset.nodes.forEach((n, i) => {
-        const t = window.setTimeout(() => setNodes((nds) => [...nds, n]), 260 * i);
-        timers.current.push(t);
-      });
-      const edgeStart = preset.nodes.length * 260 + 200;
-      preset.edges.forEach((e, i) => {
-        const t = window.setTimeout(() => setEdges((eds) => [...eds, e]), edgeStart + 140 * i);
-        timers.current.push(t);
-      });
-      const doneAt = edgeStart + preset.edges.length * 140 + 200;
-      const doneTimer = window.setTimeout(() => {
-        setGenerating(false);
-        flowInstance.current?.fitView({ padding: 0.2, duration: 400 });
-      }, doneAt);
-      timers.current.push(doneTimer);
-      navigate(location.pathname, { replace: true, state: {} });
-    } else {
-      setGenerating(false);
-      setNodes(preset.nodes);
-      setEdges(preset.edges);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [preset]);
+
+  // Sync store nodes/edges → local ReactFlow state (for Sherpa generation + run status)
+  useEffect(() => {
+    if (storeNodes !== nodes) setNodes(storeNodes);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storeNodes]);
+  useEffect(() => {
+    if (storeEdges !== edges) setEdges(storeEdges);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storeEdges]);
+
+  // Fit view after Sherpa finishes generating
+  useEffect(() => {
+    if (!harnessGenerating && storeNodes.length > 0) {
+      const t = window.setTimeout(() => flowInstance.current?.fitView({ padding: 0.2, duration: 400 }), 100);
+      return () => window.clearTimeout(t);
+    }
+  }, [harnessGenerating, storeNodes.length]);
 
   const onConnect = useCallback(
     (connection: Connection) => setEdges((eds) => addEdge(connection, eds)),
@@ -100,85 +92,55 @@ const Studio = () => {
   );
 
   const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
-    setSelectedNodeId(node.id);
-  }, []);
-
-  const setNodeStatus = useCallback(
-    (ids: string[], status: FlowNodeData["status"]) => {
-      setNodes((nds) => nds.map((n) => (ids.includes(n.id) ? { ...n, data: { ...n.data, status } } : n)));
-    },
-    [setNodes],
-  );
-
-  const runWorkflow = useCallback(() => {
-    if (runStatus === "running") return;
-
-    timers.current.forEach((id) => window.clearTimeout(id));
-    timers.current = [];
-
-    const runTimeline = preset.runTimeline;
-    setRunStatus("running");
-    setLogs([]);
-    setNodes((nds) => nds.map((n) => ({ ...n, data: { ...n.data, status: "idle" } })));
-    setEdges((eds) => eds.map((e) => ({ ...e, animated: true })));
-    startRun(preset.name);
-
-    runTimeline.forEach((step, i) => {
-      const timer = window.setTimeout(() => {
-        if (step.nodeIds.length) setNodeStatus(step.nodeIds, step.status ?? "running");
-        setLogs((prev) => [...prev, { ...step.log, t: timestamp() }]);
-
-        const priorStep = runTimeline[i - 1];
-        const priorWasPlainRun = priorStep && (!priorStep.status || priorStep.status === "running");
-        if (priorStep?.nodeIds.length && priorWasPlainRun) setNodeStatus(priorStep.nodeIds, "success");
-
-        if (i === runTimeline.length - 1) {
-          setRunStatus(preset.finalStatus);
-          setEdges((eds) => eds.map((e) => ({ ...e, animated: false })));
-        }
-      }, step.delay);
-      timers.current.push(timer);
-    });
-  }, [runStatus, setNodes, setEdges, setNodeStatus, startRun, preset]);
+    selectNode(node.id);
+    setRightPanelMode("config");
+  }, [selectNode, setRightPanelMode]);
 
   const addNode = useCallback(
     (def: EmtNodeDef) => {
       nodeCounter.current += 1;
       const id = `node_${nodeCounter.current}`;
       const column = nodeCounter.current % 4;
-      setNodes((nds) => [
-        ...nds,
-        {
-          id,
-          type: "emt",
-          position: { x: column * 260, y: 340 + Math.floor(nodeCounter.current / 4) * 90 },
-          data: {
-            label: def.label,
-            sub: def.description,
-            icon: def.icon.displayName ?? "Box",
-            status: "idle",
-            nodeType: def.id,
-          },
+      const newNode: Node<FlowNodeData> = {
+        id,
+        type: "emt",
+        position: { x: column * 260, y: 340 + Math.floor(nodeCounter.current / 4) * 90 },
+        data: {
+          label: def.label,
+          sub: def.description,
+          icon: def.icon.displayName ?? "Box",
+          status: "idle",
+          nodeType: def.id,
         },
-      ]);
-      setSelectedNodeId(id);
+      };
+      addNodeToStore(newNode);
+      setNodes((nds) => [...nds, newNode]);
+      selectNode(id);
+      setRightPanelMode("config");
     },
-    [setNodes],
+    [addNodeToStore, selectNode, setRightPanelMode, setNodes],
   );
 
-  const selectedNode = nodes.find((n) => n.id === selectedNodeId) ?? null;
+  const runWorkflow = useCallback(() => {
+    if (isRunning || generating) return;
+    startRun(useStudioStore.getState().workflowName);
+    runWorkflowOnCanvas();
+    setRightPanelMode("logs");
+  }, [isRunning, generating, startRun, setRightPanelMode]);
+
+  const showGeneratingVeil = generating || harnessGenerating;
 
   return (
     <AppShell>
       <Seo
-        title={`${preset.name} — dbSherpa Studio`}
+        title={`${useStudioStore.getState().workflowName} — dbSherpa Studio`}
         description="Design, run and debug data workflows on the dbSherpa Studio canvas."
         path={workflowId ? `/studio/${workflowId}` : "/studio"}
       />
       <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
-        <p className="text-sm font-semibold tracking-tight">{preset.name}</p>
+        <p className="text-sm font-semibold tracking-tight">{useStudioStore.getState().workflowName}</p>
         <span className="font-mono text-[11px] text-muted-foreground">{preset.file}</span>
-        {generating ? (
+        {showGeneratingVeil ? (
           <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
             <Sparkles className="h-3 w-3" /> Sherpa is building this workflow…
           </span>
@@ -193,9 +155,9 @@ const Studio = () => {
             size="sm"
             className="h-7 gap-1.5 text-xs font-semibold"
             onClick={runWorkflow}
-            disabled={runStatus === "running" || generating}
+            disabled={isRunning || generating || storeNodes.length === 0}
           >
-            <Play className="h-3 w-3" /> {runStatus === "running" ? "Running…" : "Run"}
+            <Play className="h-3 w-3" /> {isRunning ? "Running…" : "Run"}
           </Button>
         </div>
       </div>
@@ -211,7 +173,7 @@ const Studio = () => {
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             onNodeClick={onNodeClick}
-            onPaneClick={() => setSelectedNodeId(null)}
+            onPaneClick={() => selectNode(null)}
             onInit={(instance) => (flowInstance.current = instance)}
             fitView
             proOptions={{ hideAttribution: true }}
@@ -221,23 +183,37 @@ const Studio = () => {
             <Controls showInteractive={false} />
           </ReactFlow>
 
-          {nodes.length === 0 && !generating && (
+          {showGeneratingVeil && (
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-sm">
+              <div className="flex flex-col items-center gap-2">
+                <Sparkles className="h-6 w-6 animate-pulse text-primary" />
+                <span className="text-sm font-medium text-foreground">Generating</span>
+                <div className="flex gap-1">
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary [animation-delay:-0.3s]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary [animation-delay:-0.15s]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary" />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {nodes.length === 0 && !showGeneratingVeil && (
             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
                 New workflow
               </span>
               <h2 className="text-2xl font-bold tracking-tight text-foreground">Compose a workflow</h2>
               <p className="max-w-sm text-sm text-muted-foreground">
-                Drag nodes from the left palette, chain typed ports, or ask the sherpa to generate the entire workflow for you.
+                Drag nodes from the left palette, chain typed ports, or ask Sherpa to generate the entire workflow for you.
               </p>
               <div className="pointer-events-auto mt-1 flex items-center gap-2">
-                <Button variant="outline" size="sm" className="h-8 gap-1.5 text-xs" onClick={() => navigate("/templates")}>
-                  <LayoutTemplate className="h-3.5 w-3.5" />
-                  Load a template
-                </Button>
-                <Button size="sm" className="h-8 gap-1.5 text-xs font-semibold" onClick={() => openChat()}>
+                <Button
+                  size="sm"
+                  className="h-8 gap-1.5 text-xs font-semibold"
+                  onClick={() => setRightPanelMode("sherpa")}
+                >
                   <Sparkles className="h-3.5 w-3.5" />
-                  Ask sherpa
+                  Ask Sherpa
                 </Button>
               </div>
               <p className="pointer-events-none mt-2 flex items-center gap-1.5 text-xs text-muted-foreground/60">
@@ -247,10 +223,7 @@ const Studio = () => {
             </div>
           )}
         </div>
-        <StudioRightPanel
-          node={selectedNode ? { id: selectedNode.id, nodeType: selectedNode.data.nodeType, label: selectedNode.data.label } : null}
-          logs={logs}
-        />
+        <StudioRightPanel />
       </div>
     </AppShell>
   );
