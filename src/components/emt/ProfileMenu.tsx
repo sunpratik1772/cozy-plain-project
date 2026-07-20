@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useWorkspace } from "@/contexts/WorkspaceContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const THEME_OPTIONS = [
   { value: "light", label: "Light", icon: Sun },
@@ -19,6 +20,7 @@ const THEME_OPTIONS = [
 export function ProfileMenu() {
   const { settings, regenerateApiKey } = useWorkspace();
   const { theme, setTheme } = useTheme();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const [apiKeyOpen, setApiKeyOpen] = useState(false);
 
@@ -29,6 +31,16 @@ export function ProfileMenu() {
 
   const masked = `${settings.apiKey.slice(0, 17)}••••••••${settings.apiKey.slice(-4)}`;
   const initial = settings.displayName.trim().charAt(0).toUpperCase() || "P";
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast.success("Signed out");
+      navigate("/login");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Sign out failed");
+    }
+  };
 
   return (
     <>
@@ -47,7 +59,7 @@ export function ProfileMenu() {
         <PopoverContent side="top" align="start" className="w-64 p-0">
           <div className="border-b border-border p-3">
             <p className="truncate text-sm font-semibold text-foreground">{settings.displayName}</p>
-            <p className="truncate text-xs text-muted-foreground">{settings.workspaceName} workspace</p>
+            <p className="truncate text-xs text-muted-foreground">{user?.email ?? `${settings.workspaceName} workspace`}</p>
           </div>
 
           <div className="border-b border-border p-3">
@@ -91,7 +103,7 @@ export function ProfileMenu() {
               Developer &amp; API keys
             </button>
             <button
-              onClick={() => toast("Sign out is not wired up in this demo")}
+              onClick={handleSignOut}
               className="flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
               <LogOut className="h-4 w-4" />

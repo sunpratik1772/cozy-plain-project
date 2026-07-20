@@ -1,18 +1,40 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Github, Mail } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BrandMark } from "@/components/emt/BrandMark";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { signIn, signUp } = useAuth();
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/");
+    setSubmitting(true);
+    try {
+      if (mode === "signin") {
+        await signIn(email, password);
+        toast.success("Signed in");
+      } else {
+        await signUp(email, password);
+        toast.success("Account created — you're signed in");
+      }
+      navigate("/");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Authentication failed";
+      toast.error(message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -35,8 +57,12 @@ const Login = () => {
         </div>
 
         <div className="emt-card p-6">
-          <h1 className="text-lg font-bold tracking-tight">Sign in</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Continue to your workspace.</p>
+          <h1 className="text-lg font-bold tracking-tight">
+            {mode === "signin" ? "Sign in" : "Create your account"}
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {mode === "signin" ? "Continue to your workspace." : "Start managing tasks in one place."}
+          </p>
 
           <form onSubmit={submit} className="mt-5 space-y-3">
             <div className="space-y-1.5">
@@ -45,29 +71,46 @@ const Login = () => {
                 id="email"
                 type="email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@company.com"
                 className="h-9 bg-background text-sm"
+                autoComplete="email"
               />
             </div>
-            <Button type="submit" className="h-9 w-full text-sm font-semibold">
-              Continue with email
+            <div className="space-y-1.5">
+              <Label htmlFor="password" className="text-xs">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                required
+                minLength={6}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="h-9 bg-background text-sm"
+                autoComplete={mode === "signin" ? "current-password" : "new-password"}
+              />
+            </div>
+            <Button type="submit" disabled={submitting} className="h-9 w-full text-sm font-semibold">
+              {submitting
+                ? "Please wait…"
+                : mode === "signin"
+                  ? "Continue with email"
+                  : "Create account"}
             </Button>
           </form>
 
-          <div className="my-5 flex items-center gap-3">
-            <div className="h-px flex-1 bg-border" />
-            <span className="text-[11px] uppercase tracking-wider text-muted-foreground/60">or</span>
-            <div className="h-px flex-1 bg-border" />
-          </div>
-
-          <div className="space-y-2">
-            <Button variant="outline" onClick={() => navigate("/")} className="h-9 w-full gap-2 text-sm">
-              <Github className="h-4 w-4" /> Continue with GitHub
-            </Button>
-            <Button variant="outline" onClick={() => navigate("/")} className="h-9 w-full gap-2 text-sm">
-              <Mail className="h-4 w-4" /> Continue with Google
-            </Button>
-          </div>
+          <p className="mt-5 text-center text-xs text-muted-foreground">
+            {mode === "signin" ? "New to dbSherpa? " : "Already have an account? "}
+            <button
+              type="button"
+              onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+              className="font-medium text-foreground underline-offset-4 hover:underline"
+            >
+              {mode === "signin" ? "Create an account" : "Sign in"}
+            </button>
+          </p>
         </div>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
