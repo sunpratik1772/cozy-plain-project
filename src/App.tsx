@@ -9,6 +9,7 @@ import { RunProvider } from "@/contexts/RunContext";
 import { WorkspaceProvider } from "@/contexts/WorkspaceContext";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { SearchModal } from "@/components/search";
+import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Studio from "./pages/Studio";
 import Templates from "./pages/Templates";
@@ -26,7 +27,7 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-function ProtectedRoutes() {
+function Protected({ children }: { children: React.ReactNode }) {
   const { session, loading } = useAuth();
 
   if (loading) {
@@ -41,23 +42,7 @@ function ProtectedRoutes() {
     return <Navigate to="/login" replace />;
   }
 
-  return (
-    <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/studio/:workflowId?" element={<Studio />} />
-      <Route path="/templates" element={<Templates />} />
-      <Route path="/skills" element={<Skills />} />
-      <Route path="/automations" element={<Automations />} />
-      <Route path="/runs" element={<RunHistory />} />
-      <Route path="/runs/:runId" element={<RunDetail />} />
-      <Route path="/codebase" element={<Codebase />} />
-      <Route path="/settings" element={<Settings />} />
-      <Route path="/changelog" element={<Changelog />} />
-      <Route path="/docs/*" element={<Documentation />} />
-      <Route path="/api/*" element={<ApiReference />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
-  );
+  return <>{children}</>;
 }
 
 const App = () => (
@@ -73,8 +58,21 @@ const App = () => (
                 <WorkspaceProvider>
                   <SearchModal />
                   <Routes>
+                    <Route path="/" element={<Index />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/*" element={<ProtectedRoutes />} />
+                    <Route path="/changelog" element={<Changelog />} />
+                    <Route path="/docs/*" element={<Documentation />} />
+                    <Route path="/api/*" element={<ApiReference />} />
+                    <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
+                    <Route path="/studio/:workflowId?" element={<Protected><Studio /></Protected>} />
+                    <Route path="/templates" element={<Protected><Templates /></Protected>} />
+                    <Route path="/skills" element={<Protected><Skills /></Protected>} />
+                    <Route path="/automations" element={<Protected><Automations /></Protected>} />
+                    <Route path="/runs" element={<Protected><RunHistory /></Protected>} />
+                    <Route path="/runs/:runId" element={<Protected><RunDetail /></Protected>} />
+                    <Route path="/codebase" element={<Protected><Codebase /></Protected>} />
+                    <Route path="/settings" element={<Protected><Settings /></Protected>} />
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                 </WorkspaceProvider>
               </RunProvider>

@@ -9,7 +9,7 @@ const FinalCTA = () => {
         </h2>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link
-            to="/studio"
+            to="/login"
             className="inline-flex items-center px-6 py-3 text-sm font-semibold text-primary-foreground bg-primary rounded-full transition-opacity hover:opacity-90"
           >
             Get started

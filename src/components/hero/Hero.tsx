@@ -54,13 +54,13 @@ const Hero = () => {
           className="flex flex-col sm:flex-row items-center gap-3 mb-16"
         >
           <Link
-            to="/studio"
+            to="/login"
             className="inline-flex items-center px-6 py-3 text-sm font-semibold text-primary-foreground bg-primary rounded-full transition-opacity hover:opacity-90"
           >
             Get started
           </Link>
           <Link
-            to="/docs/overview"
+            to="/login"
             className="inline-flex items-center px-6 py-3 text-sm font-medium text-foreground border border-border rounded-full transition-colors hover:bg-accent"
           >
             Book a demo

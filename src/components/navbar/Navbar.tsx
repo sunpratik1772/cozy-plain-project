@@ -6,7 +6,7 @@ const navLinks = [
   { label: "Docs", href: "/docs/overview" },
   { label: "API", href: "/api/register-user" },
   { label: "Changelog", href: "/changelog" },
-  { label: "Studio", href: "/studio" },
+  { label: "Dashboard", href: "/dashboard" },
 ];
 
 const Navbar = () => {
@@ -43,13 +43,13 @@ const Navbar = () => {
           </Link>
           <ThemeToggle className="hidden sm:flex" />
           <Link
-            to="/studio"
+            to="/login"
             className="hidden sm:inline-flex items-center px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             Book a demo
           </Link>
           <Link
-            to="/studio"
+            to="/login"
             className="inline-flex items-center px-4 py-2 text-sm font-semibold text-primary-foreground bg-primary rounded-full transition-opacity hover:opacity-90"
           >
             Get started
