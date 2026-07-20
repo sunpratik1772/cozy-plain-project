@@ -243,6 +243,12 @@ All colors MUST be HSL. */
     width: 0;
     height: 0;
   }
+
+  /* Marquee animation for landing page text band */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
 }
 
 /* React Flow theme overrides — token-driven, adapts to light/dark */
