@@ -19,16 +19,22 @@ const Dashboard = () => {
   return (
     <AppShell>
       <Seo
-        title="Dashboard — dbSherpa Studio"
-        description="Monitor workflows, runs and automations across your dbSherpa Studio workspace."
-        path="/"
+        title="Dashboard — Sherpa Studio"
+        description="Monitor workflows, runs and automations across your Sherpa Studio workspace."
+        path="/dashboard"
       />
       <OnboardingWizard />
-      <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-6xl space-y-5 px-4 py-6 md:px-6">
-          <div>
-            <h2 className="text-xl font-bold tracking-tight">Good evening, Pratik</h2>
-            <p className="mt-0.5 text-sm text-muted-foreground">
+      <div className="relative flex-1 overflow-y-auto">
+        {/* Corner glow — Plasma style */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-96 corner-glow-tr opacity-70" aria-hidden />
+
+        <div className="relative mx-auto max-w-6xl space-y-6 px-4 py-8 md:px-6 md:py-10">
+          <div className="flex flex-col gap-2">
+            <p className="text-[10px] font-medium tracking-[0.28em] uppercase text-muted-foreground">Workspace overview</p>
+            <h2 className="font-serif text-3xl md:text-4xl leading-tight tracking-tight text-foreground">
+              Good evening, <em className="italic text-muted-foreground">Pratik</em>
+            </h2>
+            <p className="text-sm text-muted-foreground">
               Your workspace ran 48 workflows this month with a 94% success rate.
             </p>
           </div>

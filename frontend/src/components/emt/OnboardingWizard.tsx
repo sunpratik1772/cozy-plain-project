@@ -34,8 +34,8 @@ interface WizardStep {
 
 const STEPS: WizardStep[] = [
   {
-    headline: () => "What are you building in dbSherpa?",
-    subtitle: "A quick setup so dbSherpa starts with the sources and workflow style you actually need.",
+    headline: () => "What are you building in Sherpa?",
+    subtitle: "A quick setup so Sherpa starts with the sources and workflow style you actually need.",
     helper: "Select all that apply.",
     multi: true,
     options: [
@@ -46,7 +46,7 @@ const STEPS: WizardStep[] = [
     ],
   },
   {
-    headline: () => "Which data source should dbSherpa connect first?",
+    headline: () => "Which data source should Sherpa connect first?",
     subtitle: "Start with the source that matters most — you can connect more any time from Data Sources.",
     helper: "Select all that apply.",
     multi: true,
@@ -58,7 +58,7 @@ const STEPS: WizardStep[] = [
     ],
   },
   {
-    headline: () => "How will you use dbSherpa day-to-day?",
+    headline: () => "How will you use Sherpa day-to-day?",
     subtitle: "Choose the operating model that best reflects how your team works.",
     helper: "Choose one.",
     multi: false,
@@ -69,7 +69,7 @@ const STEPS: WizardStep[] = [
     ],
   },
   {
-    headline: () => "Which workflows should dbSherpa run first?",
+    headline: () => "Which workflows should Sherpa run first?",
     subtitle: "Pick the workflows you want live first — we'll surface these at the top of your dashboard.",
     helper: "Select all that apply.",
     multi: true,

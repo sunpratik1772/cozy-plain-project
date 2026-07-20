@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   BookOpen,
   Boxes,
@@ -9,14 +9,15 @@ import {
   LayoutGrid,
   LayoutTemplate,
   Puzzle,
+  Settings,
   Sparkles,
   Workflow,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BrandMark } from "./BrandMark";
 import { ProfileMenu } from "./ProfileMenu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { EmtDrawer } from "./AppShell";
-import { useNavigate } from "react-router-dom";
 import { useStudioStore } from "@/store/studioStore";
 
 interface SidebarProps {
@@ -25,19 +26,18 @@ interface SidebarProps {
 }
 
 const routes = [
-  { label: "Dashboard", to: "/", icon: LayoutGrid },
+  { label: "Dashboard", to: "/dashboard", icon: LayoutGrid },
   { label: "Studio", to: "/studio", icon: Workflow },
   { label: "Templates", to: "/templates", icon: LayoutTemplate },
+  { label: "Skills", to: "/skills", icon: Puzzle },
   { label: "Codebase", to: "/codebase", icon: GitGraph },
-  { label: "Docs", to: "/docs", icon: BookOpen },
+  { label: "Docs", to: "/docs/overview", icon: BookOpen },
 ];
 
 const workspaceItems: { label: string; to: string; drawerId: EmtDrawer; icon: typeof CalendarClock }[] = [
   { label: "Automations", to: "/automations", drawerId: "automations", icon: CalendarClock },
   { label: "Run History", to: "/runs", drawerId: "runs", icon: History },
 ];
-
-const workspaceRoutes = [{ label: "Skills", to: "/skills", icon: Puzzle }];
 
 const drawers: { label: string; id: EmtDrawer; icon: typeof Boxes }[] = [
   { label: "Data Sources", id: "sources", icon: Database },
@@ -51,67 +51,89 @@ export function EmtSidebar({ onOpenDrawer, className }: SidebarProps) {
 
   const isActive = (to: string) => pathname === to || pathname.startsWith(`${to}/`);
 
-  const itemClass = (active: boolean) =>
+  const iconBtn = (active: boolean) =>
     cn(
-      "flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors",
+      "relative flex h-10 w-10 items-center justify-center rounded-xl transition-colors",
       active
         ? "bg-sidebar-accent text-sidebar-accent-foreground"
-        : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-foreground",
+        : "text-muted-foreground hover:bg-sidebar-accent hover:text-foreground",
     );
 
   return (
     <aside
       className={cn(
-        "flex h-full w-56 shrink-0 flex-col border-r border-sidebar-border bg-sidebar",
+        "flex h-full w-16 shrink-0 flex-col items-center border-r border-sidebar-border bg-sidebar py-3",
         className,
       )}
     >
-      <div className="flex h-14 items-center border-b border-sidebar-border px-4">
-        <Link to="/" aria-label="dbSherpa Studio dashboard">
-          <BrandMark />
-        </Link>
+      <div className="mb-4">
+        <BrandMark compact />
       </div>
 
-      <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-3 scrollbar-none">
-        <button
-          onClick={() => { clearCopilot(); navigate("/studio"); }}
-          className="mb-3 flex w-full items-center gap-2.5 rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/15"
-        >
-          <Sparkles className="h-4 w-4" />
-          Ask Sherpa
-        </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={() => { clearCopilot(); navigate("/studio"); }}
+            className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl border border-primary/30 bg-primary/15 text-primary transition-colors hover:bg-primary/25"
+            aria-label="Ask Sherpa"
+          >
+            <Sparkles className="h-4.5 w-4.5" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="right">Ask Sherpa</TooltipContent>
+      </Tooltip>
+
+      <nav className="flex flex-1 flex-col items-center gap-1">
         {routes.map((r) => (
-          <Link key={r.to} to={r.to} className={itemClass(isActive(r.to))}>
-            <r.icon className="h-4 w-4" />
-            {r.label}
-          </Link>
+          <Tooltip key={r.to}>
+            <TooltipTrigger asChild>
+              <Link to={r.to} className={iconBtn(isActive(r.to))} aria-label={r.label}>
+                <r.icon className="h-4.5 w-4.5" />
+                {isActive(r.to) && (
+                  <span className="absolute -left-3 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full bg-primary" />
+                )}
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">{r.label}</TooltipContent>
+          </Tooltip>
         ))}
 
-        <p className="px-2.5 pb-1 pt-5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground/60">
-          Workspace
-        </p>
+        <div className="my-2 h-px w-6 bg-sidebar-border" />
+
         {workspaceItems.map((w) => (
-          <button key={w.to} onClick={() => onOpenDrawer(w.drawerId)} className={itemClass(isActive(w.to))}>
-            <w.icon className="h-4 w-4" />
-            {w.label}
-          </button>
-        ))}
-        {workspaceRoutes.map((r) => (
-          <Link key={r.to} to={r.to} className={itemClass(isActive(r.to))}>
-            <r.icon className="h-4 w-4" />
-            {r.label}
-          </Link>
+          <Tooltip key={w.label}>
+            <TooltipTrigger asChild>
+              <button onClick={() => onOpenDrawer(w.drawerId)} className={iconBtn(false)} aria-label={w.label}>
+                <w.icon className="h-4.5 w-4.5" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="right">{w.label}</TooltipContent>
+          </Tooltip>
         ))}
         {drawers.map((d) => (
-          <button key={d.id} onClick={() => onOpenDrawer(d.id)} className={itemClass(false)}>
-            <d.icon className="h-4 w-4" />
-            {d.label}
-          </button>
+          <Tooltip key={d.id}>
+            <TooltipTrigger asChild>
+              <button onClick={() => onOpenDrawer(d.id)} className={iconBtn(false)} aria-label={d.label}>
+                <d.icon className="h-4.5 w-4.5" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="right">{d.label}</TooltipContent>
+          </Tooltip>
         ))}
       </nav>
 
-      <div className="border-t border-sidebar-border p-3">
-        <ProfileMenu />
+      <div className="flex flex-col items-center gap-1">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link to="/settings" className={iconBtn(isActive("/settings"))} aria-label="Settings">
+              <Settings className="h-4.5 w-4.5" />
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent side="right">Settings</TooltipContent>
+        </Tooltip>
+        <div className="mt-1">
+          <ProfileMenu compact />
+        </div>
       </div>
     </aside>
   );

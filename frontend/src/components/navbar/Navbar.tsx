@@ -18,7 +18,7 @@ const Navbar = () => {
             <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-foreground text-background font-bold text-sm">
               d
             </div>
-            <span className="text-lg font-bold tracking-tight text-foreground">dbSherpa</span>
+            <span className="text-lg font-bold tracking-tight text-foreground">Sherpa</span>
           </Link>
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (

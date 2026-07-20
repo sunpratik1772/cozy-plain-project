@@ -32,7 +32,7 @@ const RunDetail = () => {
   if (!run) {
     return (
       <AppShell>
-        <Seo title="Run not found — dbSherpa Studio" description="This run could not be found." path="/runs" />
+        <Seo title="Run not found — Sherpa Studio" description="This run could not be found." path="/runs" />
         <div className="flex flex-1 flex-col items-center justify-center gap-3 p-6 text-center">
           <p className="text-sm text-muted-foreground">This run isn't in your recent history anymore.</p>
           <Link to="/runs" className="text-sm font-medium text-foreground underline underline-offset-4">
@@ -55,7 +55,7 @@ const RunDetail = () => {
 
   return (
     <AppShell>
-      <Seo title={`${detail.workflowName} run — dbSherpa Studio`} description="Run output detail." path={`/runs/${run.id}`} />
+      <Seo title={`${detail.workflowName} run — Sherpa Studio`} description="Run output detail." path={`/runs/${run.id}`} />
       <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
         <Link to="/runs" className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Run History

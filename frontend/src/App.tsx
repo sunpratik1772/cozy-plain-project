@@ -10,6 +10,8 @@ import { WorkspaceProvider } from "@/contexts/WorkspaceContext";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { SearchModal } from "@/components/search";
 import Index from "./pages/Index";
+import Platform from "./pages/Platform";
+import Features from "./pages/Features";
 import Dashboard from "./pages/Dashboard";
 import Studio from "./pages/Studio";
 import Templates from "./pages/Templates";
@@ -59,6 +61,8 @@ const App = () => (
                   <SearchModal />
                   <Routes>
                     <Route path="/" element={<Index />} />
+                    <Route path="/platform" element={<Platform />} />
+                    <Route path="/features" element={<Features />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/changelog" element={<Changelog />} />
                     <Route path="/docs/*" element={<Documentation />} />

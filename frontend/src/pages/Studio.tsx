@@ -133,8 +133,8 @@ const Studio = () => {
   return (
     <AppShell>
       <Seo
-        title={`${useStudioStore.getState().workflowName} — dbSherpa Studio`}
-        description="Design, run and debug data workflows on the dbSherpa Studio canvas."
+        title={`${useStudioStore.getState().workflowName} — Sherpa Studio`}
+        description="Design, run and debug data workflows on the Sherpa Studio canvas."
         path={workflowId ? `/studio/${workflowId}` : "/studio"}
       />
       <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">

@@ -67,7 +67,7 @@ const Templates = () => {
   return (
     <AppShell>
       <Seo
-        title="Templates — dbSherpa Studio"
+        title="Templates — Sherpa Studio"
         description="Prebuilt workflow templates, your saved workflows, and Sherpa drafts — open one straight into Studio and adapt it."
         path="/templates"
       />

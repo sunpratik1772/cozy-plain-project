@@ -1,17 +1,18 @@
-import { Sun } from "lucide-react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 export function BrandMark({ className, compact }: { className?: string; compact?: boolean }) {
   return (
-    <div className={cn("flex items-center gap-2.5", className)}>
-      <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
-        <Sun className="h-4 w-4" strokeWidth={2.4} />
+    <Link to="/" className={cn("flex items-center gap-2", className)} aria-label="Sherpa Studio home">
+      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground">
+        <span className="font-serif text-base italic text-background">s</span>
       </div>
       {!compact && (
-        <span className="text-sm font-bold tracking-tight text-foreground">
-          dbSherpa Studio
-        </span>
+        <>
+          <span className="font-serif text-lg italic tracking-tight text-foreground">sherpa</span>
+          <span className="text-[10px] font-medium tracking-widest uppercase text-muted-foreground/70">studio</span>
+        </>
       )}
-    </div>
+    </Link>
   );
 }

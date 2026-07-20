@@ -5,7 +5,7 @@ const features = [
   {
     eyebrow: "Features",
     title: "A complete set of tools to support your daily tasks",
-    subtitle: "Meet dbSherpa. The platform to manage tasks, hit deadlines, and keep your team moving faster.",
+    subtitle: "Meet Sherpa. The platform to manage tasks, hit deadlines, and keep your team moving faster.",
     items: [
       { title: "Oversee every project", desc: "Get the full picture across teams and goals.", inside: ["Project health", "Team visibility", "Goal tracking", "Progress reports"] },
       { title: "Visualize your work", desc: "Manage tasks and priorities at a glance.", inside: ["Drag and drop", "Custom columns", "Task labels", "Live updates"] },

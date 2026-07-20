@@ -9,8 +9,8 @@ const Changelog = () => {
   return (
     <div className="min-h-screen bg-background">
       <Seo
-        title="Changelog — dbSherpa Studio"
-        description="Product updates, new features, improvements, and bug fixes for dbSherpa Studio."
+        title="Changelog — Sherpa Studio"
+        description="Product updates, new features, improvements, and bug fixes for Sherpa Studio."
         path="/changelog"
       />
       <Navbar />

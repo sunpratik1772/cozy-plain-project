@@ -78,7 +78,7 @@ const Settings = () => {
 
   return (
     <AppShell>
-      <Seo title="Settings — dbSherpa Studio" description="Workspace profile, permissions and data source access." path="/settings" />
+      <Seo title="Settings — Sherpa Studio" description="Workspace profile, permissions and data source access." path="/settings" />
 
       <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
         <p className="text-sm font-semibold tracking-tight">Settings</p>

@@ -19,8 +19,8 @@ export default function Documentation() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Seo
-        title={`${pageSlug.replace(/-/g, " ")} — dbSherpa Studio Docs`}
-        description="Guides, architecture references, and setup instructions for building on dbSherpa Studio."
+        title={`${pageSlug.replace(/-/g, " ")} — Sherpa Studio Docs`}
+        description="Guides, architecture references, and setup instructions for building on Sherpa Studio."
         path={`/docs/${pageSlug}`}
       />
       <Navbar />

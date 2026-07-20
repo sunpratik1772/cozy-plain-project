@@ -17,14 +17,14 @@ export interface DocPageSection {
 export const documentationPages: Record<string, DocPageContent> = {
   overview: {
     title: "Overview",
-    description: "What dbSherpa Studio is and how the Studio, Sherpa copilot, and workflow engine fit together.",
+    description: "What Sherpa Studio is and how the Studio, Sherpa copilot, and workflow engine fit together.",
     breadcrumb: ["Getting Started", "Overview"],
     sections: [
       {
         id: "what-is-dbsherpa-studio",
-        title: "What is dbSherpa Studio?",
+        title: "What is Sherpa Studio?",
         level: "h2",
-        content: "dbSherpa Studio is a visual workflow-automation platform. You drag nodes onto a canvas, wire them into a directed acyclic graph, and click Run — the backend executes each node in topological order and streams progress back over SSE. For anything you'd rather describe than draw, Sherpa (the built-in AI copilot) turns a plain-English request into a validated, runnable workflow on the same canvas."
+        content: "Sherpa Studio is a visual workflow-automation platform. You drag nodes onto a canvas, wire them into a directed acyclic graph, and click Run — the backend executes each node in topological order and streams progress back over SSE. For anything you'd rather describe than draw, Sherpa (the built-in AI copilot) turns a plain-English request into a validated, runnable workflow on the same canvas."
       },
       {
         id: "core-capabilities",
@@ -49,7 +49,7 @@ export const documentationPages: Record<string, DocPageContent> = {
         id: "who-its-for",
         title: "Who it's for",
         level: "h2",
-        content: "dbSherpa Studio is aimed at data engineers, surveillance analysts, and operations teams who need to stand up a data pipeline — extract, transform, notify, publish — without shipping a full application. Most workflows combine a data source, a few transforms, an optional AI step, and an output or integration node."
+        content: "Sherpa Studio is aimed at data engineers, surveillance analysts, and operations teams who need to stand up a data pipeline — extract, transform, notify, publish — without shipping a full application. Most workflows combine a data source, a few transforms, an optional AI step, and an output or integration node."
       },
       {
         id: "getting-help",
@@ -755,7 +755,7 @@ export const documentationPages: Record<string, DocPageContent> = {
   },
   "gemini-migration": {
     title: "Gemini Migration & LLM Configuration",
-    description: "How dbSherpa Studio talks to Gemini today, and how to move from API keys to Vertex AI.",
+    description: "How Sherpa Studio talks to Gemini today, and how to move from API keys to Vertex AI.",
     breadcrumb: ["Engineering", "Gemini Migration"],
     sections: [
       {

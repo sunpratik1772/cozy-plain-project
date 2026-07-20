@@ -49,7 +49,7 @@ const Footer = () => {
               <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-foreground text-background font-bold text-sm">
                 d
               </div>
-              <span className="text-lg font-bold tracking-tight text-foreground">dbSherpa</span>
+              <span className="text-lg font-bold tracking-tight text-foreground">Sherpa</span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
               Plan, track, and deliver anything. Run your daily tasks, all in one place.
@@ -74,7 +74,7 @@ const Footer = () => {
           ))}
         </div>
         <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">© 2026 dbSherpa Studio · All rights reserved</p>
+          <p className="text-sm text-muted-foreground">© 2026 Sherpa Studio · All rights reserved</p>
           <div className="flex items-center gap-4">
             <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Twitter</Link>
             <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">GitHub</Link>

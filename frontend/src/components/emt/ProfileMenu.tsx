@@ -17,7 +17,7 @@ const THEME_OPTIONS = [
   { value: "blue", label: "Blue", icon: null },
 ] as const;
 
-export function ProfileMenu() {
+export function ProfileMenu({ compact }: { compact?: boolean } = {}) {
   const { settings, regenerateApiKey } = useWorkspace();
   const { theme, setTheme } = useTheme();
   const { user, signOut } = useAuth();
@@ -46,15 +46,21 @@ export function ProfileMenu() {
     <>
       <Popover>
         <PopoverTrigger asChild>
-          <button className="flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-left transition-colors hover:bg-sidebar-accent/60">
-            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface text-[11px] font-bold text-foreground">
+          {compact ? (
+            <button className="flex h-9 w-9 items-center justify-center rounded-xl bg-surface text-sm font-bold text-foreground transition-colors hover:bg-surface-hover" aria-label="Profile menu">
               {initial}
-            </div>
-            <div className="min-w-0">
-              <p className="truncate text-xs font-medium text-foreground">{settings.displayName}</p>
-              <p className="truncate text-[11px] text-muted-foreground">Free plan</p>
-            </div>
-          </button>
+            </button>
+          ) : (
+            <button className="flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-left transition-colors hover:bg-sidebar-accent/60">
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface text-[11px] font-bold text-foreground">
+                {initial}
+              </div>
+              <div className="min-w-0">
+                <p className="truncate text-xs font-medium text-foreground">{settings.displayName}</p>
+                <p className="truncate text-[11px] text-muted-foreground">Free plan</p>
+              </div>
+            </button>
+          )}
         </PopoverTrigger>
         <PopoverContent side="top" align="start" className="w-64 p-0">
           <div className="border-b border-border p-3">
@@ -120,7 +126,7 @@ export function ProfileMenu() {
               <KeyRound className="h-4 w-4 text-muted-foreground" /> Developer &amp; API keys
             </DialogTitle>
             <DialogDescription>
-              Use this key to authenticate scripts and custom integrations with the dbSherpa Studio API.
+              Use this key to authenticate scripts and custom integrations with the Sherpa Studio API.
             </DialogDescription>
           </DialogHeader>
           <div className="flex items-center gap-2">

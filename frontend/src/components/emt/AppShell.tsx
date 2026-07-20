@@ -45,7 +45,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <EmtSidebar onOpenDrawer={openDrawer} className="hidden lg:flex" />
 
       <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
-        <SheetContent side="left" className="w-56 border-sidebar-border bg-sidebar p-0">
+        <SheetContent side="left" className="w-16 border-sidebar-border bg-sidebar p-0">
           <EmtSidebar onOpenDrawer={openDrawer} className="w-full border-r-0" />
         </SheetContent>
       </Sheet>
