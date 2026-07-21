@@ -39,7 +39,7 @@ export function MarketingNav() {
           : "border-b border-transparent bg-transparent",
       )}
     >
-      <nav className="mx-auto flex h-16 w-full max-w-[92rem] items-center justify-between px-5 md:px-10">
+      <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 md:px-8">
         <Link to="/" className="flex items-center gap-2.5" aria-label="Sherpa Studio home">
           <div className="relative flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-foreground">
             <span className="font-serif text-base italic text-background">s</span>

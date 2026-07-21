@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Sparkles } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,30 +12,32 @@ import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { signIn, signUp } = useAuth();
+  const { signIn } = useAuth();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // Dummy sign-in: any submission (or the "Continue as demo" button)
+  // signs the user in as a demo user. Real auth is intentionally stubbed
+  // until Supabase is configured — this keeps preview environments unblocked.
+  const doSignIn = async (emailOverride?: string) => {
     setSubmitting(true);
     try {
-      if (mode === "signin") {
-        await signIn(email, password);
-        toast.success("Signed in");
-      } else {
-        await signUp(email, password);
-        toast.success("Account created — you're signed in");
-      }
+      const finalEmail = (emailOverride ?? email).trim() || "demo@sherpa.dev";
+      await signIn(finalEmail, password || "sherpa-demo");
+      toast.success("Signed in");
       navigate("/dashboard");
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Authentication failed";
-      toast.error(message);
+      toast.error(err instanceof Error ? err.message : "Sign in failed");
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await doSignIn();
   };
 
   return (
@@ -123,7 +125,6 @@ const Login = () => {
                 <Input
                   id="email"
                   type="email"
-                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@company.com"
@@ -141,8 +142,6 @@ const Login = () => {
                 <Input
                   id="password"
                   type="password"
-                  required
-                  minLength={6}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
@@ -165,6 +164,19 @@ const Login = () => {
               <span className="text-[10px] font-medium tracking-widest uppercase text-muted-foreground/70">or</span>
               <div className="h-px flex-1 bg-border/60" />
             </div>
+
+            <button
+              type="button"
+              onClick={() => doSignIn("demo@sherpa.dev")}
+              disabled={submitting}
+              className="mt-4 group flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-transparent px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent disabled:opacity-60"
+            >
+              <Sparkles className="h-4 w-4 text-primary" />
+              Continue as demo user
+            </button>
+            <p className="mt-2 text-center text-[11px] text-muted-foreground">
+              Auth is dummy mode — any credentials sign you in.
+            </p>
 
             <p className="mt-6 text-center text-sm text-muted-foreground">
               {mode === "signin" ? "New to Sherpa? " : "Already have an account? "}

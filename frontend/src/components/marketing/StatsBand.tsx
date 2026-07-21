@@ -9,9 +9,9 @@ const stats = [
 
 export function StatsBand() {
   return (
-    <section className="relative border-y border-border/50 py-16 md:py-20 overflow-hidden">
+    <section className="relative border-y border-border/50 py-14 md:py-16 overflow-hidden">
       <div className="absolute inset-0 editorial-dot-grid opacity-30" aria-hidden />
-      <div className="relative mx-auto max-w-[92rem] px-5 md:px-10">
+      <div className="relative mx-auto max-w-6xl px-5 md:px-8">
         <p className="text-xs font-medium tracking-[0.28em] uppercase text-muted-foreground mb-8">Our numbers say it all</p>
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {stats.map((s, i) => (

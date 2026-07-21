@@ -10,10 +10,10 @@ const steps = [
 
 export function AIBuildSection() {
   return (
-    <section className="relative border-t border-border/50 py-24 md:py-32 overflow-hidden">
+    <section className="relative border-t border-border/50 py-20 md:py-24 overflow-hidden">
       <div className="absolute right-0 top-0 h-full w-1/2 corner-glow-tr opacity-70" aria-hidden />
-      <div className="relative mx-auto max-w-[92rem] px-5 md:px-10">
-        <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
+      <div className="relative mx-auto max-w-6xl px-5 md:px-8">
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
             <p className="text-xs font-medium tracking-[0.28em] uppercase text-muted-foreground">AI Auto-build</p>
             <motion.h2

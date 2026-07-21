@@ -5,7 +5,7 @@ export function MarketingFooter() {
   return (
     <footer className="relative overflow-hidden border-t border-border/60 bg-background">
       <div className="pointer-events-none absolute inset-x-0 -top-40 h-80 corner-glow-tl opacity-40" aria-hidden />
-      <div className="relative mx-auto max-w-[92rem] px-5 md:px-10 py-16 md:py-24">
+      <div className="relative mx-auto max-w-6xl px-5 md:px-8 py-14 md:py-20">
         <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
             <p className="text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground/70">let's work</p>

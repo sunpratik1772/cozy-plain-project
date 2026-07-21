@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -128,18 +128,24 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Geist', 'Inter', system-ui, -apple-system, sans-serif;
     font-feature-settings: 'ss01', 'ss02', 'cv11';
+    letter-spacing: -0.011em;
   }
 
   h1, h2, h3, h4 {
     @apply tracking-tight;
+    letter-spacing: -0.028em;
   }
 
   .font-serif {
     font-family: 'Instrument Serif', 'Times New Roman', serif;
     font-feature-settings: 'liga', 'kern';
-    letter-spacing: -0.01em;
+    letter-spacing: -0.018em;
+  }
+
+  .font-mono, code, pre, kbd {
+    font-family: 'Geist Mono', ui-monospace, 'JetBrains Mono', monospace;
   }
 }
 

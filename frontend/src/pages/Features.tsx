@@ -42,12 +42,12 @@ const Features = () => {
       <Seo title="Features — Sherpa Studio" description="Everything Sherpa Studio ships with — composition, execution, observability, intelligence and pricing." path="/features" />
 
       {/* Hero */}
-      <section className="relative pt-40 pb-16 md:pt-56 md:pb-24 overflow-hidden">
+      <section className="relative pt-36 pb-14 md:pt-44 md:pb-20 overflow-hidden">
         <div className="absolute inset-0 -z-10" aria-hidden>
           <div className="absolute inset-0 corner-glow-tr" />
           <div className="absolute inset-0 editorial-grid opacity-30" />
         </div>
-        <div className="mx-auto max-w-[92rem] px-5 md:px-10">
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
           <p className="text-xs font-medium tracking-[0.28em] uppercase text-muted-foreground">Features</p>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -69,8 +69,8 @@ const Features = () => {
       </section>
 
       {/* Feature rows */}
-      <section className="border-t border-border/50 py-16 md:py-24">
-        <div className="mx-auto max-w-[92rem] px-5 md:px-10 space-y-24 md:space-y-32">
+      <section className="border-t border-border/50 py-14 md:py-20">
+        <div className="mx-auto max-w-6xl px-5 md:px-8 space-y-24 md:space-y-32">
           {features.map((f, i) => (
             <div key={f.title} className={`grid gap-10 md:gap-16 lg:grid-cols-2 items-center ${i % 2 === 1 ? "lg:[direction:rtl]" : ""}`}>
               <motion.div
@@ -124,8 +124,8 @@ const Features = () => {
       </section>
 
       {/* Pricing */}
-      <section className="border-t border-border/50 py-24 md:py-32">
-        <div className="mx-auto max-w-[92rem] px-5 md:px-10">
+      <section className="border-t border-border/50 py-20 md:py-24">
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
           <p className="text-xs font-medium tracking-[0.28em] uppercase text-muted-foreground">Pricing</p>
           <h2 className="mt-4 font-serif text-4xl md:text-6xl leading-[1] tracking-tight text-foreground max-w-3xl text-balance">
             Simple pricing. <em className="italic text-muted-foreground">Powerful</em> every step.

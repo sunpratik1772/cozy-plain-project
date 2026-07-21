@@ -11,8 +11,8 @@ const tweets = [
 
 export function TestimonialsMarquee() {
   return (
-    <section className="relative border-t border-border/50 py-24 md:py-32 overflow-hidden">
-      <div className="mx-auto max-w-[92rem] px-5 md:px-10 mb-14">
+    <section className="relative border-t border-border/50 py-20 md:py-24 overflow-hidden">
+      <div className="mx-auto max-w-6xl px-5 md:px-8 mb-14">
         <p className="text-xs font-medium tracking-[0.28em] uppercase text-muted-foreground">Loved by builders</p>
         <motion.h2
           initial={{ opacity: 0, y: 14 }}

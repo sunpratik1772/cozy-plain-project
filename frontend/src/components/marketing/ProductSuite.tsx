@@ -15,8 +15,8 @@ const products = [
 
 export function ProductSuite() {
   return (
-    <section className="relative border-t border-border/50 py-24 md:py-32">
-      <div className="mx-auto max-w-[92rem] px-5 md:px-10">
+    <section className="relative border-t border-border/50 py-20 md:py-24">
+      <div className="mx-auto max-w-6xl px-5 md:px-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-medium tracking-[0.28em] uppercase text-muted-foreground">Product Suite</p>

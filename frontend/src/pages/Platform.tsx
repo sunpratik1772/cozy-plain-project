@@ -46,12 +46,12 @@ const Platform = () => {
       <Seo title="Platform — Sherpa Studio" description="A unified automation layer combining composition, execution and observability inside a single configurable canvas." path="/platform" />
 
       {/* Hero */}
-      <section className="relative pt-40 pb-24 md:pt-56 md:pb-32 overflow-hidden">
+      <section className="relative pt-36 pb-20 md:pt-44 md:pb-24 overflow-hidden">
         <div className="absolute inset-0 -z-10" aria-hidden>
           <div className="absolute inset-0 corner-glow-tl" />
           <div className="absolute inset-0 editorial-grid opacity-30" />
         </div>
-        <div className="mx-auto max-w-[92rem] px-5 md:px-10">
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
           <p className="text-xs font-medium tracking-[0.28em] uppercase text-muted-foreground">Platform · architecture</p>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -73,8 +73,8 @@ const Platform = () => {
       </section>
 
       {/* Pillars */}
-      <section className="border-t border-border/50 py-24 md:py-32">
-        <div className="mx-auto max-w-[92rem] px-5 md:px-10">
+      <section className="border-t border-border/50 py-20 md:py-24">
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
           <div className="grid gap-8 md:grid-cols-2">
             {pillars.map((p, i) => (
               <motion.div
@@ -100,9 +100,9 @@ const Platform = () => {
       </section>
 
       {/* Modules Overview */}
-      <section className="border-t border-border/50 py-24 md:py-32 relative overflow-hidden">
+      <section className="border-t border-border/50 py-20 md:py-24 relative overflow-hidden">
         <div className="absolute right-0 top-0 h-full w-1/2 corner-glow-tr opacity-40" aria-hidden />
-        <div className="relative mx-auto max-w-[92rem] px-5 md:px-10">
+        <div className="relative mx-auto max-w-6xl px-5 md:px-8">
           <div className="grid gap-16 lg:grid-cols-[1fr_1.2fr] lg:gap-24 items-start">
             <div>
               <p className="text-xs font-medium tracking-[0.28em] uppercase text-muted-foreground">Modules</p>
