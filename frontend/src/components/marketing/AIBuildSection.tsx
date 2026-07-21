@@ -20,7 +20,7 @@ export function AIBuildSection() {
               initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="mt-4 font-serif text-4xl md:text-6xl leading-[1] tracking-tight text-foreground max-w-xl text-balance"
             >
               Even more control with <em className="italic text-muted-foreground">AI</em> auto-build
@@ -53,7 +53,7 @@ export function AIBuildSection() {
                     initial={{ opacity: 0, x: -12 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.45, delay: 0.15 + i * 0.15 }}
+                    transition={{ duration: 0.45, delay: 0.15 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
                     className="relative"
                   >
                     <div className="flex items-center gap-3 rounded-xl border border-border/70 bg-background/60 px-4 py-3">

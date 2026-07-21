@@ -20,7 +20,7 @@ export function StatsBand() {
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
+              transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
             >
               <p className="font-serif text-5xl md:text-7xl leading-none tracking-tight text-foreground">{s.value}</p>
               <p className="mt-3 text-xs md:text-sm text-muted-foreground">{s.label}</p>

@@ -12,7 +12,7 @@ export function FoundationSection() {
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="font-serif text-4xl md:text-6xl leading-[1] tracking-tight text-foreground max-w-4xl text-balance"
           >
             Built for institutional-grade engineering workflows
@@ -21,7 +21,7 @@ export function FoundationSection() {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-2xl text-base leading-relaxed text-muted-foreground"
           >
             Sherpa delivers a unified automation layer combining node composition, execution and observability inside a single configurable canvas. Every module is modular and designed for control, letting teams define workflows, permissions and execution logic while integrating with existing systems.
@@ -30,7 +30,7 @@ export function FoundationSection() {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="mt-2"
           >
             <Link to="/platform" className="inline-flex items-center gap-2 text-sm font-medium text-foreground group">

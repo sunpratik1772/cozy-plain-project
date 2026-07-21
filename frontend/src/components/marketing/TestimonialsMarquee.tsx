@@ -18,7 +18,7 @@ export function TestimonialsMarquee() {
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="mt-4 font-serif text-4xl md:text-6xl leading-[1] tracking-tight text-foreground max-w-3xl text-balance"
         >
           Real automation <em className="italic text-muted-foreground">for control</em> freaks
