@@ -340,6 +340,39 @@
     background-image: radial-gradient(560px 400px at 0% 0%, hsl(0 0% 100% / 0.14), transparent 65%);
   }
 
+  /* dbSherpa Studio login — editorial dark treatment (near-black navy +
+     a single blue accent), scoped to the login page only via .login-scope.
+     Deliberately separate from .c8-scope so the marketing site's blue
+     field is untouched while the login explores the new direction. */
+  .login-scope {
+    --background: 226 49% 8%;
+    --foreground: 0 0% 100%;
+
+    --card: 221 39% 11%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 221 39% 11%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 223 100% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 221 30% 15%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 221 30% 15%;
+    --muted-foreground: 220 15% 65%;
+
+    --accent: 223 100% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --border: 220 25% 18%;
+    --input: 220 25% 18%;
+    --ring: 223 100% 60%;
+
+    --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   .hero-title {
     letter-spacing: -0.04em;
     line-height: 0.95;
