@@ -6,6 +6,12 @@ import { ProductSuite } from "@/components/marketing/ProductSuite";
 import { StatsBand } from "@/components/marketing/StatsBand";
 import { AIBuildSection } from "@/components/marketing/AIBuildSection";
 import { TestimonialsMarquee } from "@/components/marketing/TestimonialsMarquee";
+import { LaunchSection } from "@/components/marketing/LaunchSection";
+import { ServicesAccordion } from "@/components/marketing/ServicesAccordion";
+import { RatingSection } from "@/components/marketing/RatingSection";
+import { FAQSection } from "@/components/marketing/FAQSection";
+import { InsightsSection } from "@/components/marketing/InsightsSection";
+import { ContactSection } from "@/components/marketing/ContactSection";
 
 const Index = () => {
   return (
@@ -16,11 +22,17 @@ const Index = () => {
         path="/"
       />
       <EditorialHero />
-      <FoundationSection />
-      <ProductSuite />
       <StatsBand />
-      <AIBuildSection />
+      <ServicesAccordion />
+      <FoundationSection />
+      <LaunchSection />
+      <ProductSuite />
+      <RatingSection />
       <TestimonialsMarquee />
+      <FAQSection />
+      <InsightsSection />
+      <AIBuildSection />
+      <ContactSection />
     </MarketingShell>
   );
 };
