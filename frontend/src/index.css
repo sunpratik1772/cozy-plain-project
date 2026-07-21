@@ -291,6 +291,51 @@
   .text-balance { text-wrap: balance; }
 }
 
+/* Marketing hero treatment — scoped to the landing page hero/nav only,
+   kept separate from the app's --primary (purple) so the dashboard/studio
+   brand identity is untouched. */
+@layer components {
+  .c8-scope {
+    --c8-blue: 227 78% 46%;
+    --c8-blue-deep: 227 80% 38%;
+    --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-title {
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+
+  .btn-pill-light {
+    @apply inline-flex items-center gap-3 rounded-full bg-white py-1.5 pl-5 pr-1.5 text-sm font-medium text-[hsl(var(--c8-blue))] transition-transform duration-300 hover:scale-[1.015] active:scale-[0.99];
+    transition-timing-function: var(--ease-fluid);
+  }
+  .btn-pill-light .btn-pill-icon {
+    @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[hsl(var(--c8-blue))] text-white transition-transform duration-300;
+    transition-timing-function: var(--ease-fluid);
+  }
+  .btn-pill-light:hover .btn-pill-icon {
+    transform: translate(1px, -1px);
+  }
+}
+
+@layer utilities {
+  @keyframes fluid-fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes burst-spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes burst-spin-slow-reverse {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+  }
+  .animate-burst-spin-slow { animation: burst-spin-slow 90s linear infinite; }
+  .animate-burst-spin-slow-reverse { animation: burst-spin-slow-reverse 130s linear infinite; }
+}
+
 /* React Flow theme overrides — token-driven, adapts to light/dark */
 .react-flow__background { background: hsl(var(--background)); }
 .react-flow__controls {
@@ -305,6 +350,6 @@
 }
 .react-flow__controls-button svg { fill: hsl(var(--muted-foreground)); }
 .react-flow__controls-button:hover { background: hsl(var(--accent)); }
-.react-flow__edge-path { stroke: hsl(var(--ring) / 0.6); }
+.react-flow__edge-path { stroke: hsl(var(--ring) / 0.6); stroke-dasharray: 4 4; }
 .react-flow__handle { background: hsl(var(--muted-foreground)); border: 2px solid hsl(var(--background)); }
 .react-flow__attribution { background: transparent; color: hsl(var(--muted-foreground) / 0.4); }

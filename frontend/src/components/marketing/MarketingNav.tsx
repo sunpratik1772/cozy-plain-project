@@ -1,6 +1,6 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
@@ -14,41 +14,31 @@ const navLinks = [
 
 export function MarketingNav() {
   const { session } = useAuth();
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { pathname } = useLocation();
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => setMobileOpen(false), [pathname]);
 
   return (
     <motion.header
-      initial={{ y: -12, opacity: 0 }}
+      initial={{ y: -16, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[background,backdrop-filter,border] duration-300",
-        scrolled
-          ? "border-b border-border/60 bg-background/85 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent",
-      )}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className="c8-scope fixed inset-x-0 top-0 z-50 px-4 pt-4 md:px-8 md:pt-6"
     >
-      <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 md:px-8">
-        <Link to="/" className="flex items-center gap-2.5" aria-label="Sherpa Studio home">
-          <div className="relative flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-foreground">
-            <span className="font-serif text-base italic text-background">s</span>
-          </div>
-          <span className="font-serif text-xl italic tracking-tight text-foreground">sherpa</span>
-          <span className="text-xs font-medium tracking-widest text-muted-foreground/70 uppercase">studio</span>
+      <nav className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3">
+        {/* Left pill — brand */}
+        <Link
+          to="/"
+          className="flex items-center gap-2 rounded-full bg-neutral-900/90 py-3 pl-4 pr-6 backdrop-blur transition-colors duration-300 hover:bg-neutral-800/90"
+          aria-label="Sherpa Studio home"
+        >
+          <PixelMark />
+          <span className="text-sm font-normal tracking-tight text-white">sherpa</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-1 rounded-full border border-border/60 bg-background/40 px-1.5 py-1 backdrop-blur">
+        {/* Center pill — links */}
+        <div className="hidden items-center gap-1 rounded-full bg-neutral-900/90 px-3 py-2 backdrop-blur md:flex">
           {navLinks.map((link) => (
             <NavLink
               key={link.href}
@@ -56,79 +46,85 @@ export function MarketingNav() {
               end={link.href === "/"}
               className={({ isActive }) =>
                 cn(
-                  "rounded-full px-3.5 py-1.5 text-xs font-medium tracking-wide transition-all",
-                  isActive
-                    ? "bg-foreground text-background"
-                    : "text-muted-foreground hover:text-foreground",
+                  "rounded-full px-5 py-2 text-sm transition-colors duration-300",
+                  isActive ? "text-white" : "text-neutral-300 hover:text-white",
                 )
               }
             >
-              {link.label}
+              {link.label.toLowerCase()}
             </NavLink>
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
-          <ThemeToggle className="hidden sm:flex" />
-          {session ? (
-            <Link
-              to="/dashboard"
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-1.5 text-xs font-semibold text-background transition-opacity hover:opacity-85"
-            >
-              Open Dashboard
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </Link>
-          ) : (
-            <Link
-              to="/login"
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-1.5 text-xs font-semibold text-background transition-opacity hover:opacity-85"
-            >
-              Login
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </Link>
-          )}
-          <button
-            onClick={() => setMobileOpen((o) => !o)}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-border/60 text-foreground md:hidden"
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </button>
-        </div>
+        {/* Right pill — CTA */}
+        <Link
+          to={session ? "/dashboard" : "/login"}
+          className="hidden items-center gap-1.5 rounded-full bg-[hsl(var(--c8-blue))] px-6 py-3 text-sm font-normal text-white transition-colors duration-300 hover:bg-[hsl(var(--c8-blue-deep))] sm:inline-flex"
+        >
+          {session ? "open dashboard" : "get started"}
+        </Link>
+        <button
+          onClick={() => setMobileOpen((o) => !o)}
+          className="flex h-11 w-11 items-center justify-center rounded-full bg-neutral-900/90 text-white backdrop-blur md:hidden"
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+        </button>
       </nav>
 
-      {mobileOpen && (
-        <div className="border-t border-border/60 bg-background md:hidden">
-          <div className="flex flex-col gap-1 px-5 py-4">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.href}
-                to={link.href}
-                end={link.href === "/"}
-                className={({ isActive }) =>
-                  cn(
-                    "rounded-md px-3 py-2 text-sm font-medium",
-                    isActive ? "bg-accent text-foreground" : "text-muted-foreground",
-                  )
-                }
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-2 overflow-hidden rounded-2xl bg-neutral-900/95 backdrop-blur md:hidden"
+          >
+            <div className="flex flex-col gap-1 px-3 py-3">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.href}
+                  to={link.href}
+                  end={link.href === "/"}
+                  className={({ isActive }) =>
+                    cn(
+                      "rounded-full px-4 py-2.5 text-sm",
+                      isActive ? "bg-white/10 text-white" : "text-neutral-300",
+                    )
+                  }
+                >
+                  {link.label.toLowerCase()}
+                </NavLink>
+              ))}
+              <Link
+                to={session ? "/dashboard" : "/login"}
+                className="mt-1 flex items-center justify-center gap-1.5 rounded-full bg-[hsl(var(--c8-blue))] px-4 py-2.5 text-sm font-medium text-white"
               >
-                {link.label}
-              </NavLink>
-            ))}
-            <Link
-              to={session ? "/dashboard" : "/login"}
-              className="mt-2 flex items-center justify-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background"
-            >
-              {session ? "Open Dashboard" : "Login"}
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </Link>
-            <div className="mt-2 flex items-center justify-between border-t border-border/60 pt-3">
-              <span className="text-xs text-muted-foreground">Theme</span>
-              <ThemeToggle />
+                {session ? "open dashboard" : "get started"}
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+              <div className="mt-1 flex items-center justify-between px-4 py-2">
+                <span className="text-xs text-neutral-400">theme</span>
+                <ThemeToggle className="text-white hover:bg-white/10 hover:text-white" />
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
+  );
+}
+
+/** Abstract node-mosaic mark — an original mark in the same "pixel grid"
+ * spirit as the reference, not a copy of any third-party logo. */
+function PixelMark() {
+  const filled = [0, 2, 4, 5, 7, 8];
+  return (
+    <span className="grid h-6 w-6 grid-cols-3 grid-rows-3 gap-[2px]" aria-hidden>
+      {Array.from({ length: 9 }, (_, i) => (
+        <span key={i} className={cn("rounded-[1px]", filled.includes(i) ? "bg-white" : "bg-white/25")} />
+      ))}
+    </span>
   );
 }

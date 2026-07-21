@@ -1,10 +1,12 @@
+import { useMemo, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NODE_CONFIG, NODE_OUTPUT } from "@/data/emt";
 import { useStudioStore } from "@/store/studioStore";
+import { StatusPill } from "@/components/emt/StatusPill";
 import { SherpaPanel } from "./SherpaPanel";
-import { Sparkles, Settings2, Table2, Terminal } from "lucide-react";
+import { Sparkles, Settings2, Table2, Terminal, Search } from "lucide-react";
 
 export function StudioRightPanel() {
   const mode = useStudioStore((s) => s.rightPanelMode);
@@ -15,25 +17,41 @@ export function StudioRightPanel() {
   const isRunning = useStudioStore((s) => s.isRunning);
   const runResult = useStudioStore((s) => s.runResult);
   const runError = useStudioStore((s) => s.runError);
+  const runStatus = useStudioStore((s) => s.runStatus);
+  const workflowName = useStudioStore((s) => s.workflowName);
+  const [logFilter, setLogFilter] = useState("");
 
   const selectedNode = nodes.find((n) => n.id === selectedNodeId) ?? null;
   const config = selectedNode ? NODE_CONFIG[selectedNode.data.nodeType] : undefined;
   const output = selectedNode ? NODE_OUTPUT[selectedNode.data.nodeType] : undefined;
 
+  const filteredLogs = useMemo(
+    () => (logFilter.trim() ? logs.filter((l) => l.msg.toLowerCase().includes(logFilter.trim().toLowerCase())) : logs),
+    [logs, logFilter],
+  );
+
   return (
     <aside className="hidden w-80 shrink-0 flex-col border-l border-border bg-card/50 lg:flex">
+      <div className="flex items-center gap-2.5 border-b border-border p-3">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-xs font-semibold text-foreground">{workflowName}</p>
+          <p className="text-[11px] text-muted-foreground">{nodes.length} nodes</p>
+        </div>
+        <StatusPill status={isRunning ? "running" : runStatus} />
+      </div>
+
       <Tabs value={mode} onValueChange={(v) => setMode(v as typeof mode)} className="flex h-full flex-col">
-        <TabsList className="m-3 grid h-8 grid-cols-4 bg-surface">
-          <TabsTrigger value="sherpa" className="text-xs gap-1">
+        <TabsList className="m-3 flex h-8 gap-0.5 rounded-full bg-surface p-1">
+          <TabsTrigger value="sherpa" className="flex-1 gap-1 rounded-full text-xs">
             <Sparkles className="h-3 w-3" /> Sherpa
           </TabsTrigger>
-          <TabsTrigger value="config" className="text-xs gap-1">
+          <TabsTrigger value="config" className="flex-1 gap-1 rounded-full text-xs">
             <Settings2 className="h-3 w-3" /> Config
           </TabsTrigger>
-          <TabsTrigger value="output" className="text-xs gap-1">
+          <TabsTrigger value="output" className="flex-1 gap-1 rounded-full text-xs">
             <Table2 className="h-3 w-3" /> Output
           </TabsTrigger>
-          <TabsTrigger value="logs" className="text-xs gap-1">
+          <TabsTrigger value="logs" className="flex-1 gap-1 rounded-full text-xs">
             <Terminal className="h-3 w-3" /> Logs
           </TabsTrigger>
         </TabsList>
@@ -119,21 +137,36 @@ export function StudioRightPanel() {
         </TabsContent>
 
         <TabsContent value="logs" className="flex-1 overflow-y-auto px-3 pb-3">
-          {logs.length ? (
-            <div className="emt-card space-y-1 p-3 font-mono text-[11px] leading-relaxed">
-              {logs.map((l, i) => (
-                <p key={i} className="flex gap-2">
-                  <span className="shrink-0 text-muted-foreground/60">{l.t}</span>
-                  <span className={
-                    l.level === "warn" ? "text-warning" :
-                    l.level === "error" ? "text-destructive" :
-                    "text-muted-foreground"
-                  }>
-                    {l.msg}
-                  </span>
-                </p>
-              ))}
+          {logs.length > 0 && (
+            <div className="relative mb-2">
+              <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={logFilter}
+                onChange={(e) => setLogFilter(e.target.value)}
+                placeholder="Filter logs…"
+                className="h-8 bg-background pl-8 text-xs"
+              />
             </div>
+          )}
+          {logs.length ? (
+            filteredLogs.length ? (
+              <div className="emt-card space-y-1 p-3 font-mono text-[11px] leading-relaxed">
+                {filteredLogs.map((l, i) => (
+                  <p key={i} className="flex gap-2">
+                    <span className="shrink-0 text-muted-foreground/60">{l.t}</span>
+                    <span className={
+                      l.level === "warn" ? "text-warning" :
+                      l.level === "error" ? "text-destructive" :
+                      "text-muted-foreground"
+                    }>
+                      {l.msg}
+                    </span>
+                  </p>
+                ))}
+              </div>
+            ) : (
+              <p className="px-1 pt-2 text-xs text-muted-foreground">No log lines match "{logFilter}".</p>
+            )
           ) : (
             <p className="px-1 pt-2 text-xs text-muted-foreground">
               No run yet — click <span className="font-medium text-foreground">Run</span> or ask Sherpa to run the workflow.

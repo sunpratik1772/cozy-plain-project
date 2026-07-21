@@ -19,28 +19,43 @@ const DOT: Record<string, string> = {
   idle: "bg-muted-foreground/40",
 };
 
+const STATUS_TEXT: Record<string, string> = {
+  success: "Ran successfully",
+  error: "Failed on last run",
+  warning: "Completed with warnings",
+  running: "Running…",
+  idle: "Ready",
+};
+
 function FlowNodeInner({ data, selected }: NodeProps) {
   const d = data as FlowNodeData;
   const Icon: LucideIcon = icons[d.icon as keyof typeof icons] ?? icons.Box;
+  const status = d.status ?? "idle";
 
   return (
     <div
       className={cn(
-        "w-48 rounded-lg border bg-card px-3 py-2.5 shadow-sm transition-colors",
+        "w-64 overflow-hidden rounded-lg border bg-card shadow-sm transition-colors",
         selected ? "border-ring/60" : "border-border",
       )}
     >
       <Handle type="target" position={Position.Left} />
-      <div className="flex items-center gap-2.5">
+
+      <div className="flex items-center gap-2.5 px-3 py-2.5">
         <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-border bg-surface">
           <Icon className="h-3.5 w-3.5 text-muted-foreground" />
         </div>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-xs font-semibold text-foreground">{d.label}</p>
-          <p className="truncate font-mono text-[10px] text-muted-foreground">{d.sub}</p>
-        </div>
-        <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", DOT[d.status ?? "idle"])} />
+        <p className="truncate text-xs font-semibold text-foreground">{d.label}</p>
+        <span className={cn("ml-auto h-1.5 w-1.5 shrink-0 rounded-full", DOT[status])} />
       </div>
+
+      <div className="flex items-center gap-1.5 border-t border-border bg-surface/50 px-3 py-1.5">
+        <span className={cn("h-1 w-1 shrink-0 rounded-full", DOT[status])} />
+        <p className="truncate font-mono text-[10px] text-muted-foreground">
+          {d.sub || STATUS_TEXT[status]}
+        </p>
+      </div>
+
       <Handle type="source" position={Position.Right} />
     </div>
   );
