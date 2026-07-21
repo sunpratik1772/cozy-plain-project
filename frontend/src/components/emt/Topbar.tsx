@@ -60,7 +60,7 @@ export function EmtTopbar({ onMobileMenu }: TopbarProps) {
 
       {/* Breadcrumb picker (Plasma style: workspace avatar + static label + project ~) */}
       <div className="flex min-w-0 items-center gap-2">
-        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-gradient-to-br from-primary/70 to-primary/30 text-[11px] font-bold text-primary-foreground">
+        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-accent text-[11px] font-semibold text-foreground">
           {workspaceInitial}
         </div>
         <span className="text-sm font-medium text-muted-foreground">{ctx.workspace}</span>
@@ -87,7 +87,7 @@ export function EmtTopbar({ onMobileMenu }: TopbarProps) {
               >
                 {t.label}
                 {isTabActive(t.to) && (
-                  <span className="absolute inset-x-3 -bottom-[15px] h-[2px] rounded-full bg-primary" />
+                  <span className="absolute inset-x-3 -bottom-[15px] h-[2px] rounded-full bg-foreground" />
                 )}
               </button>
             ))}

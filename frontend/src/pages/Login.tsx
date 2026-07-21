@@ -49,8 +49,8 @@ const Login = () => {
         <div className="absolute inset-0 -z-10" aria-hidden>
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-background" />
           <div className="absolute inset-0 editorial-grid opacity-40" />
-          <div className="absolute -left-24 top-1/3 h-96 w-96 rounded-full bg-primary/30 blur-[120px] animate-glow-pulse" />
-          <div className="absolute right-0 bottom-0 h-72 w-72 rounded-full bg-foreground/10 blur-[100px]" />
+          <div className="absolute -left-16 top-1/3 h-80 w-80 rounded-full bg-primary/25 blur-[70px] animate-glow-pulse" />
+          <div className="absolute right-0 bottom-0 h-56 w-56 rounded-full bg-foreground/10 blur-[60px]" />
         </div>
 
         <Link to="/" className="flex items-center gap-2.5 w-fit">

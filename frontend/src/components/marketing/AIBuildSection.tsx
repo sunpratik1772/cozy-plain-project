@@ -39,7 +39,7 @@ export function AIBuildSection() {
           </div>
 
           <div className="relative">
-            <div className="absolute -inset-6 corner-glow-tr opacity-60 blur-2xl" aria-hidden />
+            <div className="absolute -inset-4 corner-glow-tr opacity-45 blur-xl" aria-hidden />
             <div className="relative rounded-2xl border border-border/70 bg-card/80 p-5 backdrop-blur">
               <div className="flex items-center gap-2 border-b border-border/50 pb-3">
                 <span className="h-2 w-2 rounded-full bg-primary animate-glow-pulse" />

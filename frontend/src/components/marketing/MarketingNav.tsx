@@ -35,7 +35,7 @@ export function MarketingNav() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-[background,backdrop-filter,border] duration-300",
         scrolled
-          ? "border-b border-border/60 bg-background/70 backdrop-blur-xl"
+          ? "border-b border-border/60 bg-background/85 backdrop-blur-md"
           : "border-b border-transparent bg-transparent",
       )}
     >

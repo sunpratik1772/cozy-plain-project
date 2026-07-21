@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { AppShell } from "@/components/emt/AppShell";
 import { NodePalette } from "@/components/emt/studio/NodePalette";
 import { StudioRightPanel } from "@/components/emt/studio/StudioRightPanel";
+import { CanvasSherpaBar } from "@/components/emt/studio/CanvasSherpaBar";
 import { FlowNode, type FlowNodeData } from "@/components/emt/studio/FlowNode";
 import { StatusPill } from "@/components/emt/StatusPill";
 import { useRun } from "@/contexts/RunContext";
@@ -183,11 +184,14 @@ const Studio = () => {
             <Controls showInteractive={false} />
           </ReactFlow>
 
+          {/* Sherpa agent — embedded IN the canvas, not a separate panel */}
+          <CanvasSherpaBar />
+
           {showGeneratingVeil && (
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-sm">
-              <div className="flex flex-col items-center gap-2">
-                <Sparkles className="h-6 w-6 animate-pulse text-primary" />
-                <span className="text-sm font-medium text-foreground">Generating</span>
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background/50">
+              <div className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card/95 px-6 py-5">
+                <Sparkles className="h-5 w-5 animate-pulse text-primary" />
+                <span className="text-sm font-medium text-foreground">Generating workflow</span>
                 <div className="flex gap-1">
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary [animation-delay:-0.3s]" />
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary [animation-delay:-0.15s]" />
@@ -204,18 +208,8 @@ const Studio = () => {
               </span>
               <h2 className="text-2xl font-bold tracking-tight text-foreground">Compose a workflow</h2>
               <p className="max-w-sm text-sm text-muted-foreground">
-                Drag nodes from the left palette, chain typed ports, or ask Sherpa to generate the entire workflow for you.
+                Drag nodes from the left palette, chain typed ports, or ask Sherpa below to generate the entire workflow for you.
               </p>
-              <div className="pointer-events-auto mt-1 flex items-center gap-2">
-                <Button
-                  size="sm"
-                  className="h-8 gap-1.5 text-xs font-semibold"
-                  onClick={() => setRightPanelMode("sherpa")}
-                >
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Ask Sherpa
-                </Button>
-              </div>
               <p className="pointer-events-none mt-2 flex items-center gap-1.5 text-xs text-muted-foreground/60">
                 <kbd className="rounded border border-border bg-surface px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
                 for commands
