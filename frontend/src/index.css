@@ -291,89 +291,71 @@
   .text-balance { text-wrap: balance; }
 }
 
-/* Cantor8-style blue treatment — scoped to the marketing site + login only
-   (applied via the .c8-scope class on their shell wrappers), kept separate
-   from the app's --primary (purple) so the dashboard/studio brand identity
-   is untouched. Re-themes every semantic token to a single continuous blue
-   field so every section — hero, cards, footer, login — reads as one
-   seamless surface instead of alternating blue/black blocks. */
+/* Marketing site treatment — dark blue/black field with white type and a
+   single blue accent, scoped via .c8-scope on the marketing + login shells
+   so the app's own (purple) brand identity is untouched. Deep near-black
+   navy background, white foreground, one saturated blue for CTAs/highlights
+   — the "blue / black / white" palette. */
 @layer components {
   .c8-scope {
-    --background: 227 74% 47%;
+    --background: 224 44% 5%;
     --foreground: 0 0% 100%;
 
-    --card: 227 58% 54%;
+    --card: 224 30% 10%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 227 60% 50%;
+    --popover: 224 32% 9%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 0 0% 100%;
-    --primary-foreground: 227 74% 47%;
+    --primary: 224 82% 58%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 227 55% 40%;
+    --secondary: 224 24% 16%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 227 55% 40%;
-    --muted-foreground: 222 55% 88%;
+    --muted: 224 24% 16%;
+    --muted-foreground: 220 18% 68%;
 
-    --accent: 227 60% 58%;
+    --accent: 224 28% 18%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 62%;
+    --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --surface: 227 58% 54%;
-    --surface-hover: 227 60% 58%;
+    --surface: 224 30% 10%;
+    --surface-hover: 224 28% 14%;
 
-    --border: 0 0% 100%;
-    --input: 0 0% 100%;
-    --ring: 0 0% 100%;
+    --border: 220 20% 24%;
+    --input: 220 20% 24%;
+    --ring: 224 82% 58%;
 
     --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .c8-scope .corner-glow-tr {
-    background-image: radial-gradient(560px 400px at 100% 0%, hsl(0 0% 100% / 0.16), transparent 65%);
-  }
-  .c8-scope .corner-glow-tl {
-    background-image: radial-gradient(560px 400px at 0% 0%, hsl(0 0% 100% / 0.14), transparent 65%);
-  }
-
   .hero-title {
     letter-spacing: -0.04em;
-    line-height: 0.95;
-  }
-
-  .btn-pill-light {
-    @apply inline-flex items-center gap-3 rounded-full bg-primary py-1.5 pl-5 pr-1.5 text-sm font-medium text-primary-foreground transition-transform duration-300 hover:scale-[1.015] active:scale-[0.99];
-    transition-timing-function: var(--ease-fluid);
-  }
-  .btn-pill-light .btn-pill-icon {
-    @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-primary transition-transform duration-300;
-    background-color: hsl(var(--primary-foreground));
-    transition-timing-function: var(--ease-fluid);
-  }
-  .btn-pill-light:hover .btn-pill-icon {
-    transform: translate(1px, -1px);
+    line-height: 0.92;
   }
 }
 
 @layer utilities {
-  @keyframes fluid-fade-up {
-    from { opacity: 0; transform: translateY(14px); }
-    to { opacity: 1; transform: translateY(0); }
+  @keyframes aurora-drift {
+    0%   { transform: translate3d(-6%, -4%, 0) scale(1.05); }
+    50%  { transform: translate3d(6%, 5%, 0) scale(1.18); }
+    100% { transform: translate3d(-6%, -4%, 0) scale(1.05); }
   }
-  @keyframes burst-spin-slow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+  @keyframes aurora-drift-slow {
+    0%   { transform: translate3d(5%, 6%, 0) scale(1.1); }
+    50%  { transform: translate3d(-5%, -6%, 0) scale(1.22); }
+    100% { transform: translate3d(5%, 6%, 0) scale(1.1); }
   }
-  @keyframes burst-spin-slow-reverse {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(-360deg); }
+  @keyframes hue-pulse {
+    0%, 100% { opacity: 0.55; }
+    50%      { opacity: 0.9; }
   }
-  .animate-burst-spin-slow { animation: burst-spin-slow 90s linear infinite; }
-  .animate-burst-spin-slow-reverse { animation: burst-spin-slow-reverse 130s linear infinite; }
+  .animate-aurora { animation: aurora-drift 22s ease-in-out infinite; }
+  .animate-aurora-slow { animation: aurora-drift-slow 30s ease-in-out infinite; }
+  .animate-hue-pulse { animation: hue-pulse 8s ease-in-out infinite; }
 }
 
 /* React Flow theme overrides — token-driven, adapts to light/dark */

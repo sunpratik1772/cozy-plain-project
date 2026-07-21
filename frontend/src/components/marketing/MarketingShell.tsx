@@ -1,13 +1,11 @@
 import type { ReactNode } from "react";
 import { MarketingNav } from "./MarketingNav";
-import { MarketingFooter } from "./MarketingFooter";
 
 export function MarketingShell({ children }: { children: ReactNode }) {
   return (
-    <div className="c8-scope relative min-h-screen w-full overflow-x-hidden bg-background text-foreground">
+    <div className="c8-scope relative h-screen w-full overflow-hidden bg-background text-foreground">
       <MarketingNav />
-      <main className="relative">{children}</main>
-      <MarketingFooter />
+      <main className="relative h-full w-full">{children}</main>
     </div>
   );
 }

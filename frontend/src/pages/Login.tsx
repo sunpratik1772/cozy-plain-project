@@ -6,7 +6,7 @@ import { Seo } from "@/components/Seo";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { ParticleBurst } from "@/components/marketing/ParticleBurst";
+import { AuroraBackground } from "@/components/marketing/AuroraBackground";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
@@ -49,9 +49,7 @@ const Login = () => {
     <div className="c8-scope relative flex min-h-screen w-full flex-col overflow-hidden bg-background text-foreground">
       <Seo title="Sign in — Sherpa Studio" description="Sign in to your Sherpa Studio workspace." path="/login" />
 
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-start opacity-40" aria-hidden>
-        <ParticleBurst className="-ml-40 max-w-[640px] md:-ml-20" />
-      </div>
+      <AuroraBackground />
 
       <div className="relative flex h-16 shrink-0 items-center justify-between px-6 md:px-10">
         <Link to="/" className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground/80 transition-colors hover:text-foreground">
@@ -150,7 +148,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="btn-pill-light w-full justify-center rounded-lg py-2.5"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-2.5 text-sm font-medium text-white transition-transform duration-300 hover:scale-[1.01] disabled:opacity-60"
             >
               {submitting ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
               {!submitting && <ArrowUpRight className="h-4 w-4" />}
