@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { ChevronDown, HelpCircle, Menu, Search, Share2 } from "lucide-react";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ChevronDown, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ProfileMenu } from "./ProfileMenu";
 
 interface TopbarProps {
   onSearch: () => void;
@@ -35,7 +35,7 @@ function resolveContext(pathname: string) {
   return { workspace: "Sales Team", project: "Overview", tabs: DASHBOARD_TABS };
 }
 
-export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
+export function EmtTopbar({ onMobileMenu }: TopbarProps) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const ctx = resolveContext(pathname);
@@ -45,6 +45,8 @@ export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
     if (to === "/studio") return pathname === "/studio" || (pathname.startsWith("/studio/") && !pathname.endsWith("/runs") && !pathname.endsWith("/settings"));
     return pathname === to || pathname.startsWith(`${to}/`);
   };
+
+  const workspaceInitial = ctx.workspace.charAt(0).toUpperCase();
 
   return (
     <header className="relative flex h-14 shrink-0 items-center gap-3 border-b border-border bg-background px-3 md:px-5">
@@ -56,13 +58,12 @@ export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
         <Menu className="h-4 w-4" />
       </button>
 
-      {/* Breadcrumb picker (Plasma/Railway style) */}
-      <div className="flex min-w-0 items-center gap-1">
-        <button className="flex items-center gap-1 rounded-md px-2 py-1 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
-          {ctx.workspace}
-          <ChevronDown className="h-3 w-3" />
-        </button>
-        <span className="text-muted-foreground/40 text-sm">/</span>
+      {/* Breadcrumb picker (Plasma style: workspace avatar + static label + project ~) */}
+      <div className="flex min-w-0 items-center gap-2">
+        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-gradient-to-br from-primary/70 to-primary/30 text-[11px] font-bold text-primary-foreground">
+          {workspaceInitial}
+        </div>
+        <span className="text-sm font-medium text-muted-foreground">{ctx.workspace}</span>
         <button className="flex items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold text-foreground transition-colors hover:bg-accent">
           {ctx.project}
           <ChevronDown className="h-3 w-3" />
@@ -70,7 +71,7 @@ export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
       </div>
 
       <div className="ml-auto flex items-center gap-1">
-        {/* Tabs (right-aligned Plasma-style) */}
+        {/* Tabs (right-aligned Plasma style) */}
         {ctx.tabs.length > 0 && (
           <nav className="hidden items-center md:flex">
             {ctx.tabs.map((t) => (
@@ -78,7 +79,7 @@ export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
                 key={t.to}
                 onClick={() => navigate(t.to)}
                 className={cn(
-                  "relative rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
+                  "relative rounded-md px-3 py-1.5 text-[15px] font-medium transition-colors",
                   isTabActive(t.to)
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground",
@@ -94,33 +95,22 @@ export function EmtTopbar({ onSearch, onMobileMenu }: TopbarProps) {
           </nav>
         )}
 
-        {/* Command palette trigger — keyboard-first */}
-        <button
-          onClick={onSearch}
-          className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          aria-label="Search"
-          title="Search (⌘K)"
-        >
-          <Search className="h-4 w-4" />
-        </button>
-
         <a
           href="/docs/overview"
-          className="hidden h-8 items-center gap-1 rounded-md px-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground md:inline-flex"
+          className="hidden h-8 items-center rounded-md px-3 text-[15px] font-medium text-muted-foreground transition-colors hover:text-foreground md:inline-flex"
         >
-          <HelpCircle className="h-4 w-4" />
           Help
         </a>
-
         <button
-          className="hidden h-8 items-center gap-1 rounded-md px-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground md:inline-flex"
+          className="hidden h-8 items-center rounded-md px-3 text-[15px] font-medium text-muted-foreground transition-colors hover:text-foreground md:inline-flex"
           aria-label="Share"
         >
-          <Share2 className="h-4 w-4" />
           Share
         </button>
 
-        <ThemeToggle className="hidden md:flex" />
+        <div className="ml-1">
+          <ProfileMenu compact />
+        </div>
       </div>
     </header>
   );

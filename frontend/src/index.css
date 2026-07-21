@@ -185,11 +185,11 @@
 
   /* Corner spotlight glow — Plasma dashboard aesthetic */
   .corner-glow-tr {
-    background-image: radial-gradient(600px 400px at 100% 0%, hsl(262 83% 55% / 0.20), transparent 60%);
+    background-image: radial-gradient(700px 480px at 100% 0%, hsl(285 90% 60% / 0.28), hsl(262 83% 55% / 0.18) 35%, transparent 65%);
   }
 
   .corner-glow-tl {
-    background-image: radial-gradient(700px 500px at 0% 0%, hsl(262 83% 55% / 0.14), transparent 60%);
+    background-image: radial-gradient(700px 500px at 0% 0%, hsl(262 83% 55% / 0.18), transparent 60%);
   }
 
   /* Hairline gradient border (Cantor8 signature card treatment) */
