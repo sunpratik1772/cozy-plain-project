@@ -291,14 +291,53 @@
   .text-balance { text-wrap: balance; }
 }
 
-/* Marketing hero treatment — scoped to the landing page hero/nav only,
-   kept separate from the app's --primary (purple) so the dashboard/studio
-   brand identity is untouched. */
+/* Cantor8-style blue treatment — scoped to the marketing site + login only
+   (applied via the .c8-scope class on their shell wrappers), kept separate
+   from the app's --primary (purple) so the dashboard/studio brand identity
+   is untouched. Re-themes every semantic token to a single continuous blue
+   field so every section — hero, cards, footer, login — reads as one
+   seamless surface instead of alternating blue/black blocks. */
 @layer components {
   .c8-scope {
-    --c8-blue: 227 78% 46%;
-    --c8-blue-deep: 227 80% 38%;
+    --background: 227 74% 47%;
+    --foreground: 0 0% 100%;
+
+    --card: 227 58% 54%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 227 60% 50%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 0 0% 100%;
+    --primary-foreground: 227 74% 47%;
+
+    --secondary: 227 55% 40%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 227 55% 40%;
+    --muted-foreground: 222 55% 88%;
+
+    --accent: 227 60% 58%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 62%;
+    --destructive-foreground: 0 0% 100%;
+
+    --surface: 227 58% 54%;
+    --surface-hover: 227 60% 58%;
+
+    --border: 0 0% 100%;
+    --input: 0 0% 100%;
+    --ring: 0 0% 100%;
+
     --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .c8-scope .corner-glow-tr {
+    background-image: radial-gradient(560px 400px at 100% 0%, hsl(0 0% 100% / 0.16), transparent 65%);
+  }
+  .c8-scope .corner-glow-tl {
+    background-image: radial-gradient(560px 400px at 0% 0%, hsl(0 0% 100% / 0.14), transparent 65%);
   }
 
   .hero-title {
@@ -307,11 +346,12 @@
   }
 
   .btn-pill-light {
-    @apply inline-flex items-center gap-3 rounded-full bg-white py-1.5 pl-5 pr-1.5 text-sm font-medium text-[hsl(var(--c8-blue))] transition-transform duration-300 hover:scale-[1.015] active:scale-[0.99];
+    @apply inline-flex items-center gap-3 rounded-full bg-primary py-1.5 pl-5 pr-1.5 text-sm font-medium text-primary-foreground transition-transform duration-300 hover:scale-[1.015] active:scale-[0.99];
     transition-timing-function: var(--ease-fluid);
   }
   .btn-pill-light .btn-pill-icon {
-    @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[hsl(var(--c8-blue))] text-white transition-transform duration-300;
+    @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-primary transition-transform duration-300;
+    background-color: hsl(var(--primary-foreground));
     transition-timing-function: var(--ease-fluid);
   }
   .btn-pill-light:hover .btn-pill-icon {
