@@ -19,10 +19,12 @@ import { Play, Save, Sparkles } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { Button } from "@/components/ui/button";
 import { AppShell } from "@/components/emt/AppShell";
+import { TopbarSlot } from "@/components/emt/TopbarSlot";
 import { NodePalette } from "@/components/emt/studio/NodePalette";
 import { StudioRightPanel } from "@/components/emt/studio/StudioRightPanel";
 import { CanvasSherpaBar } from "@/components/emt/studio/CanvasSherpaBar";
 import { FlowNode, type FlowNodeData } from "@/components/emt/studio/FlowNode";
+import { GroupNode } from "@/components/emt/studio/GroupNode";
 import { StatusPill } from "@/components/emt/StatusPill";
 import { useRun } from "@/contexts/RunContext";
 import { useStudioStore } from "@/store/studioStore";
@@ -30,7 +32,7 @@ import { runWorkflowOnCanvas } from "@/lib/sherpaEngine";
 import { getWorkflowPreset } from "@/data/workflowPresets";
 import type { EmtNodeDef } from "@/data/emt";
 
-const nodeTypes = { emt: FlowNode };
+const nodeTypes = { emt: FlowNode, group: GroupNode };
 
 const Studio = () => {
   const { workflowId } = useParams();
@@ -62,10 +64,17 @@ const Studio = () => {
   useEffect(() => {
     if (initialized.current && !harnessGenerating) return;
     initialized.current = true;
-    setWorkflow(preset.name, preset.nodes, preset.edges);
-    setNodes(preset.nodes);
+    const presetNodes = preset.nodes as Node<FlowNodeData>[];
+    setWorkflow(preset.name, presetNodes, preset.edges);
+    setNodes(presetNodes);
     setEdges(preset.edges);
     nodeCounter.current = preset.nodes.length;
+    // Seed the run panel so the canvas loads in its "last run" state.
+    useStudioStore.setState({
+      logs: preset.seedLogs ?? [],
+      runStatus: preset.finalStatus,
+    });
+    setRightPanelMode("logs");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [preset]);
 
@@ -138,30 +147,26 @@ const Studio = () => {
         description="Design, run and debug data workflows on the Sherpa Studio canvas."
         path={workflowId ? `/studio/${workflowId}` : "/studio"}
       />
-      <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
-        <p className="text-sm font-semibold tracking-tight">{useStudioStore.getState().workflowName}</p>
-        <span className="font-mono text-[11px] text-muted-foreground">{preset.file}</span>
+      <TopbarSlot>
         {showGeneratingVeil ? (
           <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-            <Sparkles className="h-3 w-3" /> Sherpa is building this workflow…
+            <Sparkles className="h-3 w-3" /> Sherpa is building…
           </span>
         ) : (
           <StatusPill status={runStatus} />
         )}
-        <div className="ml-auto flex items-center gap-2">
-          <Button variant="outline" size="sm" className="h-7 gap-1.5 text-xs">
-            <Save className="h-3 w-3" /> Save
-          </Button>
-          <Button
-            size="sm"
-            className="h-7 gap-1.5 text-xs font-semibold"
-            onClick={runWorkflow}
-            disabled={isRunning || generating || storeNodes.length === 0}
-          >
-            <Play className="h-3 w-3" /> {isRunning ? "Running…" : "Run"}
-          </Button>
-        </div>
-      </div>
+        <Button variant="outline" size="sm" className="h-8 gap-1.5 text-xs">
+          <Save className="h-3 w-3" /> Save
+        </Button>
+        <Button
+          size="sm"
+          className="h-8 gap-1.5 text-xs font-semibold"
+          onClick={runWorkflow}
+          disabled={isRunning || generating || storeNodes.length === 0}
+        >
+          <Play className="h-3 w-3" /> {isRunning ? "Running…" : "Run"}
+        </Button>
+      </TopbarSlot>
 
       <div className="flex min-h-0 flex-1">
         <NodePalette onAddNode={addNode} />
@@ -189,30 +194,18 @@ const Studio = () => {
 
           {showGeneratingVeil && (
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background/50">
-              <div className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card/95 px-6 py-5">
-                <Sparkles className="h-5 w-5 animate-pulse text-primary" />
-                <span className="text-sm font-medium text-foreground">Generating workflow</span>
-                <div className="flex gap-1">
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary [animation-delay:-0.3s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary [animation-delay:-0.15s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary" />
-                </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/95 px-4 py-2">
+                <Sparkles className="h-4 w-4 animate-pulse text-primary" />
+                <span className="text-sm font-medium text-foreground">Generating workflow…</span>
               </div>
             </div>
           )}
 
           {nodes.length === 0 && !showGeneratingVeil && (
-            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center">
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
-                New workflow
-              </span>
+            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 px-6 text-center">
               <h2 className="text-2xl font-bold tracking-tight text-foreground">Compose a workflow</h2>
               <p className="max-w-sm text-sm text-muted-foreground">
-                Drag nodes from the left palette, chain typed ports, or ask Sherpa below to generate the entire workflow for you.
-              </p>
-              <p className="pointer-events-none mt-2 flex items-center gap-1.5 text-xs text-muted-foreground/60">
-                <kbd className="rounded border border-border bg-surface px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
-                for commands
+                Drag nodes from the left palette or ask Sherpa below to generate the workflow.
               </p>
             </div>
           )}

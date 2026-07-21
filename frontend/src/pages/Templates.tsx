@@ -71,64 +71,66 @@ const Templates = () => {
         description="Prebuilt workflow templates, your saved workflows, and Sherpa drafts — open one straight into Studio and adapt it."
         path="/templates"
       />
-      <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
-        <p className="text-sm font-semibold tracking-tight">Templates</p>
-
-        <Select value={source} onValueChange={(v) => setSource(v as Source)}>
-          <SelectTrigger className="ml-2 h-7 w-48 bg-surface text-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="prebuilt">Prebuilt templates ({TEMPLATES.length})</SelectItem>
-            <SelectItem value="workspace">Your workspace ({WORKFLOWS.length})</SelectItem>
-          </SelectContent>
-        </Select>
-
-        {source === "workspace" && (
-          <div className="flex items-center gap-1 rounded-md border border-border bg-surface p-0.5">
-            <button
-              onClick={() => setWorkspaceTab("workflows")}
-              className={cn(
-                "rounded px-2 py-1 text-xs font-medium transition-colors",
-                workspaceTab === "workflows" ? "bg-accent text-foreground" : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              Your workflows <span className="text-muted-foreground">{savedWorkflows.length}</span>
-            </button>
-            <button
-              onClick={() => setWorkspaceTab("drafts")}
-              className={cn(
-                "rounded px-2 py-1 text-xs font-medium transition-colors",
-                workspaceTab === "drafts" ? "bg-accent text-foreground" : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              Drafts <span className="text-muted-foreground">{draftWorkflows.length}</span>
-            </button>
-          </div>
-        )}
-
-        <div className="relative ml-auto w-64 max-w-full sm:ml-2">
-          <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search templates…"
-            className="h-7 w-full rounded-md border border-border bg-surface pl-8 pr-2.5 text-xs outline-none placeholder:text-muted-foreground/70 focus:border-ring/50"
-            aria-label="Search templates"
-          />
-        </div>
-        <span className="hidden text-[11px] text-muted-foreground sm:inline">{filtered.length}</span>
-      </div>
-
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-6xl px-4 py-6 md:px-6">
-          <p className="mb-4 text-sm text-muted-foreground">
-            {source === "prebuilt"
-              ? "Prebuilt workflows you can open straight into Studio and adapt."
-              : workspaceTab === "workflows"
-                ? "Workflows you've saved — open one to keep editing."
-                : "Sherpa drafts and works-in-progress — open one to continue."}
-          </p>
+        <div className="mx-auto max-w-6xl px-4 py-8 md:px-6">
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight text-foreground">Templates</h1>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {source === "prebuilt"
+                  ? "Prebuilt workflows you can open straight into Studio and adapt."
+                  : workspaceTab === "workflows"
+                    ? "Workflows you've saved — open one to keep editing."
+                    : "Sherpa drafts and works-in-progress — open one to continue."}
+              </p>
+            </div>
+            <div className="relative w-full max-w-full sm:w-64">
+              <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search templates…"
+                className="h-9 w-full rounded-md border border-border bg-surface pl-8 pr-2.5 text-sm outline-none placeholder:text-muted-foreground/70 focus:border-ring/50"
+                aria-label="Search templates"
+              />
+            </div>
+          </div>
+
+          <div className="mb-5 flex flex-wrap items-center gap-2">
+            <Select value={source} onValueChange={(v) => setSource(v as Source)}>
+              <SelectTrigger className="h-8 w-48 bg-surface text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="prebuilt">Prebuilt templates ({TEMPLATES.length})</SelectItem>
+                <SelectItem value="workspace">Your workspace ({WORKFLOWS.length})</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {source === "workspace" && (
+              <div className="flex items-center gap-1 rounded-md border border-border bg-surface p-0.5">
+                <button
+                  onClick={() => setWorkspaceTab("workflows")}
+                  className={cn(
+                    "rounded px-2.5 py-1 text-xs font-medium transition-colors",
+                    workspaceTab === "workflows" ? "bg-accent text-foreground" : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  Your workflows <span className="text-muted-foreground">{savedWorkflows.length}</span>
+                </button>
+                <button
+                  onClick={() => setWorkspaceTab("drafts")}
+                  className={cn(
+                    "rounded px-2.5 py-1 text-xs font-medium transition-colors",
+                    workspaceTab === "drafts" ? "bg-accent text-foreground" : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  Drafts <span className="text-muted-foreground">{draftWorkflows.length}</span>
+                </button>
+              </div>
+            )}
+            <span className="ml-auto hidden text-xs text-muted-foreground sm:inline">{filtered.length} results</span>
+          </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((t, i) => (
               <motion.div

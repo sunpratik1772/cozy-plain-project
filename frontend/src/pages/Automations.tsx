@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Seo } from "@/components/Seo";
 import { AppShell } from "@/components/emt/AppShell";
+import { TopbarSlot } from "@/components/emt/TopbarSlot";
 import { WORKFLOWS } from "@/data/emt";
 import { useWorkspace } from "@/contexts/WorkspaceContext";
 
@@ -37,14 +38,12 @@ const Automations = () => {
         description="Scheduled runs for your saved workflows."
         path="/automations"
       />
-      <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
-        <p className="text-sm font-semibold tracking-tight">Automations</p>
-        <span className="text-[11px] text-muted-foreground">{automations.length} scheduled</span>
-        <div className="ml-auto flex items-center gap-2">
+      <TopbarSlot>
+        <div className="flex items-center gap-2">
           <Button
             variant="outline"
             size="icon"
-            className="h-7 w-7"
+            className="h-8 w-8"
             aria-label="Collapse to side panel"
             onClick={() => navigate("/", { state: { openDrawer: "automations" } })}
           >
@@ -52,7 +51,7 @@ const Automations = () => {
           </Button>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button size="sm" className="h-7 gap-1.5 text-xs font-semibold">
+              <Button size="sm" className="h-8 gap-1.5 text-xs font-semibold">
                 <Plus className="h-3.5 w-3.5" /> New automation
               </Button>
             </DialogTrigger>
@@ -89,11 +88,14 @@ const Automations = () => {
             </DialogContent>
           </Dialog>
         </div>
-      </div>
+      </TopbarSlot>
 
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-4xl space-y-3 px-4 py-6 md:px-6">
-          <p className="mb-1 text-sm text-muted-foreground">Scheduled runs for your saved workflows.</p>
+        <div className="mx-auto max-w-4xl space-y-3 px-4 py-8 md:px-6">
+          <header className="mb-2">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">Automations</h1>
+            <p className="mt-1 text-sm text-muted-foreground">Scheduled runs for your saved workflows · {automations.length} scheduled.</p>
+          </header>
 
           {automations.length === 0 && (
             <p className="py-12 text-center text-sm text-muted-foreground">No automations yet — create one to run a workflow on a schedule.</p>

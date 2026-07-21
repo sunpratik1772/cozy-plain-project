@@ -36,8 +36,8 @@ export function EmtSidebar({ className }: SidebarProps) {
     cn(
       "group relative flex h-9 w-9 items-center justify-center rounded-lg transition-colors",
       active
-        ? "bg-sidebar-accent text-foreground"
-        : "text-muted-foreground/80 hover:bg-sidebar-accent/70 hover:text-foreground",
+        ? "bg-primary/12 text-primary"
+        : "text-muted-foreground/80 hover:bg-sidebar-accent hover:text-foreground",
     );
 
   return (
@@ -48,8 +48,13 @@ export function EmtSidebar({ className }: SidebarProps) {
       )}
     >
       {/* Brand mark — minimal, bold sans (Railway/Plasma style) */}
-      <Link to="/" className="mb-3 flex h-8 w-8 items-center justify-center rounded-md bg-foreground" aria-label="Home">
-        <span className="text-[13px] font-bold leading-none text-background">S</span>
+      <Link
+        to="/"
+        className="mb-3 flex h-8 w-8 items-center justify-center rounded-full text-[13px] font-bold leading-none text-white"
+        style={{ background: "linear-gradient(135deg, hsl(255 92% 70%), hsl(265 85% 58%))" }}
+        aria-label="Home"
+      >
+        S
       </Link>
 
       <nav className="flex flex-1 flex-col items-center gap-1">
@@ -59,7 +64,7 @@ export function EmtSidebar({ className }: SidebarProps) {
               <Link to={r.to} className={railBtn(isActive(r.to))} aria-label={r.label}>
                 <r.icon className="h-[17px] w-[17px]" strokeWidth={1.75} />
                 {isActive(r.to) && (
-                  <span className="absolute -left-[11px] top-1/2 h-4 w-[2px] -translate-y-1/2 rounded-r-full bg-foreground" />
+                  <span className="absolute -left-[11px] top-1/2 h-4 w-[2px] -translate-y-1/2 rounded-r-full bg-primary" />
                 )}
               </Link>
             </TooltipTrigger>

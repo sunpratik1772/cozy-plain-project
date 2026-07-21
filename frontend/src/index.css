@@ -10,87 +10,87 @@
 @layer base {
   :root,
   .dark {
-    /* Editorial near-black w/ subtle warm undertone */
-    --background: 220 10% 5%;
-    --foreground: 40 10% 92%;
+    /* Railway-style near-black with a cool undertone */
+    --background: 240 10% 4%;
+    --foreground: 240 6% 96%;
 
-    --card: 220 8% 8%;
-    --card-foreground: 40 10% 92%;
+    --card: 240 8% 8%;
+    --card-foreground: 240 6% 96%;
 
-    --popover: 220 8% 7%;
-    --popover-foreground: 40 10% 92%;
+    --popover: 240 9% 7%;
+    --popover-foreground: 240 6% 96%;
 
-    /* Editorial purple accent — Plasma-esque */
-    --primary: 262 83% 68%;
+    /* Railway violet */
+    --primary: 255 92% 68%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 8% 11%;
-    --secondary-foreground: 40 10% 92%;
+    --secondary: 240 6% 12%;
+    --secondary-foreground: 240 6% 96%;
 
-    --muted: 220 8% 11%;
-    --muted-foreground: 40 6% 60%;
+    --muted: 240 6% 12%;
+    --muted-foreground: 240 5% 58%;
 
-    --accent: 220 8% 14%;
-    --accent-foreground: 40 10% 96%;
+    --accent: 240 6% 15%;
+    --accent-foreground: 240 6% 98%;
 
     --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 142 65% 48%;
-    --success-foreground: 144 70% 8%;
+    --success: 150 62% 45%;
+    --success-foreground: 150 70% 8%;
 
     --warning: 38 92% 55%;
     --warning-foreground: 32 80% 10%;
 
-    --info: 212 100% 55%;
+    --info: 212 100% 60%;
     --info-foreground: 0 0% 100%;
 
-    --surface: 220 8% 9%;
-    --surface-hover: 220 8% 12%;
+    --surface: 240 8% 9%;
+    --surface-hover: 240 7% 13%;
 
-    --border: 220 8% 15%;
-    --input: 220 8% 15%;
-    --ring: 262 83% 65%;
+    --border: 240 6% 16%;
+    --input: 240 6% 16%;
+    --ring: 255 92% 66%;
 
-    --radius: 0.5rem;
+    --radius: 0.625rem;
 
-    --sidebar-background: 220 10% 3%;
-    --sidebar-foreground: 40 10% 88%;
-    --sidebar-primary: 262 83% 68%;
+    --sidebar-background: 240 11% 3%;
+    --sidebar-foreground: 240 6% 90%;
+    --sidebar-primary: 255 92% 68%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 8% 10%;
-    --sidebar-accent-foreground: 40 10% 96%;
-    --sidebar-border: 220 8% 11%;
-    --sidebar-ring: 262 83% 65%;
+    --sidebar-accent: 240 7% 10%;
+    --sidebar-accent-foreground: 240 6% 98%;
+    --sidebar-border: 240 7% 10%;
+    --sidebar-ring: 255 92% 66%;
   }
 
   .light {
-    --background: 30 10% 98%;
-    --foreground: 220 15% 10%;
+    --background: 240 20% 99%;
+    --foreground: 240 12% 9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 15% 10%;
+    --card-foreground: 240 12% 9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 10%;
+    --popover-foreground: 240 12% 9%;
 
-    --primary: 262 70% 52%;
+    --primary: 255 85% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 30 10% 95%;
-    --secondary-foreground: 220 15% 10%;
+    --secondary: 240 14% 96%;
+    --secondary-foreground: 240 12% 9%;
 
-    --muted: 30 10% 95%;
-    --muted-foreground: 220 8% 40%;
+    --muted: 240 14% 96%;
+    --muted-foreground: 240 6% 42%;
 
-    --accent: 30 10% 92%;
-    --accent-foreground: 220 15% 10%;
+    --accent: 240 14% 93%;
+    --accent-foreground: 240 12% 9%;
 
     --destructive: 0 72% 42%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 142 65% 32%;
-    --success-foreground: 144 70% 97%;
+    --success: 150 60% 34%;
+    --success-foreground: 150 70% 97%;
 
     --warning: 36 92% 40%;
     --warning-foreground: 32 80% 97%;
@@ -98,21 +98,21 @@
     --info: 212 90% 45%;
     --info-foreground: 0 0% 100%;
 
-    --surface: 30 10% 96%;
-    --surface-hover: 30 10% 93%;
+    --surface: 240 16% 97%;
+    --surface-hover: 240 16% 94%;
 
-    --border: 30 10% 88%;
-    --input: 30 10% 88%;
-    --ring: 262 70% 55%;
+    --border: 240 12% 90%;
+    --input: 240 12% 90%;
+    --ring: 255 85% 60%;
 
-    --sidebar-background: 30 10% 99%;
-    --sidebar-foreground: 220 15% 10%;
-    --sidebar-primary: 262 70% 52%;
+    --sidebar-background: 240 20% 99%;
+    --sidebar-foreground: 240 12% 9%;
+    --sidebar-primary: 255 85% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 30 10% 93%;
-    --sidebar-accent-foreground: 220 15% 10%;
-    --sidebar-border: 30 10% 88%;
-    --sidebar-ring: 262 70% 55%;
+    --sidebar-accent: 240 14% 94%;
+    --sidebar-accent-foreground: 240 12% 9%;
+    --sidebar-border: 240 12% 90%;
+    --sidebar-ring: 255 85% 60%;
   }
 }
 
@@ -154,11 +154,11 @@
 
 @layer components {
   .emt-card {
-    @apply rounded-lg border border-border bg-card transition-colors duration-200;
+    @apply rounded-xl border border-border bg-card transition-all duration-200;
   }
 
   .emt-card-hover:hover {
-    @apply border-ring/40 bg-[hsl(var(--surface))];
+    @apply border-primary/40 bg-[hsl(var(--surface))] shadow-[0_8px_28px_-18px_hsl(255_92%_60%/0.5)];
   }
 
   /* Editorial grid background (Cantor8 style) */
@@ -376,8 +376,24 @@
   .animate-burst-spin-slow-reverse { animation: burst-spin-slow-reverse 130s linear infinite; }
 }
 
+/* App aura — subtle Railway-style violet glow + edge vignette (no hard frame) */
+.app-aura::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  background:
+    radial-gradient(1100px 380px at 50% -12%, hsl(255 92% 62% / 0.07), transparent 60%),
+    radial-gradient(900px 900px at 100% 100%, hsl(265 60% 40% / 0.05), transparent 60%);
+}
+.light .app-aura::after {
+  background: radial-gradient(1100px 380px at 50% -12%, hsl(255 85% 60% / 0.05), transparent 60%);
+}
+
 /* React Flow theme overrides — token-driven, adapts to light/dark */
 .react-flow__background { background: hsl(var(--background)); }
+.react-flow__node-group { background: transparent; border: none; padding: 0; }
 .react-flow__controls {
   border: 1px solid hsl(var(--border));
   border-radius: var(--radius);

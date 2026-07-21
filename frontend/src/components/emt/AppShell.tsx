@@ -41,7 +41,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-background">
+    <div className="app-aura flex h-screen w-full overflow-hidden bg-background">
       <EmtSidebar onOpenDrawer={openDrawer} className="hidden lg:flex" />
 
       <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>

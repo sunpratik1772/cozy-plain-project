@@ -3,6 +3,7 @@ import { ChevronRight, PanelRightOpen } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { Button } from "@/components/ui/button";
 import { AppShell } from "@/components/emt/AppShell";
+import { TopbarSlot } from "@/components/emt/TopbarSlot";
 import { StatusPill } from "@/components/emt/StatusPill";
 import { useRun } from "@/contexts/RunContext";
 
@@ -13,23 +14,24 @@ const RunHistory = () => {
   return (
     <AppShell>
       <Seo title="Run History — Sherpa Studio" description="Latest executions across every workflow." path="/runs" />
-      <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
-        <p className="text-sm font-semibold tracking-tight">Run History</p>
-        <span className="text-[11px] text-muted-foreground">{recentRuns.length} runs</span>
+      <TopbarSlot>
         <Button
           variant="outline"
           size="icon"
-          className="ml-auto h-7 w-7"
+          className="h-8 w-8"
           aria-label="Collapse to side panel"
           onClick={() => navigate("/", { state: { openDrawer: "runs" } })}
         >
           <PanelRightOpen className="h-3.5 w-3.5" />
         </Button>
-      </div>
+      </TopbarSlot>
 
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-4xl px-4 py-6 md:px-6">
-          <p className="mb-4 text-sm text-muted-foreground">Latest executions across every workflow.</p>
+        <div className="mx-auto max-w-4xl px-4 py-8 md:px-6">
+          <header className="mb-5">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">Run History</h1>
+            <p className="mt-1 text-sm text-muted-foreground">Latest executions across every workflow · {recentRuns.length} runs.</p>
+          </header>
           <div className="emt-card divide-y divide-border">
             {recentRuns.map((r) => (
               <Link

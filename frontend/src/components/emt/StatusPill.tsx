@@ -5,7 +5,7 @@ const STYLES: Record<string, { dot: string; text: string; label: string }> = {
   success: { dot: "bg-success", text: "text-success", label: "Success" },
   error: { dot: "bg-destructive", text: "text-destructive", label: "Failed" },
   warning: { dot: "bg-warning", text: "text-warning", label: "Warning" },
-  running: { dot: "bg-info animate-pulse", text: "text-info", label: "Running" },
+  running: { dot: "bg-primary animate-pulse", text: "text-primary", label: "Running" },
   connected: { dot: "bg-success", text: "text-success", label: "Connected" },
   partial: { dot: "bg-warning", text: "text-warning", label: "Partial" },
   off: { dot: "bg-muted-foreground/40", text: "text-muted-foreground", label: "Off" },

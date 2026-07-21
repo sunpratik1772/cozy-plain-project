@@ -1,5 +1,6 @@
 import type { Edge, Node } from "@xyflow/react";
-import type { FlowNodeData } from "@/components/emt/studio/FlowNode";
+import type { FlowNodeData, FlowNodeRow, NodeAccent } from "@/components/emt/studio/FlowNode";
+import type { GroupNodeData } from "@/components/emt/studio/GroupNode";
 import type { EmtLogLine, RunStatus } from "@/data/emt";
 
 export interface RunStep {
@@ -12,10 +13,53 @@ export interface RunStep {
 export interface WorkflowPreset {
   name: string;
   file: string;
-  nodes: Node<FlowNodeData>[];
+  // Mixed emt/group nodes — kept as the base Node type so group containers
+  // (GroupNodeData) and flow cards (FlowNodeData) can coexist in one array.
+  nodes: Node[];
   edges: Edge[];
   runTimeline: RunStep[];
   finalStatus: RunStatus;
+  /** Log lines shown in the run panel before the workflow is (re)run. */
+  seedLogs?: EmtLogLine[];
+}
+
+/** Rich screenshot-accurate node (colored tile + typed rows). */
+function card(
+  id: string,
+  x: number,
+  y: number,
+  label: string,
+  icon: string,
+  accent: NodeAccent,
+  rows: FlowNodeRow[],
+  opts: { nodeType?: string; parentId?: string; badge?: string; status?: FlowNodeData["status"] } = {},
+): Node<FlowNodeData> {
+  return {
+    id,
+    type: "emt",
+    position: { x, y },
+    ...(opts.parentId ? { parentId: opts.parentId, extent: "parent" as const } : {}),
+    data: {
+      label,
+      sub: rows[0]?.text ?? "",
+      icon,
+      accent,
+      rows,
+      badge: opts.badge,
+      status: opts.status ?? "success",
+      nodeType: opts.nodeType ?? id,
+    },
+  };
+}
+
+function groupNode(id: string, x: number, y: number, width: number, height: number, label: string, icon = "FileText"): Node<GroupNodeData> {
+  return {
+    id,
+    type: "group",
+    position: { x, y },
+    style: { width, height },
+    data: { label, icon },
+  };
 }
 
 function node(
@@ -54,6 +98,68 @@ function timeline(steps: TimelineStep[], finalMsg: string, finalLevel: EmtLogLin
 }
 
 export const WORKFLOW_PRESETS: Record<string, WorkflowPreset> = {
+  "new-leads-automation": {
+    name: "New leads Automation",
+    file: "leads.slip",
+    nodes: [
+      groupNode("grp-filecheck", 40, 380, 288, 356, "File Check", "FileText"),
+      card("file-watcher-1", 16, 52, "File Watcher", "Folder", "red", [
+        { kind: "check", text: "New file in folder" },
+        { kind: "file", text: "/Projects/scripts" },
+      ], { parentId: "grp-filecheck", nodeType: "file_watcher" }),
+      card("file-watcher-2", 16, 196, "File Watcher", "Folder", "red", [
+        { kind: "check", text: "New file in folder" },
+        { kind: "file", text: "/Projects/scripts/Customer dat…" },
+      ], { parentId: "grp-filecheck", nodeType: "file_watcher" }),
+      card("csv-parser", 470, 60, "CSV Parser", "Table", "green", [
+        { kind: "check", text: "Convert CSV to usable objects" },
+        { kind: "clock", text: "Next 2.45 minutes" },
+      ], { nodeType: "csv_parser" }),
+      card("de-duplicator", 470, 360, "De duplicator", "Filter", "cyan", [
+        { kind: "check", text: "Removes Duplicates" },
+      ], { nodeType: "de_duplicator" }),
+      card("crm-sync", 690, 640, "CRM Sync", "Send", "orange", [
+        { kind: "check", text: "Sends clean data to CRM" },
+        { kind: "link", text: "https://api.hubapi.com/crm/v3/…" },
+      ], { nodeType: "crm_sync" }),
+    ],
+    edges: [
+      edge("e-fc-csv", "file-watcher-1", "csv-parser"),
+      edge("e-csv-dedup", "csv-parser", "de-duplicator"),
+      edge("e-dedup-crm", "de-duplicator", "crm-sync"),
+    ],
+    finalStatus: "running",
+    seedLogs: [
+      { t: "Nov 12 00:12:00", level: "info", msg: 'Initializing automation: "New Leads Automation"' },
+      { t: "Nov 12 00:12:00", level: "info", msg: "Environment: Local-first" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "Loaded configuration from /Users/sam/Automations/leads.slip" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "Node: Watcher — Listening to /Users/sam/Downloads/leads/" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "File detected: leads-2025-04-19.csv" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "Reading file: leads-2025-04-19.csv (38 KB)" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "Parsed 122 rows in 241ms" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "Node: Clean Data — Removing incomplete rows" },
+      { t: "Nov 12 00:12:00", level: "warn", msg: "Found 3 rows with missing email addresses" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "119 valid rows remaining" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "Domain check complete: 115 valid, 4 flagged" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "Enrichment completed in 2.1s" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "Node: Deduplication — Comparing with CRM (local db)" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "Checking against existing 13,842 records" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "117 new leads, 2 duplicates ignored" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "Node: CRM Sync — Writing to local CRM instance" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "Synced 117 new contacts in 1.4s" },
+      { t: "Nov 12 00:12:00", level: "info", msg: "Node: Notify — Slack Webhook to #sales-leads" },
+    ],
+    runTimeline: timeline(
+      [
+        { nodeIds: ["file-watcher-1", "file-watcher-2"], msg: "Watcher: new file detected — leads-2025-04-19.csv" },
+        { nodeIds: ["csv-parser"], msg: "CSV Parser: parsed 122 rows in 241ms" },
+        { nodeIds: ["de-duplicator"], msg: "Deduplication: 117 new leads, 2 duplicates ignored" },
+        { nodeIds: ["crm-sync"], msg: "CRM Sync: synced 117 new contacts in 1.4s" },
+      ],
+      "Run succeeded — 117 new leads processed",
+    ),
+  },
+
   "leads-pipeline": {
     name: "Lead scoring pipeline",
     file: "leads_pipeline.json",
@@ -269,6 +375,6 @@ export const DEFAULT_PRESET: WorkflowPreset = {
 };
 
 export function getWorkflowPreset(id: string | undefined): WorkflowPreset {
-  if (!id) return WORKFLOW_PRESETS["leads-pipeline"];
+  if (!id) return WORKFLOW_PRESETS["new-leads-automation"];
   return WORKFLOW_PRESETS[id] ?? DEFAULT_PRESET;
 }

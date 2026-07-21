@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Seo } from "@/components/Seo";
 import { AppShell } from "@/components/emt/AppShell";
+import { TopbarSlot } from "@/components/emt/TopbarSlot";
 import { StatusPill } from "@/components/emt/StatusPill";
 import { useWorkspace } from "@/contexts/WorkspaceContext";
 
@@ -74,17 +75,13 @@ const Settings = () => {
     }
   };
 
-  const activeCat = CATEGORIES.find((c) => c.id === cat) ?? CATEGORIES[0];
-
   return (
     <AppShell>
       <Seo title="Settings — Sherpa Studio" description="Workspace profile, permissions and data source access." path="/settings" />
 
-      <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
-        <p className="text-sm font-semibold tracking-tight">Settings</p>
-        <span className="text-[11px] text-muted-foreground">{activeCat.label}</span>
-        <span className="ml-auto text-[11px] text-muted-foreground">Changes are saved automatically</span>
-      </div>
+      <TopbarSlot>
+        <span className="hidden text-xs text-muted-foreground lg:inline">Changes are saved automatically</span>
+      </TopbarSlot>
 
       <div className="flex min-h-0 flex-1">
         <aside className="w-52 shrink-0 overflow-y-auto border-r border-border p-3">

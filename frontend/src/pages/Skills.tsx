@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Seo } from "@/components/Seo";
 import { AppShell } from "@/components/emt/AppShell";
+import { TopbarSlot } from "@/components/emt/TopbarSlot";
 import { useWorkspace } from "@/contexts/WorkspaceContext";
 
 type Source = "prebuilt" | "workspace";
@@ -48,34 +49,11 @@ const Skills = () => {
         description="Packaged capabilities Sherpa can drop into any workflow."
         path="/skills"
       />
-      <div className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
-        <p className="text-sm font-semibold tracking-tight">Skills</p>
-
-        <Select value={source} onValueChange={(v) => setSource(v as Source)}>
-          <SelectTrigger className="ml-2 h-7 w-48 bg-surface text-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="prebuilt">Prebuilt skills ({prebuilt.length})</SelectItem>
-            <SelectItem value="workspace">Your workspace ({custom.length})</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <div className="relative ml-auto w-64 max-w-full sm:ml-2">
-          <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search skills…"
-            className="h-7 w-full rounded-md border border-border bg-surface pl-8 pr-2.5 text-xs outline-none placeholder:text-muted-foreground/70 focus:border-ring/50"
-            aria-label="Search skills"
-          />
-        </div>
-
-        {source === "workspace" && (
+      {source === "workspace" && (
+        <TopbarSlot>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button size="sm" className="h-7 gap-1.5 text-xs font-semibold">
+              <Button size="sm" className="h-8 gap-1.5 text-xs font-semibold">
                 <Plus className="h-3.5 w-3.5" /> New skill
               </Button>
             </DialogTrigger>
@@ -98,16 +76,43 @@ const Skills = () => {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-        )}
-      </div>
+        </TopbarSlot>
+      )}
 
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-6xl px-4 py-6 md:px-6">
-          <p className="mb-4 text-sm text-muted-foreground">
-            {source === "prebuilt"
-              ? "Packaged capabilities Sherpa can drop into any workflow — define the logic once, reuse everywhere."
-              : "Skills you've defined for this workspace."}
-          </p>
+        <div className="mx-auto max-w-6xl px-4 py-8 md:px-6">
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight text-foreground">Skills</h1>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {source === "prebuilt"
+                  ? "Packaged capabilities Sherpa can drop into any workflow — define the logic once, reuse everywhere."
+                  : "Skills you've defined for this workspace."}
+              </p>
+            </div>
+            <div className="relative w-full max-w-full sm:w-64">
+              <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search skills…"
+                className="h-9 w-full rounded-md border border-border bg-surface pl-8 pr-2.5 text-sm outline-none placeholder:text-muted-foreground/70 focus:border-ring/50"
+                aria-label="Search skills"
+              />
+            </div>
+          </div>
+
+          <div className="mb-5 flex items-center gap-2">
+            <Select value={source} onValueChange={(v) => setSource(v as Source)}>
+              <SelectTrigger className="h-8 w-48 bg-surface text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="prebuilt">Prebuilt skills ({prebuilt.length})</SelectItem>
+                <SelectItem value="workspace">Your workspace ({custom.length})</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           {filtered.length === 0 && source === "workspace" && (
             <p className="py-12 text-center text-sm text-muted-foreground">
