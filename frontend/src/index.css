@@ -340,35 +340,41 @@
     background-image: radial-gradient(560px 400px at 0% 0%, hsl(0 0% 100% / 0.14), transparent 65%);
   }
 
-  /* dbSherpa Studio login — editorial dark treatment (near-black navy +
-     a single blue accent), scoped to the login page only via .login-scope.
-     Deliberately separate from .c8-scope so the marketing site's blue
-     field is untouched while the login explores the new direction. */
+  /* dbSherpa Studio login — fabrica-style editorial treatment: a light,
+     off-white shell with near-black type and a solid black pill CTA,
+     scoped to the login page only via .login-scope. Deliberately separate
+     from .c8-scope so the marketing site's blue field is untouched. A
+     black "panel" pair (--panel / --panel-foreground) is layered on top
+     for the one full-bleed dark block on the page, echoing fabrica's own
+     mix of light sections + occasional near-black panels. */
   .login-scope {
-    --background: 226 49% 8%;
-    --foreground: 0 0% 100%;
+    --background: 30 10% 98%;
+    --foreground: 220 15% 10%;
 
-    --card: 221 39% 11%;
-    --card-foreground: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 10%;
 
-    --popover: 221 39% 11%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 10%;
 
-    --primary: 223 100% 60%;
+    --primary: 220 15% 9%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 221 30% 15%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 30 10% 95%;
+    --secondary-foreground: 220 15% 10%;
 
-    --muted: 221 30% 15%;
-    --muted-foreground: 220 15% 65%;
+    --muted: 30 10% 95%;
+    --muted-foreground: 220 8% 40%;
 
-    --accent: 223 100% 60%;
+    --accent: 220 15% 9%;
     --accent-foreground: 0 0% 100%;
 
-    --border: 220 25% 18%;
-    --input: 220 25% 18%;
-    --ring: 223 100% 60%;
+    --border: 220 10% 88%;
+    --input: 220 10% 88%;
+    --ring: 220 15% 9%;
+
+    --panel: 220 10% 7%;
+    --panel-foreground: 0 0% 100%;
 
     --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
   }
