@@ -54,9 +54,9 @@ export function EmtSidebar({ className }: SidebarProps) {
         className,
       )}
     >
-      {/* Brand mark — minimal Plasma-style */}
+      {/* Brand mark — minimal Plasma-style, bold sans */}
       <Link to="/" className="mb-3 flex h-8 w-8 items-center justify-center rounded-md bg-foreground" aria-label="Home">
-        <span className="font-serif text-[15px] italic leading-none text-background">s</span>
+        <span className="text-[13px] font-bold leading-none text-background">S</span>
       </Link>
 
       <nav className="flex flex-1 flex-col items-center gap-1">

@@ -31,8 +31,8 @@ const Dashboard = () => {
         <div className="relative mx-auto max-w-6xl space-y-6 px-4 py-8 md:px-6 md:py-10">
           <div className="flex flex-col gap-2">
             <p className="text-[10px] font-medium tracking-[0.28em] uppercase text-muted-foreground">Workspace overview</p>
-            <h2 className="font-serif text-3xl md:text-4xl leading-tight tracking-tight text-foreground">
-              Good evening, <em className="italic text-muted-foreground">Pratik</em>
+            <h2 className="text-3xl md:text-4xl font-semibold leading-tight tracking-tight text-foreground">
+              Good evening, Pratik
             </h2>
             <p className="text-sm text-muted-foreground">
               Your workspace ran 48 workflows this month with a 94% success rate.
